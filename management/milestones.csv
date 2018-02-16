@@ -1,4 +1,10 @@
-MilestoneID,             Dependencies, EstimatedEffort, Lead,  Completed, Description
-DefineInitialMilestones,             ,               1,    ?,           , Come up with initial milestones for getting started
+MilestoneID,             Dependencies, EstimatedEffort(/10), Lead,  Completed, Description
+DefineInitialMilestones,             ,               1,    ?,    Done   , Come up with initial milestones for getting started
 Initial file commits,                ,                1,   T,           , Commit all the type files that we will be needing
-Buil
+Flexer file symbol definitions,      ,               4,   T,        , Formal definition of viable characters        
+Build Parser,                       4,            3, Both, , Sifting through gramatical hierachy 
+Necessary header files for parser,  4 5,          5, , ,
+Implement binary functions,        3 4 5,      4, , ,
+Implement unary functions,         3 4 5,         4, , ,
+Implement int main(),              3 4 5,          7,
+DefineMidMilestones               1-9,            1, A,           , Once initial milestones achieved, list next milestones to complete
