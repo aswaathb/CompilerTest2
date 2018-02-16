@@ -6,5 +6,5 @@ Build Parser,                       4,            3, Both, , Sifting through gra
 Necessary header files for parser,  4 5,          5, , ,
 Implement binary functions,        3 4 5,      4, , ,
 Implement unary functions,         3 4 5,         4, , ,
-Implement int main(),              3 4 5,          7,
+Implement int main(),              3 4 5,          7, , ,
 DefineMidMilestones               1-9,            1, A,           , Once initial milestones achieved, list next milestones to complete
