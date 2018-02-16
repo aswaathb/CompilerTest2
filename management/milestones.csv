@@ -7,4 +7,4 @@ Necessary header files for parser,  4 5,          5, , ,
 Implement binary functions,        3 4 5,      4, , ,
 Implement unary functions,         3 4 5,         4, , ,
 Implement int main(),              3 4 5,          7, , ,
-DefineMidMilestones,               1-9,            1, A,           , Once initial milestones achieved, list next milestones to complete
+DefineMidMilestones,               1-9,            1, A,            Once initial milestones achieved, list next milestones to complete
