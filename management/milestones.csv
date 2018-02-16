@@ -1,2 +1,4 @@
 MilestoneID,             Dependencies, EstimatedEffort, Lead,  Completed, Description
 DefineInitialMilestones,             ,               1,    ?,           , Come up with initial milestones for getting started
+Initial file commit, , 1, T, , Commit all the type files that we will be needing
+Buil
