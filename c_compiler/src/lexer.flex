@@ -7,10 +7,14 @@ extern "C" int fileno(FILE *stream);
 #include "parser.tab.hpp"
 %}
 
-DIGIT           [0-9]
-LETTER          [a-zA-Z_]
-HEXDIG          [a-fA-F0-9]
-
+LETTER  [a-zA-Z_]
+ALP_NUM [a-zA-Z0-9_]
+DIGIT   [0-9]
+DEC     {DIGIT}*(\.){DIGIT}+
+HEX     0[xX][a-fA-F0-9]+
+OCT     0[1-7]+
+NUM     [1-9]
+FLOAT   (({DEC})([eE][+-]?{DIGIT}+)?)|{NUM}+[eE][+-]?{DIGIT}+
 
 %%
 
