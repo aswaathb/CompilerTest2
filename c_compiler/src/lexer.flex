@@ -25,76 +25,76 @@ SYNTAX    ">>="|"<<="|"+="|"-="|"*="|"/="|"%="|"&="|"^="|"|="|">>"|"<<"|"++"|"--
 "/*"			                              { comment()?; }
 "//"                                    { comment()?; }
 ////////////////////////////////////////// Variable Types /////////////////////////////////////////////////
-auto                                    { yy_colCount(); /* other functions */ ; return AUTO; }
-double                                  { yy_colCount(); /* other functions */ ; return DOUBLE; }
-float                                   { yy_colCount(); /* other functions */ ; return FLOAT; }
-char                                    { yy_colCount(); /* other functions */ ; return CHAR; }
-int                                     { yy_colCount(); /* other functions */ ; return INT; }
-unsigned                                { yy_colCount(); /* other functions */ ; return UNSIGNED; }
-signed                                  { yy_colCount(); /* other functions */ ; return SIGNED; }
+auto                                      { yy_colCount(); /* other functions */ ; return AUTO; }
+double                                    { yy_colCount(); /* other functions */ ; return DOUBLE; }
+float    		                          { yy_colCount(); /* other functions */ ; return FLOAT; }
+char            	                      { yy_colCount(); /* other functions */ ; return CHAR; }
+int                 	                  { yy_colCount(); /* other functions */ ; return INT; }
+unsigned                	              { yy_colCount(); /* other functions */ ; return UNSIGNED; }
+signed                      	          { yy_colCount(); /* other functions */ ; return SIGNED; }
 ////////////////////////////////////////// Function Types /////////////////////////////////////////////////
-for                                     { yy_colCount(); /* other functions */ ; return FOR; }
-if                                      { yy_colCount(); /* other functions */ ; return IF; }
-switch                                  { yy_colCount(); /* other functions */ ; return SWITCH; }
-case                                    { yy_colCount(); /* other functions */ ; return CASE; }
-else                                    { yy_colCount(); /* other functions */ ; return ELSE; }
-do                                      { yy_colCount(); /* other functions */ ; return DO; }
-void                                    { yy_colCount(); /* other functions */ ; return VOID; }
-while                                   { yy_colCount(); /* other functions */ ; return WHILE; }
+for                             	      { yy_colCount(); /* other functions */ ; return FOR; }
+if                                  	  { yy_colCount(); /* other functions */ ; return IF; }
+switch                                    { yy_colCount(); /* other functions */ ; return SWITCH; }
+case  		                              { yy_colCount(); /* other functions */ ; return CASE; }
+else        	                          { yy_colCount(); /* other functions */ ; return ELSE; }
+do              	                      { yy_colCount(); /* other functions */ ; return DO; }
+void                	                  { yy_colCount(); /* other functions */ ; return VOID; }
+while                   	              { yy_colCount(); /* other functions */ ; return WHILE; }
 
 //////////////////////////////////// Supporting (Constructs?) /////////////////////////////////////////////
-break                                   { yy_colCount(); /* other functions */ ; return BREAK; }
-goto                                    { yy_colCount(); /* other functions */ ; return GOTO; }
-const                                   { yy_colCount(); /* other functions */ ; return CONST; }
-default                                 { yy_colCount(); /* other functions */ ; return DEFAULT; }
-struct                                  { yy_colCount(); /* other functions */ ; return STRUCT; }
-register                                { yy_colCount(); /* other functions */ ; return REGISTER; }
-typedef                                 { yy_colCount(); /* other functions */ ; return TYPEDEF; }
-return                                  { yy_colCount(); /* other functions */ ; return RETURN; }
-sizeof                                  { yy_colCount(); /* other functions */ ; return SIZEOF; }
-static                                  { yy_colCount(); /* other functions */ ; return STATIC; }
+break                       	          { yy_colCount(); /* other functions */ ; return BREAK; }
+goto                            	      { yy_colCount(); /* other functions */ ; return GOTO; }
+const                               	  { yy_colCount(); /* other functions */ ; return CONST; }
+default                                   { yy_colCount(); /* other functions */ ; return DEFAULT; }
+struct		                              { yy_colCount(); /* other functions */ ; return STRUCT; }
+register                                  { yy_colCount(); /* other functions */ ; return REGISTER; }
+typedef                                   { yy_colCount(); /* other functions */ ; return TYPEDEF; }
+return                                    { yy_colCount(); /* other functions */ ; return RETURN; }
+sizeof                                    { yy_colCount(); /* other functions */ ; return SIZEOF; }
+static                                    { yy_colCount(); /* other functions */ ; return STATIC; }
 
 /////////////////////////////////////// Constants and Strings /////////////////////////////////////////////
-//({HEX}|{OCT}|0){DIGIT}+{UN_SUFFIX}?		  { yy_colCount(); return(CONSTANT); }
+//({HEX}|{OCT}|0){DIGIT}+{UN_SUFFIX}?	    { yy_colCount(); return(CONSTANT); }
 //LETTER?'(\\.|[^\\'])+'	                { yy_colCount(); return(CONSTANT); }
-//{FLOAT}{F_SUFFIX}?		                  { yy_colCount(); return(CONSTANT); }
+//{FLOAT}{F_SUFFIX}?		                { yy_colCount(); return(CONSTANT); }
 //{DIGIT}*"."{FLOAT}{F_SUFFIX}?  	        { yy_colCount(); return(CONSTANT); }
-//{DIGIT}+"."{FLOAT}{F_SUFFIX}?	          { yy_colCount(); return(CONSTANT); }
+//{DIGIT}+"."{FLOAT}{F_SUFFIX}?	            { yy_colCount(); return(CONSTANT); }
 LETTER?\"(\\.|[^\\"])*\"	              { yy_colCount(); return(STRING_LITERAL); }
 
 ///////////////////////////////////////////// Operations //////////////////////////////////////////////////
-">>="		    	                          { yy_colCount(); return(RIGHT_AGN); }
-"<<="			                              { yy_colCount(); return(LEFT_AGN); }
-"+="			                              { yy_colCount(); return(ADD_AGN); }
-"-="			                              { yy_colCount(); return(SUB_AGN); }
-"*="			                              { yy_colCount(); return(MUL_AGN); }
-"/="			                              { yy_colCount(); return(DIV_AGN); }
-"%="			                              { yy_colCount(); return(MOD_AGN); }
-"&="			                              { yy_colCount(); return(AND_AGN); }
-"^="			                              { yy_colCount(); return(XOR_AGN); }
-"|="			                              { yy_colCount(); return(OR_AGN); }
-">>"			                              { yy_colCount(); return(RIGHT_OPR); }
-"<<"			                              { yy_colCount(); return(LEFT_OPR); }
-"++"			                              { yy_colCount(); return(INC_OPR); }
-"--"			                              { yy_colCount(); return(DEC_OPR); }
-"->"			                              { yy_colCount(); return(PTR_OPR); }
-"&&"			                              { yy_colCount(); return(AND_OPR); }
-"||"			                              { yy_colCount(); return(OR_OPR); }
-"<="			                              { yy_colCount(); return(LE_OPR); }
-">="			                              { yy_colCount(); return(GE_OPR); }
-"=="			                              { yy_colCount(); return(EQ_OPR); }
-"!="			                              { yy_colCount(); return(NE_OPR); }
-"..."			                              { yy_colCount(); return(ELLIPSIS); }
+">>="		    	                      { yy_colCount(); return(RIGHT_AGN); }
+"<<="			                          { yy_colCount(); return(LEFT_AGN); }
+"+="			                          { yy_colCount(); return(ADD_AGN); }
+"-="			                          { yy_colCount(); return(SUB_AGN); }
+"*="			                          { yy_colCount(); return(MUL_AGN); }
+"/="			                          { yy_colCount(); return(DIV_AGN); }
+"%="			                          { yy_colCount(); return(MOD_AGN); }
+"&="			                          { yy_colCount(); return(AND_AGN); }
+"^="			                          { yy_colCount(); return(XOR_AGN); }
+"|="			                          { yy_colCount(); return(OR_AGN); }
+">>"			                          { yy_colCount(); return(RIGHT_OPR); }
+"<<"			                          { yy_colCount(); return(LEFT_OPR); }
+"++"			                          { yy_colCount(); return(INC_OPR); }
+"--"			                          { yy_colCount(); return(DEC_OPR); }
+"->"			                          { yy_colCount(); return(PTR_OPR); }
+"&&"			                          { yy_colCount(); return(AND_OPR); }
+"||"			                          { yy_colCount(); return(OR_OPR); }
+"<="			                          { yy_colCount(); return(LE_OPR); }
+">="			                          { yy_colCount(); return(GE_OPR); }
+"=="			                          { yy_colCount(); return(EQ_OPR); }
+"!="			                          { yy_colCount(); return(NE_OPR); }
+"..."			                          { yy_colCount(); return(ELLIPSIS); }
 ";"		  	                              { yy_colCount(); return(';'); }
 "{"   		                              { yy_colCount(); return('{'); }
-"}" 		                                { yy_colCount(); return('}'); }
+"}" 		                              { yy_colCount(); return('}'); }
 ","	  		                              { yy_colCount(); return(','); }
 ":"	  		                              { yy_colCount(); return(':'); }
 "("	  		                              { yy_colCount(); return('('); }
 ")"	  		                              { yy_colCount(); return(')'); }
 "["		                                  { yy_colCount(); return('['); }
 "]"		                                  { yy_colCount(); return(']'); }
-"." 			                              { yy_colCount(); return('.'); }
+"." 			                          { yy_colCount(); return('.'); }
 "="	  		                              { yy_colCount(); return('='); }
 "&"		  	                              { yy_colCount(); return('&'); }
 "!"	  		                              { yy_colCount(); return('!'); }
@@ -112,7 +112,7 @@ LETTER?\"(\\.|[^\\"])*\"	              { yy_colCount(); return(STRING_LITERAL); 
 
 ////////////////////////////////////////// Clean up ///////////////////////////////////////////////////////
 [ \t\v\n\f]		                          { yy_colCount(); }
-.			                                  { return("INVALID"); }
+.			                              { return("INVALID"); }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 %%
