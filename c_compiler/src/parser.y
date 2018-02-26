@@ -35,7 +35,8 @@
 
 %token T_NUMBER T_VARIABLE
 
-%type <expr> EXPR TERM FACTOR
+%type <expr> TRANSLATION_UNIT IDENTIFIER
+%type <statement>
 %type <number> T_NUMBER
 %type <string> T_VARIABLE T_LOG T_EXP T_SQRT
 
@@ -45,7 +46,7 @@
 
 ROOT : TRANSLATION_UNIT { g_root = $1; }
 
-TRANSLATION_UNIT : T_IDENTIFIER     { $$ = //need funcitonality}
+TRANSLATION_UNIT : IDENTIFIER    
 
 T_IDENTIFIER
 
@@ -55,20 +56,6 @@ EXPR : TERM                 { $$ = $1; }
 
 TERM : FACTOR               { $$ = $1; }
 
-    | TERM T_TIMES FACTOR { $$ = new MulOperator($1, $3); }
-    | TERM T_DIVIDE FACTOR { $$ = new DivOperator($1, $3); }
-
-
-FACTOR : T_NUMBER           { $$ = new Number($1); }
-    | T_VARIABLE { $$ = new Variable (*$1); }
-
-    | FACTOR T_EXPONENT FACTOR { $$ = new ExpOperator($1, $3); }
-
-    | T_LOG T_LBRACKET EXPR T_RBRACKET  { $$ = new LogFunction($3); }
-    | T_EXP T_LBRACKET EXPR T_RBRACKET  { $$ = new ExpFunction($3); }
-    | T_SQRT T_LBRACKET EXPR T_RBRACKET  { $$ = new SqrtFunction($3); }
-
-    | T_LBRACKET EXPR T_RBRACKET { $$ = $2; }
 %%
 
 const Expression *g_root; // Definition of variable (to match declaration earlier)
