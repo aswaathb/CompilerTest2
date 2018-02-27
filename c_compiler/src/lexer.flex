@@ -32,6 +32,9 @@ char            	                      { yy_colCount(); /* other functions */ ; 
 int                 	                  { yy_colCount(); /* other functions */ ; return INT; }
 unsigned                	              { yy_colCount(); /* other functions */ ; return UNSIGNED; }
 signed                      	          { yy_colCount(); /* other functions */ ; return SIGNED; }
+long									  { yy_colCount(); /* other functions */ ; return LONG; }
+short									  { yy_colCount(); /* other functions */ ; return SHORT; }
+									  
 ////////////////////////////////////////// Function Types /////////////////////////////////////////////////
 for                             	      { yy_colCount(); /* other functions */ ; return FOR; }
 if                                  	  { yy_colCount(); /* other functions */ ; return IF; }
