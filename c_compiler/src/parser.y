@@ -20,36 +20,41 @@
       double number;
       std::string *string;
       function_definition *func;
+      return_statement *ret_state;
 }
 
 %token VAR NUM
 %token EQ SEMIC COMMA L_BRAC R_BRAC L_CURLY R_CURLY
 %token VOID CHAR SHORT INT LONG FLOAT DOUBLE SIGNED UNSIGNED
+%token RETURN
 
 
-%type <node> ROOT TYPE_SPEC BEGIN
-%type <variable> EXPR SCOPE FACTOR
-%type <func> FUNC
+%type <node> ROOT TYPE_SPEC  
+%type <variable>  SCOPE FACTOR DECLARATION STATEMENT RETURN_STATEMENT FUNC
+
 %type <number> NUM 
-%type <string> VAR 
+%type <string> VAR  RETURN
 
 %start ROOT
 
 %%
-    ROOT : BEGIN { g_root = $1; }
+    ROOT : STATEMENT                      { g_root = $1; }
 
-    BEGIN : EXPR
-          | FUNC
-
-    EXPR : TYPE_SPEC VAR EQ NUM SEMIC     {$$ = new variable_declaration($2,$4);}
-         | TYPE_SPEC VAR SEMIC            {$$ = new variable_declaration($2,0);}
-         
-    FUNC : TYPE_SPEC VAR L_BRAC R_BRAC SCOPE     {$$ = new function_definition($2,$5); }
-
-    FACTOR : L_BRAC R_BRAC  	            {;}
-           | L_BRAC TYPE_SPEC VAR R_BRAC  {$$ = new variable_declaration($3,0);}
+    STATEMENT : DECLARATION               {$$ = $1; }
+              | FUNC                      {$$ = $1; }
+              | RETURN_STATEMENT          {$$ = $1; }
     
-    SCOPE : L_CURLY EXPR R_CURLY          {$$ = $2 ;}
+    RETURN_STATEMENT : RETURN NUM SEMIC           {$$ = new return_statement($1,$2); }
+
+    DECLARATION : TYPE_SPEC VAR EQ NUM SEMIC      {$$ = new variable_declaration($2,$4);}
+         | TYPE_SPEC VAR SEMIC                    {$$ = new variable_declaration($2,0);}
+         
+    FUNC : TYPE_SPEC VAR L_BRAC R_BRAC SCOPE      {$$ = new function_definition($2,$5); }
+
+    FACTOR : L_BRAC R_BRAC  	                    {;}
+           | L_BRAC TYPE_SPEC VAR R_BRAC          {$$ = new variable_declaration($3,0);}
+    
+    SCOPE : L_CURLY STATEMENT R_CURLY             {$$ = $2 ;}
 
     TYPE_SPEC : VOID                    
               | CHAR
@@ -60,10 +65,6 @@
               | DOUBLE
               | SIGNED 
               | UNSIGNED
-      
-
- 
-
 
 
 %%

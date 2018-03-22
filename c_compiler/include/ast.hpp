@@ -46,18 +46,34 @@ public:
 std::string *func_name;
 variable_declaration Variable;
 
-    function_definition(std::string *_func_name, variable_declaration _var_decl)
-    : func_name(_func_name), Variable(_var_decl) {};
+    function_definition(std::string *_func_name, variable_declaration* _scope)
+    : func_name(_func_name), Variable(*_scope) {};
 
     virtual void translate() const override{
         std::cout<<"def ";
         std::cout<<*func_name;
-        std::cout<<"():\n\t"<<std::endl;
-        std::cout<<Variable.var_name;
+        std::cout<<"():\n"<<std::endl;
+        std::cout<<"\t"<<*Variable.var_name;
         std::cout<<"=";
         std::cout<<Variable.value;
         std::cout<<std::endl;
     }
+
+};
+
+class return_statement : public Expression{
+public:
+std::string *return_type;
+double value;
+
+    return_statement(std::string *_return_type, double _val )
+    : return_type(_return_type), value(_val){};
+    
+    virtual void translate() const override{
+        std::cout<<*return_type<<" ";
+        std::cout<<value;
+        std::cout<<std::endl;
+    }    
 
 };
 
