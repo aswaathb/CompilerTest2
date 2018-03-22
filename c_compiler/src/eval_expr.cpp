@@ -4,21 +4,22 @@
 
 int main(int argc, char *argv[])
 {
-    std::map<std::string,double> bindings;
     
-    // Grab the pairs of bindings from argv
-    for(int i=1; i<argc-1 ; i+=2){
-        bindings.insert( std::make_pair( argv[i], strtod(argv[i+1],0) )  );
-    }
-    
-    // Parse the AST
     const Expression *ast=parseAST();
     
-    // evaluate it with the bindings given
-    double res=ast->evaluate(bindings);
+    //python translation
+    ast->translate();
+    std::cout<<std::endl;
+    //Python "Footer"
+    std::cout<<"if __name__ == \"__main__\": "<<std::endl;
+    std::cout<<"import sys" <<std::endl ;
+    std::cout<<"ret=main()" << std::endl;
+    std::cout<<"sys.exit(ret)" << std::endl;
     
-    // Print it out
-    std::cout << std::fixed << std::setprecision(6) << res << std::endl;
 
+    //MIPS Machine Code
+    //ast->compile();
+    //std::cout<<std::endl;   
+    
     return 0;
 }

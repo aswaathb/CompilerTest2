@@ -4,8 +4,7 @@ int main()
 {
     const Expression *ast=parseAST();
 
-    ast->print(std::cout);
-    std::cout<<std::endl;
+    ast->translate();
 
     return 0;
 }

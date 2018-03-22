@@ -15,76 +15,56 @@
 // Represents the value associated with any kind of
 // AST node.
 %union{
-  const Expression *expr;
-  double number;
-  std::string *string;
+      const Expression *node;
+      variable_declaration *variable;
+      double number;
+      std::string *string;
+      function_definition *func;
 }
 
-//variable types
-%token AUTO DOUBLE FLOAT CHAR INT UNSIGNED SIGNED
+%token VAR NUM
+%token EQ SEMIC COMMA L_BRAC R_BRAC L_CURLY R_CURLY
+%token VOID CHAR SHORT INT LONG FLOAT DOUBLE SIGNED UNSIGNED
 
-//function Types
-%token FOR IF SWITCH CASE ELSE DO VOID WHILE
 
-//supporting (Constructs?)
-%token BREAK GOTO CONST DEFAULT STRUCT REGISTER TYPEDEF RETURN SIZEOF STATIC
-
-%token T_LBRACKET T_RBRACKET T_CLBRACKET T_RLBRACKET T_SRBRACKET T_SLBRACKET
-
-%token T_LOG T_EXP T_SQRT
-
-%token T_NUMBER T_VARIABLE
-
-%type <statement>
-%type <number> T_NUMBER
-%type <string> T_VARIABLE T_LOG T_EXP T_SQRT
+%type <node> ROOT TYPE_SPEC BEGIN
+%type <variable> EXPR SCOPE FACTOR
+%type <func> FUNC
+%type <number> NUM 
+%type <string> VAR 
 
 %start ROOT
 
 %%
+    ROOT : BEGIN { g_root = $1; }
 
-ROOT : TRANSLATION_UNIT { g_root = $1; }
+    BEGIN : EXPR
+          | FUNC
 
-TRANSLATION_UNIT
-: PROGRAM
+    EXPR : TYPE_SPEC VAR EQ NUM SEMIC     {$$ = new variable_declaration($2,$4);}
+         | TYPE_SPEC VAR SEMIC            {$$ = new variable_declaration($2,0);}
+         
+    FUNC : TYPE_SPEC VAR L_BRAC R_BRAC SCOPE     {$$ = new function_definition($2,$5); }
 
-// 1
-PROGRAM
-: DECLARATION_LIST
+    FACTOR : L_BRAC R_BRAC  	            {;}
+           | L_BRAC TYPE_SPEC VAR R_BRAC  {$$ = new variable_declaration($3,0);}
+    
+    SCOPE : L_CURLY EXPR R_CURLY          {$$ = $2 ;}
 
+    TYPE_SPEC : VOID                    
+              | CHAR
+              | SHORT
+              | INT
+              | LONG
+              | FLOAT
+              | DOUBLE
+              | SIGNED 
+              | UNSIGNED
+      
 
-DECLARATION_LIST
-: DECLARATION
-| DECLARATION_LIST DECLARATION
-
-DECLARATION
-: FUNC_DECLARATION
-
-FUNC_DECLARATION
-: TYPE_SPECIFIER IDENTIFIER "(" ")" STATEMENT // GRAMMAR BELOW FOR STATEMENTS
-| IDENTIFIER
-
-TYPE_SPECIFIER
-: INT
-| CHAR
-
-//STATEMENTS
-STATEMENT
-: EXPR_STATEMENT
-| RET_STATEMENT
-
-EXPR_STATEMENT
-: EXPR ";"
-| ";"
+ 
 
 
-RET_STATEMENT
-: RETURN ";"
-| RETURN EXPR
-
-//EXPRESSIONS
-EXPR
-: EXPR { //DEFINE AS SOMETHING SIMPLE TO BEGIN WITH }
 
 %%
 
