@@ -22,8 +22,8 @@ void yy_colCount();
 "double" 					{ yylval.string=new std::string("double"); 		return DOUBLE; 	}
 "signed"					{ yylval.string=new std::string("signed"); 		return SIGNED; 	}
 "unsigned"					{ yylval.string=new std::string("unsigned"); 	return UNSIGNED;}
-"return"					{ yylval.string=new std::string("return"); 		return RETURN;  }
 
+"return"					{ yylval.string=new std::string("return"); 		return RETURN;	}
 
 
 "="							{ return EQ		; }

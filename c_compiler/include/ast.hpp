@@ -12,7 +12,9 @@
 
 class Expression;
 class variable_declaration;
+class return_statement;
 class function_definition;
+
 
 extern const Expression *parseAST();
 
@@ -31,6 +33,7 @@ public:
 
     variable_declaration(std::string *_var, double _val)
     : var_name(_var), value(_val) {};
+
 
     virtual void translate() const override {
         std::cout<<*var_name;
@@ -61,13 +64,13 @@ variable_declaration Variable;
 
 };
 
-class return_statement : public Expression{
+class return_statement : public Expression {
 public:
 std::string *return_type;
 double value;
 
     return_statement(std::string *_return_type, double _val )
-    : return_type(_return_type), value(_val){};
+    : return_type(_return_type), value(_val) {};
     
     virtual void translate() const override{
         std::cout<<*return_type<<" ";

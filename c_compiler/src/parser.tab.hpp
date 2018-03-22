@@ -91,9 +91,9 @@ union YYSTYPE
 #line 17 "src/parser.y" /* yacc.c:1909  */
 
       const Expression *node;
-      variable_declaration *variable;
       double number;
       std::string *string;
+      variable_declaration *variable;
       function_definition *func;
       return_statement *ret_state;
 
