@@ -61,50 +61,50 @@ FUNCTION_DEFINITION
 //| DECLARATOR DECLARATION-LIST COMPOUND-STATEMENT							{$$ = new ErrorStopper();}
 
 
-// STATEMENTS
+///////////////////////////////////////// STATEMENTS /////////////////////////////////////////////////////////////////////////////////
 
 STATEMENT
-: COMPOUND_STATEMENT				{$$ =$1;}
-| SELECTION_STATEMENT				{$$ =$1;}
-| ITERATION_STATEMENT				{$$ =$1;}
-| JUMP_STATEMENT					{$$ =$1;}
-// | LABELED_STATEMENT				  {$$ =$1;}
-| EXPRESSION_STATEMENT				{$$ =$1;}
+: COMPOUND_STATEMENT				      {$$ =$1;}
+| SELECTION_STATEMENT				      {$$ =$1;}
+| ITERATION_STATEMENT				      {$$ =$1;}
+| JUMP_STATEMENT					        {$$ =$1;}
+//| LABELED_STATEMENT				      {$$ =$1;}
+| EXPRESSION_STATEMENT				    {$$ =$1;}
 
 COMPOUND_STATEMENT
-: L_CURLY R_CURLY																	{$$ = new CompoundStatement();} // needs implementation
+: L_CURLY R_CURLY																	              {$$ = new CompoundStatement();} // needs implementation
 // | L_CURLY STATEMENT_LIST R_CURLY
 // | L_CURLY DECLARATION_SEQ R_CURLY
 // | L_CURLY DECLARATION_SEQ STATEMENT_LIST R_CURLY
 
 SELECTION_STATEMENT
-: IF L_BRAC EXPRESSION R_BRAC STATEMENT												{$$ = new IfElseStatement($3, $5, new CompoundStatement());} // needs implementation
-| IF L_BRAC EXPRESSION R_BRAC STATEMENT ELSE STATEMENT								{$$ = new IfElseStatement($3, $5, $7);} // needs implementation
-// | SWITCH L_BRAC EXPRESSION R_BRAC STATEMENT { $$ = new SwitchStatement($3, $5); }
+: IF L_BRAC EXPRESSION R_BRAC STATEMENT												  {$$ = new IfElseStatement($3, $5, new CompoundStatement());} // needs implementation
+| IF L_BRAC EXPRESSION R_BRAC STATEMENT ELSE STATEMENT					{$$ = new IfElseStatement($3, $5, $7);} // needs implementation
+// | SWITCH L_BRAC EXPRESSION R_BRAC STATEMENT                  { $$ = new SwitchStatement($3, $5); }
 
 ITERATION_STATEMENT // start with one
-: WHILE L_BRAC EXPRESSION R_BRAC STATEMENT											{$$ = new WhileStatement($3, $5);} //needs implemetation
-| DO STATEMENT WHILE L_BRAC EXPRESSION R_BRAC										{$$ = new DoWhileStatement($2, $5);} //needs implemetation
-| FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT	{$$ = new ES_ES_EForStatement($3, $4, $5, $7);} //needs implemetation
-| FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT R_BRAC STATEMENT				{$$ = new ES_ESForStatement($3, $4, $6);} //needs implemetation
-| FOR L_BRAC DECLARATION EXPRESSION_STATEMENT R_BRAC STATEMENT						{$$ = new D_ESForStatement($3, $4, $6);} //needs implemetation
-| FOR L_BRAC DECLARATION EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT			{$$ = new D_ES_EForStatement($3,$4,$5,$7);} //needs implemetation
+: WHILE L_BRAC EXPRESSION R_BRAC STATEMENT											                      {$$ = new WhileStatement($3, $5);} //needs implemetation
+| DO STATEMENT WHILE L_BRAC EXPRESSION R_BRAC										                      {$$ = new DoWhileStatement($2, $5);} //needs implemetation
+| FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT	  {$$ = new ES_ES_EForStatement($3, $4, $5, $7);} //needs implemetation
+| FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT R_BRAC STATEMENT				        {$$ = new ES_ESForStatement($3, $4, $6);} //needs implemetation
+| FOR L_BRAC DECLARATION EXPRESSION_STATEMENT R_BRAC STATEMENT						            {$$ = new D_ESForStatement($3, $4, $6);} //needs implemetation
+| FOR L_BRAC DECLARATION EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT			        {$$ = new D_ES_EForStatement($3,$4,$5,$7);} //needs implemetation
 
 JUMP_STATEMENT // just focus on return function for now
-: RETURN EXPRESSION_STATEMENT			{$$ = new return_statement($2);} // return statement has to be changed in ast
+: RETURN EXPRESSION_STATEMENT			                  {$$ = new return_statement($2);} // return statement has to be changed in ast
 // | GOTO IDENTIFIER SEMICOLON
 // | CONTINUE SEMICOLON
 // | BREAK SEMICOLON
 
 
-// EXPRESSIONS
+////////////////////////////////////////////////////// EXPRESSIONS //////////////////////////////////////////////////////////////////////
 
 EXPRESSION_STATEMENT
-: SEMICOLON							{$$ = new ExpressionStatement(new EmptyExpression());} //needs implementation
-| EXPRESSION SEMICOLON				{$$ = new ExpressionStatement($1);} //needs implementation
+: SEMICOLON							              {$$ = new ExpressionStatement(new EmptyExpression());} //needs implementation
+| EXPRESSION SEMICOLON				        {$$ = new ExpressionStatement($1);} //needs implementation
 
 EXPRESSION
-: ASSIGNMENT_EXPRESSION				{$$ = $1;}
+: ASSIGNMENT_EXPRESSION				                    {$$ = $1;}
 // | EXPRESSION COMMA ASSIGNMENT_EXPRESSION
 
 ASSIGNMENT_EXPRESSION
@@ -138,12 +138,12 @@ SHIFT_EXPRESSION
 : ADDITIVE_EXPRESSION				{$$ = $1;}
 
 ADDITIVE_EXPRESSION
-: MULTIPLCATIVE_EXPRESSION			{$$ = $1;}
+: MULTIPLCATIVE_EXPRESSION			                            {$$ = $1;}
 | ADDITIVE_EXPRESSION PLUS MULTIPLCATIVE_EXPRESSION
 | ADDITIVE_EXPRESSION MINUS MULTIPLCATIVE_EXPRESSION
 
 MULTIPLCATIVE_EXPRESSION
-: CAST_EXPRESSION										{$$ = $1;}
+: CAST_EXPRESSION										                        {$$ = $1;}
 | MULTIPLCATIVE_EXPRESSION TIMES CAST_EXPRESSION
 | MULTIPLCATIVE_EXPRESSION DIVIDE CAST_EXPRESSION
 | MULTIPLCATIVE_EXPRESSION MODULUS CAST_EXPRESSION
@@ -164,7 +164,7 @@ TYPE_NAME
 | SIGNED
 | UNSIGNED
 
-// DECLARATIONS
+///////////////////////////////////////////////////////////////// DECLARATIONS ///////////////////////////////////////////////////////////////////
 
 //DECLARATION_SEQ
 //: DECLARATION
@@ -183,29 +183,29 @@ DECLARATION_SPECIFIER
 // | STORAGE_CLASS_SPECIFIER DECLARATION_SPECIFIER
 
 TYPE_SPECIFIER
-: VOID			{$$ = new Type(Void);}
-//| CHAR			{$$ = new Type(Char);}
-| INT			{$$ = new Type(Int);}
-// | SHORT			{$$ = new Type(Short);}
-// | LONG			{$$ = new Type(Long);}
-| FLOAT			{$$ = new Type(Float);}
-// | DOUBLE		{$$ = new Type(Double);}
-// | SIGNED		{$$ = new Type(Signed);}
-// | UNSIGNED		{$$ = new Type(Unsigned);}
+: VOID			          {$$ = new Type(Void);}
+//| CHAR			        {$$ = new Type(Char);}
+| INT			            {$$ = new Type(Int);}
+//| SHORT			        {$$ = new Type(Short);}
+//| LONG			        {$$ = new Type(Long);}
+| FLOAT			          {$$ = new Type(Float);}
+//| DOUBLE		        {$$ = new Type(Double);}
+//| SIGNED		        {$$ = new Type(Signed);}
+//| UNSIGNED		      {$$ = new Type(Unsigned);}
 
 INIT_DECLARATOR_LIST
-: INIT_DECLARATOR	{$$ = $1;}
+: INIT_DECLARATOR	                                  {$$ = $1;}
 // | INIT_DECLARATOR_LIST COMMA INIT_DECLARATOR
 
 INIT_DECLARATOR
-: DECLARATOR		{$$ = $1;}
+: DECLARATOR		                      {$$ = $1;}
 | DECLARATOR EQUAL INITIALIZER
 
 INITIALIZER
 : ASSIGNMENT_EXPRESSION
 
 DECLARATOR
-: DIRECT_DECLARATOR {$$ = $1;}
+: DIRECT_DECLARATOR                                     {$$ = $1;}
 | TIMES DIRECT_DECLARATOR // pointer declaration
 
 // HAVEN'T FINISHED THE REST, NEED TO FIND A CONCISE WAY OF LINKING DECLARATORS WITH EXPRESSIONS.
