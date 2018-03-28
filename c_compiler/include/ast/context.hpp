@@ -2,87 +2,79 @@
 #ifndef CONTEXT_HPP
 #define CONTEXT_HPP
 
-#include <vector>
-#include <iostream>
-#include <cstdlib>
+#include <map>
+#include <stdio.h>
+#include "baseNode.hpp"
 
-struct symbol_vector {
-	std::string symbol_id;
-	std::string symbol_type;
-	int reg_num;
+extern int UNIQUE_ID;
+
+class baseNode;
+
+
+
+std::string makeLabel(std::string base);
+std::string genUnqID();
+
+struct Var {
+  int reg;
+  std::string type;
+  int offset;
+  bool global;
+  bool pointer;
+  
 };
 
-struct scope_symbol_table {
-	std::string scope_ID; 	//The name of the parent function
-	std::string scope_type; 		//The type of the scope: e.g. if, while, for
-	std::vector<symbol_vector*> all_symbols;	//All symbols within the scope
-};
-
-class ast_context {
-public:
-
-	ast_context(std::ostream &in_stream);
-
-	void enter_subroutine ();
-	
-	//Exiting the current subroutine
-	void exit_subroutine ();
-
-	//Inserting a symbol
-	//Returns true if inserted, returns false if found before --> i.e. need to overwrite
-	bool insert_symbols(std::string in_type, std::string in_id, int in_reg, bool declaration);
-
-	//Creating a new scope
-	void make_scope(std::string in_id, std::string in_scope_type, int mem_needed);
-
-	//Exiting the scope
-	void exit_scope();
-
-	void exit_function_scope();
-
-	int find_variable(std::string in_id);
-
-	std::ostream& get_stream();
-
-	std::string make_label(std::string base);
-
-	void flush_parameters();
-
-	void insert_global(std::string in_type, std::string in_id, int in_reg);
-
-	void insert_param_id(unsigned int param_num, std::string id);
-
-	std::string get_param_id(unsigned int param_num);
-
-	std::string insert_break();
-
-	std::string get_break();
-
-	int get_current_func();
-
+class Context {
 private:
+  std::map<std::string, Var> bindings;
+  std::map<std::string, std::string> strbindings;
+  std::ostream *out;
+  int offset = 0;
+  std::string f = "";
+  std::string b = "";
+  std::string c = "";
+public:
+  Context(std::ostream *stream) { out = stream; };
+  std::ostream& ss();
+  
+  void assignVariable(std::string id, std::string type);
+  void assignVariable(std::string id, std::string type, int offin);
+  void assignVariable(std::string id, std::string type, bool global);
+  void assignVariable(std::string id, std::string type, bool global, bool pointer);
+  void setVarPtr(std::string id);
+  int isPtr(std::string id);
+  
+  Var getVariable(std::string id);
+  void loadVariable(std::string id, int d);
+  void storeVariable(std::string id, int d = 2);
+  void storeVariable(std::string id, int s, int d);
+  std::string getVarType(std::string id);
+  int getVarOffset(std::string id);
+  
+  void addString(std::string s);
+  std::string getString(std::string s);
+  void createStrings();
+  
+  // Control flow statements - hacky but robust and quick solution
+  // Return
+  void setF(std::string fname){ f = fname; }
+  std::string getF(){ return f; }
+  // Break
+  void setBreak(std::string exitlabel) { b = exitlabel; }
+  std::string getBreak() { return b; }
+  // Continue
+  void setContinue(std::string startlabel) { c = startlabel; }
+  std::string getContinue() { return c; }
+  // Set offset
+  void setOffset(int i){ offset = i;}
+  int getOffset() { return offset; }
+  int getAddress(const Node * in, int d =2);
 
-	std::vector<symbol_vector*> global_variables;
-
-//TODO: Fix, not very nice structure
-	std::vector<std::string> parameters_ids;
-
-	//Global Symbol table
-	std::vector<scope_symbol_table*> symbol_table;
-
-	unsigned int current_scope_depth; //What the depth of the current scope is
-
-	std::ostream &stream;
-
-	int makeNameUnq;
-
-	int stack_mem;
-
-	int break_number;
-
-	int function_num;
-	
+  
+  void push(int reg);
+  void pop(int reg);
 };
+
 
 
 #endif
