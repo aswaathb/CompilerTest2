@@ -1,5 +1,5 @@
 int c;
 
 int main() {
-	return !(a==10);
+	return !(c==10);
 }

@@ -1,5 +1,5 @@
-int self_recursion(int a)
+int self_recursion(int a);
 
-int main() {
+int main(){
 	return self_recursion(10);
 }
