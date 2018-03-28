@@ -4,7 +4,7 @@ int main()
 {
     const Expression *ast=parseAST();
 
-    ast->translate();
+    ast->python_print();
 
     return 0;
 }
