@@ -2,7 +2,7 @@
 
 int main()
 {
-    const Expression *ast=parseAST();
+    const baseNode *ast=parseAST();
 
     ast->python_print();
 
