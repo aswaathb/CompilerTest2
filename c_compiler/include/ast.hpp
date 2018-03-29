@@ -9,7 +9,6 @@
 #include "ast/declaration.hpp"
 #include "ast/functions.hpp"
 #include "ast/statement.hpp"
-#include "ast/logical_expr.hpp"
 #include "ast/types.hpp"
 #include "ast/unary_expr.hpp"
 #include "ast/variabes.hpp"
