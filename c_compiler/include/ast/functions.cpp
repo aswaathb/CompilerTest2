@@ -101,37 +101,37 @@ Context Function::generate_assembly(Context ctxt, int d) const{
   ctxt.setOffset(local_offset);
   std::string fname = id;
   
-  ctxt.ss() << "\t.globl\t" << fname	            << std::endl;
-  ctxt.ss() << "\t.set	nomips16"                   << std::endl;
-  ctxt.ss() << "\t.set	nomicromips"                << std::endl;
+  ctxt.ss() << "\t.globl\t" << fname	              << std::endl;
+  ctxt.ss() << "\t.set\tnomips16"                   << std::endl;
+  ctxt.ss() << "\t.set\tnomicromips"                << std::endl;
   ctxt.ss() << "\t.ent\t" << fname	                << std::endl;
   ctxt.ss() << "\t.type\t" << fname <<", @function" << std::endl;
   ctxt.setF(fname);
   
   
   // Label for the function
-  ctxt.ss() << fname << ":" << std::endl
-  ctxt.ss() << "\t.frame\t$fp,"<< total_size+8+pad << ",$31\t\t# vars= "<< variableSize <<", regs= 1/0, args= " << args_size << ", gp= 0" << std::endl
+  ctxt.ss() << fname << ":" << std::endl;
+  ctxt.ss() << "\t.frame\t$fp,"<< total_size+8+pad << ",$31\t\t# vars= "<< variableSize <<", regs= 1/0, args= " << args_size << ", gp= 0" << std::endl;
   
   // .mask for size of int?
-  ctxt.ss() << "\t.mask\t0x40000000,-4" << std::endl
+  ctxt.ss() << "\t.mask\t0x40000000,-4" << std::endl;
   // .fmask for sixe of float?
-  ctxt.ss() << "\t.fmask\t0x00000000,0" << std::endl
+  ctxt.ss() << "\t.fmask\t0x00000000,0" << std::endl;
   // additional lines that is required
-  ctxt.ss() << "\t.set\tnoreorder"      << std::endl
-  ctxt.ss() << "\t.set\tnomacro"        << std::endl
+  ctxt.ss() << "\t.set\tnoreorder"      << std::endl;
+  ctxt.ss() << "\t.set\tnomacro"        << std::endl;
   
   // Reserve space on the stack for the frame
-  ctxt.ss() << "\taddiu\t$sp,$sp,-" << total_size+8+pad << std::endl
+  ctxt.ss() << "\taddiu\t$sp,$sp,-" << total_size+8+pad << std::endl;
   
   // Store return address
-  ctxt.ss() << "\tsw\t$31,"<< total_size+4-variableSize << "($sp)" << std::endl
+  ctxt.ss() << "\tsw\t$31,"<< total_size+4-variableSize << "($sp)" << std::endl;
   
   // Store frame ptr
-  ctxt.ss() << "\tsw\t$fp,"<< total_size-variableSize << "($sp)" << std::endl
+  ctxt.ss() << "\tsw\t$fp,"<< total_size-variableSize << "($sp)" << std::endl;
   
   // Store result
-  ctxt.ss() << "\tsw\t$16,"<< total_size-4-variableSize << "($sp)" << std::endl
+  ctxt.ss() << "\tsw\t$16,"<< total_size-4-variableSize << "($sp)" << std::endl;
   
   // FPtr==SPtr
   ctxt.ss() << "\tmove\t$fp,$sp" << std::endl;
