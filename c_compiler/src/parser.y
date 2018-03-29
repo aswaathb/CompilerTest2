@@ -26,7 +26,9 @@
 %token PLUS MINUS TIMES DIVIDE MODULUS
 %token VOID CHAR SHORT INT LONG FLOAT DOUBLE SIGNED UNSIGNED
 %token RETURN DO WHILE IF ELSE FOR
-%token EQUAL SEMICOLON COMMA L_BRAC R_BRAC L_CURLY R_CURLY
+%token EQUAL SEMICOLON COMMA L_BRAC R_BRAC L_CURLY R_CURLY 
+//add
+%token QUES_MARK COLON LOR LAND OR NEQUAL LESSEQUAL LESSTHAN GREATEQUAL GREATTHAN AND XOR L_SHIFT R_SHIFT DOT 
 
 
 %type <baseNode> ROOT TRANSLATION-UNIT
@@ -38,238 +40,260 @@
 
 %type <expression> EXPRESSION
 %type <expression> ASSIGNMENT_EXPRESSION CONDITIONAL_EXPRESSION LOGICAL_OR_EXPRESSION LOGICAL_AND_EXPRESSION INCLUSIVE_OR_EXPRESSION EXCLUSIVE_OR_EXPRESSION AND_EXPRESSION EQUALITY_EXPRESSION RELATIONAL_EXPRESSION SHIFT_EXPRESSION ADDITIVE_EXPRESSION MULTIPLCATIVE_EXPRESSION CAST_EXPRESSION PREFIX_EXPRESSION POSTFIX_EXPRESSION PRIMARY_EXPRESSION
+//add
+%type <expression> ASSIGNMENT_OP
 
 %start ROOT
 
 %%
 
 ROOT
-: TRANSLATION_UNIT																{g_root = $1;}
+	: TRANSLATION_UNIT																{ g_root = (const baseNode *)$1; }
 
 TRANSLATION_UNIT
-: EXTERNAL_DECLARATION															{$$ = new TranslationUnit($1);}
-| TRANSLATION_UNIT EXTERNAL_DECLARATION											{$$ = new TranslationUnit($1, $2);}
+	: EXTERNAL_DECLARATION															{ $$ = new TranslationUnit($1);}
+	| TRANSLATION_UNIT EXTERNAL_DECLARATION											{ $$->add($2);}
 
 // EXTERNAL DECLARATIONS
 EXTERNAL_DECLARATION
-: DECLARATION             {$$ = $1;}
-| FUNCTION_DEFINITION     {$$ = $1;}
+	: DECLARATION             														{ $$ = $1;}
+	| FUNCTION_DEFINITION     														{ $$ = $1;}
 
 // FUNCTIONS - INITIALLY SMALLER TO BE MORE MANAGEABLE
 
 FUNCTION_DEFINITION
-: DECLARATOR COMPOUND_STATEMENT													{$$ = new FunctionDefinition($1, $2);} // needs implementation
-//| DECLARATION-SPECIFIERS DECLARATOR COMPOUND-STATEMENT						{$$ = new FunctionDefinitionSpecifier($1, $2, $3);}
-//| DECLARATION-SPECIFIERS DECLARATOR DECLARATION-LIST COMPOUND-STATEMENT		{$$ = new FunctionDefinitionSpecifierList($1, $2, $3, $4);}
-//| DECLARATOR DECLARATION-LIST COMPOUND-STATEMENT								{$$ = new ErrorStopper();}
+	: DECLARATOR COMPOUND_STATEMENT													{ $$ = new FunctionDefinition($1, $2);} // needs implementation?????
+	//| DECLARATION-SPECIFIERS DECLARATOR COMPOUND-STATEMENT						{ $$ = new Function($1, $2, $3);}
+	//| DECLARATION-SPECIFIERS DECLARATOR DECLARATION-LIST COMPOUND-STATEMENT		{ $$ = new Function($2, $3, $4);}
+	//| DECLARATOR DECLARATION-LIST COMPOUND-STATEMENT								{ $$ = new ErrorStopper();}????
 
 
 ///////////////////////////////////////// STATEMENTS /////////////////////////////////////////////////////////////////////////////////
 
 STATEMENT
-: COMPOUND_STATEMENT															{$$ = $1;}
-| SELECTION_STATEMENT															{$$ = $1;}
-| ITERATION_STATEMENT															{$$ = $1;}
-| JUMP_STATEMENT																{$$ = $1;}
-//| LABELED_STATEMENT															{$$ = $1;}
-| EXPRESSION_STATEMENT															{$$ = $1;}
+	: COMPOUND_STATEMENT															{ $$ = $1;}
+	| SELECTION_STATEMENT															{ $$ = $1;}
+	| ITERATION_STATEMENT															{ $$ = $1;}
+	| JUMP_STATEMENT																{ $$ = $1;}
+	//| LABELED_STATEMENT															{ $$ = $1;}
+	| EXPRESSION_STATEMENT															{ $$ = $1;}
 
 COMPOUND_STATEMENT
-: L_CURLY R_CURLY																{$$ = new CompoundStatement();} // needs implementation
-// | L_CURLY STATEMENT_LIST R_CURLY
-// | L_CURLY DECLARATION_SEQ R_CURLY
-// | L_CURLY DECLARATION_SEQ STATEMENT_LIST R_CURLY
+	: L_CURLY R_CURLY																{ $$ = new CompoundStatement();} // needs implementation
+	// | L_CURLY STATEMENT_LIST R_CURLY
+	// | L_CURLY DECLARATION_SEQ R_CURLY
+	// | L_CURLY DECLARATION_SEQ STATEMENT_LIST R_CURLY
 
 SELECTION_STATEMENT
-: IF L_BRAC EXPRESSION R_BRAC STATEMENT											{$$ = new IfElseStatement($3, $5, new CompoundStatement());} // needs implementation
-| IF L_BRAC EXPRESSION R_BRAC STATEMENT ELSE STATEMENT							{$$ = new IfElseStatement($3, $5, $7);} // needs implementation
-// | SWITCH L_BRAC EXPRESSION R_BRAC STATEMENT									{ $$ = new SwitchStatement($3, $5); }
+	: IF L_BRAC EXPRESSION R_BRAC STATEMENT											{ $$ = new IfElseStatement($3, $5, new CompoundStatement());}
+	| IF L_BRAC EXPRESSION R_BRAC STATEMENT ELSE STATEMENT							{ $$ = new IfElseStatement($3, $5, $7);} 
+	// | SWITCH L_BRAC EXPRESSION R_BRAC STATEMENT									{ $$ = new SwitchStatement($3, $5); }
 
 ITERATION_STATEMENT // start with one
-: WHILE L_BRAC EXPRESSION R_BRAC STATEMENT											  {$$ = new WhileStatement($3, $5);} //needs implemetation
-| DO STATEMENT WHILE L_BRAC EXPRESSION R_BRAC										  {$$ = new DoWhileStatement($2, $5);} //needs implemetation
-| FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT	  {$$ = new ES_ES_EForStatement($3, $4, $5, $7);} //needs implemetation
-| FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT R_BRAC STATEMENT				  {$$ = new ES_ESForStatement($3, $4, $6);} //needs implemetation
-| FOR L_BRAC DECLARATION EXPRESSION_STATEMENT R_BRAC STATEMENT						  {$$ = new D_ESForStatement($3, $4, $6);} //needs implemetation
-| FOR L_BRAC DECLARATION EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT			  {$$ = new D_ES_EForStatement($3,$4,$5,$7);} //needs implemetation
-
+	: WHILE L_BRAC EXPRESSION R_BRAC STATEMENT											  { $$ = new WhileStatement($3, $5);} 
+	| DO STATEMENT WHILE L_BRAC EXPRESSION R_BRAC										  { $$ = new DoWhileStatement($2, $5);} 
+	| FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT R_BRAC STATEMENT				  { $$ = new ExprExprFor($3, $4, $6);}
+	| FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT	  { $$ = new ExprExprExprFor($3, $4, $5, $7);} 
+	| FOR L_BRAC DECLARATION EXPRESSION_STATEMENT R_BRAC STATEMENT						  { $$ = new DecExprFor($3, $4, $6);} 
+	| FOR L_BRAC DECLARATION EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT			  { $$ = new DecExprExprFor($3,$4,$5,$7);}
+		
 JUMP_STATEMENT // just focus on return function for now
-: RETURN EXPRESSION_STATEMENT													{$$ = new return_statement($2);} // return statement has to be changed in ast
-// | GOTO IDENTIFIER SEMICOLON
-// | CONTINUE SEMICOLON
-// | BREAK SEMICOLON
+	: RETURN EXPRESSION_STATEMENT													{ $$ = new ReturnStatement($2);}
+	| GOTO IDENTIFIER SEMICOLON														{ $$ = new GotoStatement(*$2);}
+	| CONTINUE SEMICOLON															{ $$ = new ContinueStatement();}
+	| BREAK SEMICOLON																{ $$ = new BreakStatement();}
 
 
 ////////////////////////////////////////////////////// EXPRESSIONS //////////////////////////////////////////////////////////////////////
 
 EXPRESSION_STATEMENT
-: SEMICOLON																		{$$ = new ExpressionStatement(new EmptyExpression());} //needs implementation
-| EXPRESSION SEMICOLON															{$$ = new ExpressionStatement($1);} //needs implementation
+	: SEMICOLON																		{ $$ = new ExprStatement(new Expression_Null());}
+	| EXPRESSION SEMICOLON															{ $$ = new ExprStatement($1);}
 
 EXPRESSION
-: ASSIGNMENT_EXPRESSION				                    {$$ = $1;}
-// | EXPRESSION COMMA ASSIGNMENT_EXPRESSION
+	: ASSIGNMENT_EXPRESSION															{ $$ = $1;}
+	| EXPRESSION COMMA ASSIGNMENT_EXPRESSION										{ $$ -> add($3); }
 
 ASSIGNMENT_EXPRESSION
-: CONDITIONAL_EXPRESSION			{$$ = $1;}
+	: CONDITIONAL_EXPRESSION														{ $$ = $1;}
+	| PREFIX_EXPRESSION ASSIGNMENT_OP ASSIGNMENT_EXPRESSION 						{ $$ = new AssignmentExpression($1, $3, $2); }
+
 
 CONDITIONAL_EXPRESSION
-: LOGICAL_OR_EXPRESSION				{$$ = $1;}
+	: LOGICAL_OR_EXPRESSION															{ $$ = $1;}
+	| LOGICAL_OR_EXPRESSION QUES_MARK EXPRESSION COLON CONDITIONAL_EXPRESSION 		{ $$ = new TernaryExpression($1, $3, $5); }
 
 LOGICAL_OR_EXPRESSION
-: LOGICAL_AND_EXPRESSION			{$$ = $1;}
+	: LOGICAL_AND_EXPRESSION														{ $$ = $1;}
+  	| LOGICAL_OR_EXPRESSION LOR LOGICAL_AND_EXPRESSION 								{ $$ = new BinaryExpression($1, $3, $2); }
+
 
 LOGICAL_AND_EXPRESSION
-: INCLUSIVE_OR_EXPRESSION			{$$ = $1;}
+	: INCLUSIVE_OR_EXPRESSION														{ $$ = $1;}
+	| LOGICAL_AND_EXPRESSION LAND INCLUSIVE_OR_EXPRESSION							{ $$ = new BinaryExpression($1, $3, $2); }
+
 
 INCLUSIVE_OR_EXPRESSION
-: EXCLUSIVE_OR_EXPRESSION			{$$ = $1;}
+	: EXCLUSIVE_OR_EXPRESSION														{ $$ = $1;}
+	| INCLUSIVE_OR_EXPRESSION OR EXCLUSIVE_OR_EXPRESSION							{ $$ = new BinaryExpression($1, $3, $2); }
 
 EXCLUSIVE_OR_EXPRESSION
-: AND_EXPRESSION					{$$ = $1;}
+	: AND_EXPRESSION																{ $$ = $1;}
+	| EXCLUSIVE_OR_EXPRESSION XOR AND_EXPRESSION									{ $$ = new BinaryExpression($1, $3, $2); }
 
 AND_EXPRESSION
-: EQUALITY_EXPRESSION				{$$ = $1;}
+	: EQUALITY_EXPRESSION															{ $$ = $1;}
+	| AND_EXPRESSION AND EQUALITY_EXPRESSION										{ $$ = new BinaryExpression($1, $3, $2); }
 
 EQUALITY_EXPRESSION
-: RELATIONAL_EXPRESSION				{$$ = $1;}
+	: RELATIONAL_EXPRESSION															{ $$ = $1;}
+	| EQUALITY_EXPRESSION EQUAL	RELATIONAL_EXPRESSION								{ $$ = new BinaryExpression($1, $3, $2); }
+	| EQUALITY_EXPRESSION NEQUAL RELATIONAL_EXPRESSION								{ $$ = new BinaryExpression($1, $3, $2); }
 
 RELATIONAL_EXPRESSION
-: SHIFT_EXPRESSION					{$$ = $1;}
+	: SHIFT_EXPRESSION																{ $$ = $1;}
+	| RELATIONAL_EXPRESSION LESSTHAN SHIFT_EXPRESSION								{ $$ = new BinaryExpression($1, $3, $2); }
+	| RELATIONAL_EXPRESSION LESSEQUAL SHIFT_EXPRESSION								{ $$ = new BinaryExpression($1, $3, $2); }
+	| RELATIONAL_EXPRESSION GREATTHAN SHIFT_EXPRESSION								{ $$ = new BinaryExpression($1, $3, $2); }
+	| RELATIONAL_EXPRESSION GREATEQUAL SHIFT_EXPRESSION								{ $$ = new BinaryExpression($1, $3, $2); }
 
 SHIFT_EXPRESSION
-: ADDITIVE_EXPRESSION				{$$ = $1;}
+	: ADDITIVE_EXPRESSION															{ $$ = $1;}
+	| SHIFT_EXPRESSION L_SHIFT ADDITIVE_EXPRESSION									{ $$ = new BinaryExpression($1, $3, $2); }
+	| SHIFT_EXPRESSION R_SHIFT ADDITIVE_EXPRESSION									{ $$ = new BinaryExpression($1, $3, $2); }
 
 ADDITIVE_EXPRESSION
-: MULTIPLCATIVE_EXPRESSION			                            {$$ = $1;}
-| ADDITIVE_EXPRESSION PLUS MULTIPLCATIVE_EXPRESSION
-| ADDITIVE_EXPRESSION MINUS MULTIPLCATIVE_EXPRESSION
+	: MULTIPLCATIVE_EXPRESSION			                            				{ $$ = $1;}
+	| ADDITIVE_EXPRESSION PLUS MULTIPLCATIVE_EXPRESSION								{ $$ = new BinaryExpression($1, $3, $2); }
+	| ADDITIVE_EXPRESSION MINUS MULTIPLCATIVE_EXPRESSION							{ $$ = new BinaryExpression($1, $3, $2); }
 
 MULTIPLCATIVE_EXPRESSION
-: CAST_EXPRESSION										                        {$$ = $1;}
-| MULTIPLCATIVE_EXPRESSION TIMES CAST_EXPRESSION
-| MULTIPLCATIVE_EXPRESSION DIVIDE CAST_EXPRESSION
-| MULTIPLCATIVE_EXPRESSION MODULUS CAST_EXPRESSION
+	: CAST_EXPRESSION										                        { $$ = $1;}
+	| MULTIPLCATIVE_EXPRESSION TIMES CAST_EXPRESSION								{ $$ = new BinaryExpression($1, $3, $2); }
+	| MULTIPLCATIVE_EXPRESSION DIVIDE CAST_EXPRESSION								{ $$ = new BinaryExpression($1, $3, $2); }
+	| MULTIPLCATIVE_EXPRESSION MODULUS CAST_EXPRESSION								{ $$ = new BinaryExpression($1, $3, $2); }
 
 CAST_EXPRESSION
-: L_BRAC TYPE_NAME R_BRAC CAST_EXPRESSION
-| PREFIX_EXPRESSION
+	: L_BRAC TYPE_NAME R_BRAC CAST_EXPRESSION										{ $$ = new CastExpr($4, $2); }
+	| PREFIX_EXPRESSION																{ $$ = $1; }
 
-TYPE_NAME
-: VOID
-| CHAR
-| SHORT
-| INT
-| LONG
-| FLOAT
-| DOUBLE
-| SIGNED
-| UNSIGNED
 
-| PREFIX_EXPRESSION
-: POSTFIX_EXPRESSION { $$ = $1; }
-//| INCR PREFIX_EXPRESSION { $$ = new PrefixExpression($2, $1); }
-//| DECR PREFIX_EXPRESSION { $$ = new PrefixExpression($2, $1); }
-//| UNARY_OPERATOR CAST_EXPRESSION { $$ = new PrefixExpression($2, $1); }
-//| SIZEOF '(' PREFIX_EXPRESSION ')' { $$ = new PrefixExpression($3, $1); }
-//| SIZEOF '(' TYPE_NAME ')' { $$ = new PrefixExpression($3, $1); }
+PREFIX_EXPRESSION
+	: POSTFIX_EXPRESSION 															{ $$ = $1; }
+	| INCR PREFIX_EXPRESSION 														{ $$ = new PrefixExpr($2, $1); }
+	| DECR PREFIX_EXPRESSION 														{ $$ = new PrefixExpr($2, $1); }
+	| UNARY_OPERATOR CAST_EXPRESSION 												{ $$ = new PrefixExpr($2, $1); }
+	| SIZEOF L_BRAC PREFIX_EXPRESSION R_BRAC										{ $$ = new PrefixExpr($3, $1); }
+	| SIZEOF L_BRAC TYPE_NAME R_BRAC 												{ $$ = new PrefixExpr($3, $1); }
 
-//UNARY_OPERATOR
-//: '&'
-//| '*'
-//| '+'
-//| '-'
-//| '~'
-//| '!'
+
+UNARY_OPERATOR
+	: '&'
+	| '*'
+	| '+'
+	| '-'
+	| '~'
+	| '!'
 
 POSTFIX_EXPRESSION
-: PRIMARY_EXPRESSION {$$ = $1;}
-//| POSTFIX_EXPRESSION '[' expression ']' { $$ = new SquareOperator($1, $3); }
-//| POSTFIX_EXPRESSION '(' ')' { $$ = new FunctionCall($1); }
-//| POSTFIX_EXPRESSION '(' argument-expression-list ')' { $$ = new FunctionCall($1, $3); }
-//| POSTFIX_EXPRESSION '.' ID { $$ = new DotOperator($1, $3); }
-//| POSTFIX_EXPRESSION ARROW ID { $$ = new ArrowOperator($1, $3); }
-//| POSTFIX_EXPRESSION INCR { $$ = new PostfixExpression($1, $2); }
-//| POSTFIX_EXPRESSION DECR { $$ = new PostfixExpression($1, $2); }
+	: PRIMARY_EXPRESSION 															{$$ = $1;}
+	| POSTFIX_EXPRESSION L_SQUARE EXPRESSION R_SQUARE 								{ $$ = new SquareOperator($1, $3); }
+	| POSTFIX_EXPRESSION L_BRAC R_BRAC 												{ $$ = new FunctionCall($1); }
+	//| POSTFIX_EXPRESSION L_BRAC EXPRESSION_LIST L_BRAC 							{ $$ = new FunctionCall($1, $3); } // needs to be implemented in grammar
+	| POSTFIX_EXPRESSION DOT ID 													{ $$ = new DotOperator($1, $3); }
+	| POSTFIX_EXPRESSION ARROW ID 													{ $$ = new ArrowOperator($1, $3); }
+	| POSTFIX_EXPRESSION INCR 														{ $$ = new PostfixExpr($1, $2); }
+	| POSTFIX_EXPRESSION DECR 														{ $$ = new PostfixExpr($1, $2); }
+
+TYPE_NAME
+	: VOID
+	| CHAR
+	| SHORT
+	| INT
+	| LONG
+	| FLOAT
+	| DOUBLE
+	| SIGNED
+	| UNSIGNED
 
 PRIMARY_EXPRESSION
-: VAR_CONST																		{$$ = $1;}
-| STRING																		{$$ = new StringLiteral(*$1);}
-| L_BRAC EXPRESSION R_BRAC														{$$ = $2;}
+	: VAR_CONST																		{ $$ = $1;}
+	| STRING																		{ $$ = new StringLiteral(*$1);}
+	| L_BRAC EXPRESSION R_BRAC														{ $$ = $2;}
 
 VAR_CONST
-: IDENTIFIER																	{$$ = new Variable($1);}
-| I_CONSTANT																	{$$ = new IntConstant(*$1);}
-| F_CONSTANT																	{$$ = new FloatConstant(*$1);}
-//| C_CONSTANT { $$ = new CharConstant(*$1); }
+	: IDENTIFIER																	{ $$ = new Variable($1);}
+	| I_CONSTANT																	{ $$ = new IntConstant(*$1);}
+	| F_CONSTANT																	{ $$ = new FloatConstant(*$1);}
+	| C_CONSTANT 																	{ $$ = new CharConstant(*$1); }
 
-//ASSIGNMENT OP					//NECESSARY WHEN (COMPOUND) ASSIGNMENT EXPRESSION IMPLEMENTED
-//: EQUAL { $$ = $1; }
-//| MUL_ASS  { $$ = $1; }
-//| DIV_ASS { $$ = $1; }
-//| MOD_ASS { $$ = $1; }
-//| ADD_ASS { $$ = $1; }
-//| SUB_ASS { $$ = $1; }
-//| LL_ASS { $$ = $1; }
-//| RR_ASS { $$ = $1; }
-//| AND_ASS { $$ = $1; }
-//| XOR_ASS { $$ = $1; }
-//| OR_ASS { $$ = $1; }
+ASSIGNMENT_OP
+	: EQUAL 																		{ $$ = $1; }
+	| MUL_ASS  																		{ $$ = $1; }
+	| DIV_ASS 																		{ $$ = $1; }
+	| MOD_ASS 																		{ $$ = $1; }
+	| ADD_ASS 																		{ $$ = $1; }
+	| SUB_ASS 																		{ $$ = $1; }
+	| LL_ASS 																		{ $$ = $1; }
+	| RR_ASS 																		{ $$ = $1; }
+	| AND_ASS 																		{ $$ = $1; }
+	| XOR_ASS 																		{ $$ = $1; }
+	| OR_ASS 																		{ $$ = $1; }
 
 
 ///////////////////////////////////////////////////////////////// DECLARATIONS ///////////////////////////////////////////////////////////////////
 
-//DECLARATION_SEQ
-//: DECLARATION
-//| DECLARATION_SEQ DECLARATIONS								// Required for more than one declaration
+DECLARATION_SEQ
+	: DECLARATION																	{ $$ = new DeclarationList($1);}
+	| DECLARATION_SEQ DECLARATIONS													{ $$ -> add($2); }
 
 DECLARATION
-: DECLARATION_SPECIFIER SEMICOLON
-| DECLARATION_SPECIFIER INIT_DECLARATOR_LIST SEMICOLON
+	: DECLARATION_SPECIFIER SEMICOLON												{ $$ = new Declaration($1,( new List({}) ) ); }
+	| DECLARATION_SPECIFIER INIT_DECLARATOR_LIST SEMICOLON							{ $$ = new Declaration($1, $2); }
 
-DECLARATION_SPECIFIER
-: TYPE_SPECIFIER
-// | TYPE_SPECIFIER DECLARATION_SPECIFIER						// Alternate more complex types of declarations
-// | TYPE_QUALIFIER
-// | TYPE_QUALIFIER DECLARATION_SPECIFIER
-// | STORAGE_CLASS_SPECIFIER
-// | STORAGE_CLASS_SPECIFIER DECLARATION_SPECIFIER
+DECLARATION_SPECIFIER	
+	: TYPE_SPECIFIER																{ $$ = $1 ; }
+	| TYPE_QUALIFIER																{ $$ = $1 ; }
+	| STORAGE_CLASS_SPECIFIER														{ $$ = $1 ; }
+	| TYPE_SPECIFIER DECLARATION_SPECIFIER											{ $2->add($1); $$ = $2; delete $1; }
+	| TYPE_QUALIFIER DECLARATION_SPECIFIER											{ $2->add($1); $$ = $2; delete $1; }
+	| STORAGE_CLASS_SPECIFIER DECLARATION_SPECIFIER									{ $2->add($1); $$ = $2; delete $1; }
 
 TYPE_SPECIFIER
-: VOID			          {$$ = new Type(Void);}
-//| CHAR			        {$$ = new Type(Char);}
-| INT			            {$$ = new Type(Int);}
-//| SHORT			        {$$ = new Type(Short);}
-//| LONG			        {$$ = new Type(Long);}
-| FLOAT			          {$$ = new Type(Float);}
-//| DOUBLE		        {$$ = new Type(Double);}
-//| SIGNED		        {$$ = new Type(Signed);}
-//| UNSIGNED		      {$$ = new Type(Unsigned);}
+	: VOID			          														{ $$ = new Type(Void);}
+	| CHAR			        														{ $$ = new Type(Char);}
+	| INT			            													{ $$ = new Type(Int);}
+	| SHORT			        														{ $$ = new Type(Short);}
+	| LONG			        														{ $$ = new Type(Long);}
+	| FLOAT			          														{ $$ = new Type(Float);}
+	| DOUBLE		        														{ $$ = new Type(Double);}
+	| SIGNED		        														{ $$ = new Type(Signed);}
+	| UNSIGNED		      															{ $$ = new Type(Unsigned);}
 
 INIT_DECLARATOR_LIST
-: INIT_DECLARATOR	                                  {$$ = $1;}
-// | INIT_DECLARATOR_LIST COMMA INIT_DECLARATOR
+	: INIT_DECLARATOR	                                  							{ $$ = new DeclarationList($1); }
+	| INIT_DECLARATOR_LIST COMMA INIT_DECLARATOR									{ $$ = add($3); }
 
 INIT_DECLARATOR
-: DECLARATOR		                      {$$ = $1;}
-| DECLARATOR EQUAL INITIALIZER
+	: DECLARATOR		                      										{ $$ = $1; }
+	//| DECLARATOR EQUAL INITIALIZER													{ $$ = new InitDeclarator($1,$3); if ($1->getPtr()){$$->setPtr();} } //TOO HARD!!!!
 
 INITIALIZER
-: ASSIGNMENT_EXPRESSION
+	: ASSIGNMENT_EXPRESSION															{ $$ = $1; }
 
 DECLARATOR
-: DIRECT_DECLARATOR                                     {$$ = $1;}
-| TIMES DIRECT_DECLARATOR // pointer declaration
+	: DIRECT_DECLARATOR                                     						{ $$ = $1; }
+	| TIMES DIRECT_DECLARATOR 														{ $$ = $2; ((const Declarator *)$$) -> setPtr();} //Think this rule will work
 
 DIRECT_DECLARATOR
-: L_BRAC DECLARATOR R_BRAC
-| IDENTIFIER																	{$$ = new Variable($1);}
-| L_BRAC R_BRAC DECLARATOR
-// | DIRECT_DECLARATOR L_SQUARE R_SQUARE						// Array without size specified
-// | DIRECT_DECLARATOR L_SQUARE CONSTANT_EXPRESSION R_SQUARE	// Array with fixed size
-// | DIRECT_DECLARATOR L_BRAC R_BRAC							// Function with no arguments
-// | DIRECT_DECLARATOR L_BRAC PARAMETER_LIST R_BRAC				// Function declaration with parameter list
-// | DIRECT_DECLARATOR L_BRAC IDENTIFIER LIST R_BRAC			// Function declaration with id list, must be followed by declaration list
+	: L_BRAC DECLARATOR R_BRAC														{ $$ = $2; }
+	| IDENTIFIER																	{ $$ = new Variable($1);}
+	| L_BRAC R_BRAC DECLARATOR														{ $$ = $2; }
+	| DIRECT_DECLARATOR L_SQUARE R_SQUARE											{ $$ = new ArrayDeclarator($1, new Constant("-1")); } 	// Undefined Array 
+	| DIRECT_DECLARATOR L_SQUARE CONSTANT_EXPRESSION R_SQUARE						{ $$ = new ArrayDeclarator($1, $3); }   				// Defined Array 
+	| DIRECT_DECLARATOR L_BRAC R_BRAC												{ $$ = new FunctionDeclarator($1,( new List({}) ) ); } 	// Nullary Function
+	| DIRECT_DECLARATOR L_BRAC PARAMETER_LIST R_BRAC				                { $$ = new FunctionDeclarator($1, $3); } 				// Unary|Binary Function 
+	| DIRECT_DECLARATOR L_BRAC IDENTIFIER LIST R_BRAC								{ $$ = new FunctionDeclarator($1, $3); } 	//ExtraHard // Complex Unary|Binary Function 
 
 %%
 
