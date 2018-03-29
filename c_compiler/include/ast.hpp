@@ -16,8 +16,7 @@
 
 
 // #include <iostream>
-
-// extern const Expression *parseAST();
+ extern const Expression *parseAST();
 
 
 // class Expression;
