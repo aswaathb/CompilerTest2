@@ -13,31 +13,48 @@ void yy_colCount();
 %%
 
 
-"void" 						{ yylval.string=new std::string("void"); 		return VOID; 	}
-"char" 						{ yylval.string=new std::string("char"); 		return CHAR; 	}
-"short" 					{ yylval.string=new std::string("short"); 		return SHORT; 	}
-"int" 						{ yylval.string=new std::string("int"); 		return INT; 	}
-"long" 						{ yylval.string=new std::string("long"); 		return LONG; 	}
-"float" 					{ yylval.string=new std::string("float"); 		return FLOAT; 	}
-"double" 					{ yylval.string=new std::string("double"); 		return DOUBLE; 	}
-"signed"					{ yylval.string=new std::string("signed"); 		return SIGNED; 	}
-"unsigned"					{ yylval.string=new std::string("unsigned"); 	return UNSIGNED;}
-
-"return"					{ yylval.string=new std::string("return"); 		return RETURN;	}
+void 						{ yylval.string=new std::string("void"); 		return VOID; 	}
+char 						{ yylval.string=new std::string("char"); 		return CHAR; 	}
+short 				      	{ yylval.string=new std::string("short"); 		return SHORT; 	}
+int 						{ yylval.string=new std::string("int"); 		return INT; 	}
+long 						{ yylval.string=new std::string("long"); 		return LONG; 	}
+float 				      	{ yylval.string=new std::string("float"); 		return FLOAT; 	}
+double 				     	{ yylval.string=new std::string("double"); 		return DOUBLE; 	}
+signed				      	{ yylval.string=new std::string("signed"); 		return SIGNED; 	}
+unsigned					{ yylval.string=new std::string("unsigned"); 	return UNSIGNED;}
 
 
-"="							{ return EQ		; }
-"("							{ return L_BRAC ; }
-")"							{ return R_BRAC ; }
-"{"							{ return L_CURLY; }
-"}"							{ return R_CURLY; }
-";"							{ return SEMIC 	; }
-","							{ return COMMA 	; }
+
+return					    { yylval.string=new std::string("return"); 		return RETURN;	}
+
+do                          { yylval.string=new std::string("do"); 		   return DO; 	}
+while                       { yylval.string=new std::string("while"); 		return WHILE; 	}
+if                          { yylval.string=new std::string("if"); 		   return IF; 	}
+else                        { yylval.string=new std::string("else"); 		return ELSE; 	}
+
+for                         { yylval.string=new std::string("for"); 		return FOR; 	}
+
+
+[=]							{ return EQUAL	; }
+[(]							{ return L_BRAC ; }
+[)]							{ return R_BRAC ; }
+[{]							{ return L_CURLY; }
+[}]							{ return R_CURLY; }
+[[]                         { return L_SQUARE; }
+[]]                         { return R_SQUARE; }
+[;]							{ return SEMICOLON; }
+[:]                         { return COLON; }
+[,]							{ return COMMA 	; }
+
+[*]                         { return TIMES; }
+[+]                         { return PLUS; }
+[\^]                        { return EXPONENT; }
+[-]                         { return MINUS; }
+[/]                         { return DIVIDE; }
 
 
 [a-z]+        				{ yylval.string=new std::string(yytext); return VAR; }
 [-]?[0-9]+([\.][0-9]*)? 	{ yylval.number=strtod(yytext, 0); return NUM; }
-
 
 
 

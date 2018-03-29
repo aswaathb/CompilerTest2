@@ -1,10 +1,10 @@
 %code requires{
 	#include "ast.hpp"
-	
+
 	#include <cassert>
-	
+
 	extern const Expression *g_root; // A way of getting the AST out
-	
+
 	//! This is to fix problems when generating C++
 	// We are declaring the functions provided by Flex, so
 	// that Bison generated code can call them.
@@ -14,7 +14,7 @@
 
 // Represents the value associated with any kind of
 // AST node.
-%union{
+%union{ // NEEDS EDITING
 	const Expression *node;
 	double number;
 	std::string *string;
@@ -23,31 +23,13 @@
 	return_statement *ret_state;
 }
 
-%token EQUAL SEMICOLON COMMA L_BRAC R_BRAC L_CURLY R_CURLY
 %token PLUS MINUS TIMES DIVIDE MODULUS
 %token VOID CHAR SHORT INT LONG FLOAT DOUBLE SIGNED UNSIGNED
-%token RETURN
+%token RETURN DO WHILE IF ELSE FOR
+%token EQUAL SEMICOLON COMMA L_BRAC R_BRAC L_CURLY R_CURLY
 
 
-
-
-%type <baseNode> ROOT
-
-%type <variable>  SCOPE FACTOR DECLARATION STATEMENT
-%type <func> FUNC
-%type <number> NUM
-%type <string> VAR  RETURN
-%type <ret_state> RETURN_STATEMENT
-
-
-
-%type <declarationVal>          DECLARATION
-%type <astNodeVal>              DECLARATION-SPECIFIERS TYPE-SPECIFIER
-%type <astNodeVal>              INIT-DECLARATOR-LIST DIRECT-DECLARATOR DECLARATOR INITIALIZER EXTERNAL-DECLARATION COMPOUND-STATEMENT
-%type <stringVal>               IDENTIFIER T_ASSIGN
-
-
-%type <astNode> TRANSLATION-UNIT
+%type <baseNode> ROOT TRANSLATION-UNIT
 
 %type <declaration>
 
