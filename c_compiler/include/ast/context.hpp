@@ -13,7 +13,7 @@ class baseNode;
 
 
 std::string makeLabel(std::string base);
-std::string genUnqID();
+std::string genUniqueID();
 
 struct Var {
   int reg;
@@ -27,7 +27,7 @@ struct Var {
 class Context {
 private:
   std::map<std::string, Var> bindings;
-  std::map<std::string, std::string> strbindings;
+  std::map<std::string, std::string> string_bindings;
   std::ostream *out;
   int offset = 0;
   std::string f = "";
@@ -44,7 +44,7 @@ public:
   void setVarPtr(std::string id);
   int isPtr(std::string id);
   
-  Var getVariable(std::string id);
+  Var  getVariable(std::string id);
   void loadVariable(std::string id, int d);
   void storeVariable(std::string id, int d = 2);
   void storeVariable(std::string id, int s, int d);
@@ -68,7 +68,7 @@ public:
   // Set offset
   void setOffset(int i){ offset = i;}
   int getOffset() { return offset; }
-  int getAddress(const Node * in, int d =2);
+  int getAddress(const baseNode * in, int d =2);
 
   
   void push(int reg);

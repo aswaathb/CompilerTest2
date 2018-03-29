@@ -1,28 +1,29 @@
 #include "context.hpp"
-#include "iostream"
-#include "stdexcept"
-#include "unary_expression.hpp"
+#include "unary_expr.hpp"
+#include <iostream>
+#include <stdexcept>
+
 
 int UNIQUE_ID = 0;
 
 void Context::addString(std::string s){
   if (bindings.count(s)){
-      std::cerr << s <<" is already in strbindings." << std::endl;
+      std::cerr << s <<" is already in string_bindings." << std::endl;
   }
   else{
-    std::string str_loc = "$LC"+genUnqID();
-    strbindings[s] = str_loc;
+    std::string str_loc = "$LC"+genUniqueID();
+    string_bindings[s] = str_loc;
   }
 }
 std::string Context::getString(std::string s){
-  return strbindings.at(s);
+  return string_bindings.at(s);
 }
 
 void Context::createStrings(){
-  for (auto const& s: strbindings){
-    ss() << s.second << ":" << std::endl;
-    ss() << "\t.ascii\t" << "\""+s.first+"\\000\"" << std::endl;
-    ss() << "\t.align\t2" << std::endl;
+  for (auto const& s: string_bindings){
+    ss() << s.second 		<< ":" 						<< std::endl;
+    ss() << "\t.ascii\t" 	<< "\""+s.first+"\\000\"" 	<< std::endl;
+    ss() << "\t.align\t2" 								<< std::endl;
   }
 }
 
@@ -34,14 +35,14 @@ int Context::isPtr(std::string id){
   return (int)bindings.at(id).pointer; 
 }
 
-int Context::getAddress(const Node * in, int d){
+int Context::getAddress(const baseNode * in, int d){
   std::string id = in->getId();
   int s = 14;
   if (in->getNodeType() == "SquareOperator"){
-    // Evaluate the expression in the square operator into a certain register
-    ((const SquareOperator *)in)->getChildren()[1]->print_asm(*this, 14);
-    ss() << "\tsll\t$" << s << ",$" << s << ",2" << std::endl;
-    ss() << "\taddu\t$" << d <<",$" << s << ",$fp"<< std::endl;
+    // Evaluate ->[EXPR]<- into a register
+    ((const SquareOperator *)in)->getChildren()[1]->generate_assembly(*this, 14);
+    ss() << "\tsll\t$"  << s << ",$" 	<< s << ",2" 			<< std::endl;
+    ss() << "\taddu\t$" << d << ",$" 	<< s << ",$fp"			<< std::endl;
     ss() << "\taddi\t$" << d << ",$fp," << getVarOffset(id) + 4 << std::endl;
   }
   else{
@@ -57,10 +58,10 @@ std::string Context::getVarType(std::string id){
 void Context::loadVariable(std::string id, int d){
   Var v = getVariable(id);
   if (v.global){
-    ss() << "\tlui\t$28,%hi(__gnu_local_gp)" << std::endl;
-    ss() << "\taddiu\t$28,$28,%lo(__gnu_local_gp)" << std::endl;
-    ss() << "\tlw\t$" << d << ",%got(" << id <<")($28)" <<std::endl;
-    ss() << "\tlw\t$" << d << ",0($2)" << std::endl;
+    ss() << "\tlui\t$28,%hi(__gnu_local_gp)" 			<< std::endl;
+    ss() << "\taddiu\t$28,$28,%lo(__gnu_local_gp)" 		<< std::endl;
+    ss() << "\tlw\t$" << d << ",%got(" << id <<")($28)" << std::endl;
+    ss() << "\tlw\t$" << d << ",0($2)" 					<< std::endl;
   } else {
     ss() << "\tlw $" << d << "," << v.offset << "($fp)" << " # load var: " << id << std::endl;
   }
@@ -71,7 +72,6 @@ Var Context::getVariable(std::string id){
   if (bindings.count(id))
     return bindings.at(id);
   else {
-    // If can't find it, assume global
     return Var{0,"Int",0,true,0};
   }
 }
@@ -79,14 +79,13 @@ Var Context::getVariable(std::string id){
 void Context::storeVariable(std::string id, int d){
   Var v = getVariable(id);
   if (v.global){
-    // Store the variable going into global in $17
-    ss() << "\tmove\t$17,$" << d << std::endl;
-    // Load these shizzle into $2
-    ss() << "\tlui\t$28,%hi(__gnu_local_gp)" << std::endl;
-    ss() << "\taddiu\t$28,$28,%lo(__gnu_local_gp)" << std::endl;
-    ss() << "\tlw\t$2,%got(" << id <<")($28)" <<std::endl;
-    // Store 17 into the thingy
-    ss() << "\tsw\t$17,0($2)" << std::endl;
+    // Store the variable in $17
+    ss() << "\tmove\t$17,$" << d 						<< std::endl;
+    // Load into $2
+    ss() << "\tlui\t$28,%hi(__gnu_local_gp)" 			<< std::endl;
+    ss() << "\taddiu\t$28,$28,%lo(__gnu_local_gp)" 		<< std::endl;
+    ss() << "\tlw\t$2,%got(" << id <<")($28)" 			<< std::endl;
+    ss() << "\tsw\t$17,0($2)" 							<< std::endl;
   }
   else {
     ss() << "\tsw\t$" << d <<"," << v.offset << "($fp)" << " # store var: " << id << std::endl;
@@ -135,16 +134,18 @@ std::string makeLabel(std::string base){
   return base;
 }
 
-std::string genUnqID() {
+std::string genUniqueID() {
   return std::to_string(UNIQUE_ID++);
 }
 
 void Context::push(int reg){
-  ss() <<"### PUSH\n\taddiu\t$sp,$sp,-4" 	<< std::endl;
-  ss() << "\tsw\t$" <<reg <<",0($sp)\n" 	<< std::endl;
+  ss() 	<< "### CONTEXT.PUSH"			<< std::endl;
+  ss()	<< "\taddiu\t$sp,$sp,-4"		<< std::endl;
+  ss() 	<< "\tsw\t$" <<reg <<",0($sp)\n"<< std::endl;
 }
 
 void Context::pop(int reg){
-  ss() << "### POP\n\tlw\t$" <<reg<< ",0($sp)" 	<< std::endl;
-  ss() <<"\taddiu\t$sp,$sp,4\n" 				<< std::endl;
+  ss() 	<< "### CONTEXT.POP"			<< std::endl;
+  ss()	<< "\tlw\t$" <<reg<< ",0($sp)" 	<< std::endl;
+  ss()	<<"\taddiu\t$sp,$sp,4\n" 		<< std::endl;
 }

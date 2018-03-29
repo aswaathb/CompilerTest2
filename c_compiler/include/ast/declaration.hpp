@@ -3,167 +3,75 @@
 #define DECLARATION_HPP
 
 
-#include "base_expr.hpp"
-#include "base_statement.hpp"
+#include "baseNode.hpp"
+#include "types.hpp"
 
 
-class ast_declarator : public ast_base_statement {
+class DeclaratorBase : public baseNode {};
+
+
+class Declarator : public DeclaratorBase {
+const baseNode * child;
+mutable int ptr = 0;
 public:
-    virtual ~ast_declarator();
+  Declarator(const baseNode * _child) : child(_child) {};
 
-    virtual std::string get_id() const = 0;
-
-    virtual void xmlprint() const = 0;
-
-    virtual void prettyprint(std::ostream &stream) const = 0;
-
-    virtual void generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const=  0;
-
-    virtual void allocate_memory(int& allocated_mem) const = 0;
-
-    std::string statement_type() const;
-protected:
-    ast_identifier* ID;
-    std::vector<ast_identifier*> all_ids;
-
+  virtual std::string getNodeType() const override;
+  virtual std::string getId() const override { return child->getId(); };
+  virtual void setPtr() const { ptr = 1; }
+  virtual int getPtr() const override { return ptr; }
+  virtual void setChildDefs() const override;
+  virtual void python_print(std::ostream &stream) const override;
+  virtual std::vector<const baseNode *> getChildren() const override { return {child}; }
+  virtual const List * getParams() const { return new List({}); }
+  virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 };
 
-extern bool my_global_variable;
-
-class ast_variable_declarator: public ast_declarator {
+class InitDeclarator : public Declarator {
+const Expression * expr;
 public:
-    ast_variable_declarator(ast_identifier* in_ID);
+  InitDeclarator(const baseNode * _child, const Expression * _expr) : Declarator(_child), expr(_expr) {};
+  virtual std::string getNodeType() const override;
+  std::vector<const baseNode *> getChildren() const;
+  virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+};
 
-    void xmlprint() const;
+class ArrayDeclarator : public Declarator {
+const Expression * expr;
+public:
+  ArrayDeclarator(const baseNode * _child, const Expression * _expr) : Declarator(_child), expr(_expr) { setPtr(); };
+  virtual std::string getNodeType() const override;
+  virtual void setChildDefs() const override;
+  virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+};
 
-    void prettyprint(std::ostream &stream) const ;
+class FunctionDeclarator : public Declarator {
+const List * func;
+public:
+  FunctionDeclarator(const baseNode * _child, const List * _func) : Declarator(_child), func(_func) {};
+  virtual std::string getNodeType() const override;
+  virtual const List * getParams() const override;
+  virtual void python_print(std::ostream &stream) const override;
+};
 
-    void generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const ;
-
-    std::string get_id() const ;
-
-    std::string statement_type() const ;
-
-    void allocate_memory(int& allocated_mem) const ;
-
+class Declaration : public DeclaratorBase {
 private:
-
-};
-
-
-class ast_array_declarator : public ast_declarator{
+  const Type * type;
+  const List * list;
 public:
-    ast_array_declarator(ast_identifier* in_ID, ast_base_expression* in_expr);
-
-    void xmlprint() const;
-
-    void prettyprint(std::ostream &stream) const ;
-
-    void generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const ;
-
-    std::string get_id() const ;
-
-    std::string statement_type() const ;
-
-    void allocate_memory(int& allocated_mem) const ;
-
-private:
-    ast_base_expression* inside_expr;
-    ast_identifier* ID;
+  Declaration(const Type * _type, const List * _list) : type(_type), list(_list){};
+  virtual std::string getNodeType() const override;
+  virtual std::string getTypename() const;
+  virtual std::vector<std::string> getTypeVec() const;
+  
+  virtual const Type * getType() const { return type; };
+  virtual std::string getId() const;
+  virtual std::vector<const baseNode *> getChildren() const override;
+  virtual std::vector<std::string> getChildDefs() const override;
+  virtual void setChildDefs() const override;
+  
+  virtual void python_print(std::ostream &streams) const override;
+  virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 };
 
-
-
-class ast_initialisers_declarator : public ast_declarator {
-public:
-    ast_initialisers_declarator(ast_declarator* in_dec, ast_base_expression* in_equal_expr) ;
-
-    void xmlprint() const;
-
-    void prettyprint(std::ostream &stream) const ;
-
-    void generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const;
-
-    std::string get_id() const ;
-
-    std::string statement_type() const ;
-
-    void allocate_memory(int& allocated_mem) const ;
-
-    int constant_fold() const ;
-
-private:
-    ast_declarator* declarator;
-    ast_base_expression* equal_expression;
-};
-
-
-
-//UGLY HACK FOR GLOBAL VARIABLES!
-struct declaration_template
-{
-    ast_initialisers_declarator* dec;
-    int reg_num;
-    std::string ID;
-    int temp_mem;
-};
-
-static std::vector<declaration_template> load_dec;
-
-
-
-
-class ast_declaration : public ast_base_statement {
-public:
-
-    ast_declaration(ast_type* in_Type) ;
-
-    ast_declaration(ast_type* in_Type, std::vector<ast_initialisers_declarator*> in_dec) ;
-
-    void xmlprint() const;
-
-    void prettyprint(std::ostream &stream) const;
-
-    void generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const;
-
-    std::string statement_type() const ;
-
-    ast_type* return_type() ;
-
-    void allocate_memory(int& allocated_mem) const;
-
-    std::vector<ast_initialisers_declarator*>* return_dec_list();
-
-private:
-    ast_type* Type;
-    std::vector<ast_initialisers_declarator*> dec_list;
-};
-
-
-
-class ast_global_declaration : public ast_base_statement {
-public:
-
-    ast_global_declaration(ast_declaration* in_decl) ;
-
-    void xmlprint() const;
-
-    void prettyprint(std::ostream &stream) const ; 
-
-    void generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const;
-
-    void allocate_memory(int& allocated_mem) const;
-
-    std::string statement_type() const ;
-
-    int constant_fold(ast_initialisers_declarator* in_dec) const;
-
-private:
-    //Hack
-    ast_declaration* decl;
-    ast_type* Type;
-    std::vector<ast_initialisers_declarator*>* dec_list;
-};
-
-
-#endif //AST_DECLARATION_HPP
+#endif

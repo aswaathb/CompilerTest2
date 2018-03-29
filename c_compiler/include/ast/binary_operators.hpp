@@ -3,124 +3,45 @@
 
 #include "base_expr.hpp"
 
-class ast_binary_operators : public ast_base_expression{
-public:
-	virtual void xmlprint() const = 0;
-    virtual void prettyprint(std::ostream &stream) const =0;
-    virtual void generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const = 0;
-    virtual void allocate_memory(int& allocated_mem) const = 0;
-    virtual int constant_fold() const = 0;
-
-	virtual ~ast_binary_operators();
-
-	const ast_base_expression* get_left() const;
-
-	const ast_base_expression* get_right() const;
-
+class BinaryExpression : public Expression {
 private:
-    const ast_base_expression *left;
-    const ast_base_expression *right;
-
+  const Expression * left;
+  const Expression * right;
 protected:
-    ast_binary_operators(const ast_base_expression *_left, const ast_base_expression *_right);
-};
-
-class ast_less_comp : public ast_binary_operators{
+  std::string op;
 public:
-	ast_less_comp(const ast_base_expression *_left, const ast_base_expression *_right);
 
-    void xmlprint() const;
+  BinaryExpression(const Expression * _left, const Expression * _right, std::string * _op);
 
-    void prettyprint(std::ostream &stream) const;
+  virtual std::vector<std::string> getTypeVec() const override;
 
-    void generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const;
+  virtual std::string getNodeType() const override;
 
+  virtual std::string getDetails() const override;
 
-    int constant_fold() const;
+  std::string getOp() const;
 
+  virtual std::vector<const baseNode *> getChildren() const;
 
-    void allocate_memory(int& allocated_mem) const;
+  const Expression * getLeft() const { return left;};
+
+  const Expression * getRight()const { return right;};
+
+  virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+
+  virtual void python_print(std::ostream& stream) const override;
 
 };
 
-
-class ast_less_equal_comp : public ast_binary_operators{
+class AssignmentExpression : public BinaryExpression {
 public:
-	ast_less_equal_comp(const ast_base_expression *_left, const ast_base_expression *_right);
-	
-    void xmlprint() const;
+  using BinaryExpression::BinaryExpression;
 
-    void prettyprint(std::ostream &stream) const;
+  virtual std::string getNodeType() const override;
 
-    void generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const;
+  virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 
-    int constant_fold() const;
-
-    void allocate_memory(int& allocated_mem) const;
 };
 
 
-class ast_greater_comp : public ast_binary_operators{
-public:
-	ast_greater_comp(const ast_base_expression *_left, const ast_base_expression *_right);
-
-    void xmlprint() const;
-
-    void prettyprint(std::ostream &stream) const;
-
-    void generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const;
-
-    int constant_fold() const;
-
-    void allocate_memory(int& allocated_mem) const;
-};
-
-
-class ast_greater_equal_comp : public ast_binary_operators{
-public:
-	ast_greater_equal_comp(const ast_base_expression *_left, const ast_base_expression *_right);
-	
-    void xmlprint() const;
-
-    void prettyprint(std::ostream &stream) const;
-
-    void generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const;
-
-    int constant_fold() const;
-
-    void allocate_memory(int& allocated_mem) const;
-};
-
-
-class ast_equal_comp : public ast_binary_operators{
-public:
-	ast_equal_comp(const ast_base_expression *_left, const ast_base_expression *_right);
-	
-    void xmlprint() const;
-
-    void prettyprint(std::ostream &stream) const;
-
-    void generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const;
-
-    int constant_fold() const;
-
-    void allocate_memory(int& allocated_mem) const;
-};
-
-
-class ast_not_equal_comp : public ast_binary_operators{
-public:
-	ast_not_equal_comp(const ast_base_expression *_left, const ast_base_expression *_right);
-	
-    void xmlprint() const;
-
-    void prettyprint(std::ostream &stream) const;
-
-    void generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const;
-
-    int constant_fold() const;
-
-    void allocate_memory(int& allocated_mem) const;
-};
-
-#endif 
+#endif

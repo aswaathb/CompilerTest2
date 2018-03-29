@@ -1,278 +1,182 @@
 #include "functions.hpp"
 
-ast_function::ast_function(ast_type* in_return_type, ast_identifier* in_id, std::vector<ast_function_parameters*> in_params, ast_compound_statement* in_stat) {
-    ast_parameters = in_params;
-    statements = in_stat;
-    return_type = in_return_type;
-    ID = in_id;
+
+Function::Function(const baseNode *_type, const baseNode *_dec, const baseNode *_stat)
+    : type((const Type *)_type), declarator((const FunctionDeclarator *)_dec), statement((const CompoundStatement *)_stat) {
+        id = declarator->getId(); //! Returns id of first child, won't have declaration lists of functions
+      };
+
+/*
+   GETTERS
+ */
+std::vector<const baseNode *> Function::getChildren() const{
+  return {statement};
 }
 
-ast_function::ast_function(ast_type* in_return_type, ast_identifier* in_id, ast_compound_statement* in_stat) {
-    statements = in_stat;
-    return_type = in_return_type;
-    ID = in_id;
+std::string Function::getType() const { return type->getTypename(); }
+
+std::string Function::getHeader() const {
+  return "<" + getNodeType() + " id=\"" + id + "\" type=\"" + type->getTypename() + "\" " + getDetails() + " >";
 }
-//~ast_function() { }
 
-void ast_function::xmlprint() const {
-    std::cout << "<Function id=\"";
-    ID->xmlprint();
-    std::cout << "\">" << std::endl;
+std::string Function::getDetails() const {
+  std::string params = getParamString();
+  if (params!=""){
+    params = "params=\"" + params + "\" ";
+  }
+  return params + baseNode::getDetails();
+}
 
-    for (unsigned int i =0; i < ast_parameters.size(); i++) {
-        if (ast_parameters[i] != NULL) {
-            ast_parameters[i]->xmlprint();
-        }
+std::vector<std::string> Function::getParams() const {
+  std::vector<std::string> out;
+  for (auto it: declarator->getParams()->getChildren()){
+    out.push_back(it->getId());
+  }
+  return out;
+}
+
+std::string Function::getParamString() const {
+  std::string out;
+  for (auto it: getParams()){
+    out += it + ",";
+  }
+  if (out!=""){
+    out = out.substr(0, out.size()-1);
+  }
+  return out;
+}
+
+
+void Function::setChildDefs() const {
+  baseNode::setChildDefs();
+}
+
+
+/*
+   END OF GETTERS
+*/
+
+
+/* 
+    PRINT ASSEMBLY 
+*/
+
+Context Function::generate_assembly(Context ctxt, int d) const{
+  Context return_ctxt = ctxt;
+  std::vector<std::string> vars = getChildDefs();
+  int i = 0;
+  std::vector<std::string> args = getChildParams();
+  int args_size = 16;
+  if (args.size()>0){
+    for (auto &it: args){
+      if (i>3){
+        args_size+=4;
+      }
+      i++;
     }
-    
-    std::cout << std::endl << "<Scope>" << std::endl;
-    
-    if (statements != NULL)
-        statements->xmlprint();
+  }
+  
+  int variableSize = vars.size()*4 + getParams().size()*4;
+  int pad = 0;
+  int total_size = args_size+variableSize + 8;
+  if (total_size%8 != 0){pad = 4; }
+  
+  
+  int local_offset = total_size+8-variableSize;
+  ctxt.setOffset(local_offset);
 
-    std::cout << "</Scope>" << std::endl;
-    
-    std::cout << "</Function>" << std::endl;
-}
-
-
-void ast_function::prettyprint(std::ostream &stream) const {
-
-    stream << "Function id=\"";
-    ID->prettyprint(stream);
-    stream << "\" ";
-
-    stream << " | Type: ";
-    return_type->prettyprint(stream);
-
-    stream << " | Parameters: " << std::endl;
-
-    for (unsigned int i =0; i < ast_parameters.size(); i++) {
-        ast_parameters[i]->prettyprint(stream);
-        stream << " ";
+  i = 0;
+  for (auto &it : getParams()){
+    if (i==4){
+      ctxt.setOffset(total_size+8+pad+16);
     }
-    stream << "Statements: " << std::endl;
-    statements->prettyprint(stream);
-}
-
-
-void ast_function::allocate_memory(int& allocated_mem) const {
-    for (unsigned int i =0; i < ast_parameters.size(); i++) {
-        if (ast_parameters[i] != NULL) {
-            ast_parameters[i]->allocate_memory(allocated_mem);
-        }
+    ctxt.ss() << "# param " << i << ": " << it << std::endl;
+    ctxt.assignVariable(it,"int");
+    if (i<4){
+      local_offset = ctxt.getOffset();
     }
+    i++;
+  }
 
-    if (statements != NULL)
-        statements->allocate_memory(allocated_mem);
-}
-
-
-void ast_function::generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const {        
-    context->get_stream()   <<      "\t.globl " << ID->get_id()                <<std::endl
-                                    <<      "\t.set\tnomips16"                          <<std::endl
-                                    <<      "\t.set\tnomicromips"                       <<std::endl
-                                    <<      "\t.ent\t" << ID->get_id()                  <<std::endl
-                                    <<      "\t.type\t" << ID->get_id()<<", @function"  <<std::endl
-                                    <<ID->get_id() << ":"                               <<std::endl;
-
-
-    int mem_needed = 4;
-    allocate_memory(mem_needed);
-
-    context->make_scope(ID->get_id(), std::string("function"), mem_needed*2 + 4);
-
-    /*Get global variable
-    if (ID->get_id() == "main") {
-     for (unsigned int i = 0; i < load_dec.size(); i++) {
-         load_dec.at(i).dec->generate_assembly(context, registers, load_dec.at(i).reg_num);
-         
-         context->get_stream() << "sw $" << load_dec.at(i).reg_num << ", " << load_dec.at(i).temp_mem*4 << "($fp)" << std::endl;
-
-         context->get_stream() << "\tlui $2,%hi(" << load_dec.at(i).ID << ")" << std::endl;
-         context->get_stream() << "\tsw  $" << load_dec.at(i).reg_num << ",%lo(" << load_dec.at(i).ID << ")($2)"<< std::endl;
-         registers->erase_reg(load_dec.at(i).reg_num); 
-
-     }   
-    }*/
-
-    //Reading parameter and saving it to temporary register/ stack
-    //TODO: only works for < 4 parameters right now
-    if ((ast_parameters.size() > 0) && (ast_parameters.size() <= 4)) {
-        for (unsigned int i = 0; i < ast_parameters.size(); i++) {
-
-            if (debug_mode)
-                context->get_stream() << "#In function defintion: parameter id: " << ast_parameters.at(i)->get_id() << std::endl;
-
-            int new_mem = registers->get_free_mem();
-
-            context->insert_symbols("int", ast_parameters.at(i)->get_id(), new_mem, true);
-
-            //context->get_stream() << "\tmove $" << new_mem << ", $a"<< i << std::endl;
-            context->get_stream() << "\tsw $a" << i << ", " << new_mem*4 << "($fp)"  << std::endl;
-
-            registers->write_mem(new_mem, "temp", context->get_current_func());
-
-            //Binding each variable to each ID for access in function call
-            context->insert_param_id(i, ast_parameters.at(i)->get_id());
-            //int var_reg = registers->get_free();
-            //registers->write(var_reg, ast_parameters[i]->get_id());
-
-            //ast_parameters[i]->get_id()->generate_assembly(context, registers, dest_reg);                
-        }
+  ctxt.setOffset(local_offset);
+  std::string fname = id;
+  
+  ctxt.ss() << "\t.globl\t" << fname	            << std::endl;
+  ctxt.ss() << "\t.set	nomips16"                   << std::endl;
+  ctxt.ss() << "\t.set	nomicromips"                << std::endl;
+  ctxt.ss() << "\t.ent\t" << fname	                << std::endl;
+  ctxt.ss() << "\t.type\t" << fname <<", @function" << std::endl;
+  ctxt.setF(fname);
+  
+  
+  // Label for the function
+  ctxt.ss() << fname << ":" << std::endl
+  ctxt.ss() << "\t.frame\t$fp,"<< total_size+8+pad << ",$31\t\t# vars= "<< variableSize <<", regs= 1/0, args= " << args_size << ", gp= 0" << std::endl
+  
+  // .mask for size of int?
+  ctxt.ss() << "\t.mask\t0x40000000,-4" << std::endl
+  // .fmask for sixe of float?
+  ctxt.ss() << "\t.fmask\t0x00000000,0" << std::endl
+  // additional lines that is required
+  ctxt.ss() << "\t.set\tnoreorder"      << std::endl
+  ctxt.ss() << "\t.set\tnomacro"        << std::endl
+  
+  // Reserve space on the stack for the frame
+  ctxt.ss() << "\taddiu\t$sp,$sp,-" << total_size+8+pad << std::endl
+  
+  // Store return address
+  ctxt.ss() << "\tsw\t$31,"<< total_size+4-variableSize << "($sp)" << std::endl
+  
+  // Store frame ptr
+  ctxt.ss() << "\tsw\t$fp,"<< total_size-variableSize << "($sp)" << std::endl
+  
+  // Store result
+  ctxt.ss() << "\tsw\t$16,"<< total_size-4-variableSize << "($sp)" << std::endl
+  
+  // FPtr==SPtr
+  ctxt.ss() << "\tmove\t$fp,$sp" << std::endl;
+  
+  
+  i = 4;
+  for (auto &it : getParams()){
+    if (i<8){
+      ctxt.ss() << "\tmove\t$2,$" << std::to_string(i++) << std::endl;
+      ctxt.storeVariable(it);
     }
+    // Rest of params will already be on stack so no need to store it.
+  }
+  
 
+  ctxt = baseNode::generate_assembly(ctxt);
+  
+/* 
+    ENDING BLOCK
+*/
+  ctxt.ss() << fname << "the_end:"                                  << std::endl;
+  // Move FPtr->SPtr
+  ctxt.ss() << "\tmove $sp,$fp"                                     << std::endl;
+  // Load return address
+  ctxt.ss() << "\tlw\t$31," << total_size+4-variableSize <<"($sp)"  << std::endl;
+  // Load frame ptr
+  ctxt.ss() << "\tlw\t$fp," << total_size-variableSize <<"($sp)"    << std::endl;
+  // Load value in $16
+  ctxt.ss() << "\tlw\t$16," << total_size-4-variableSize <<"($sp)"  << std::endl;
+  // Unallocate frame
+  ctxt.ss() << "\taddiu\t$sp,$sp," << total_size+8+pad              << std::endl;
+  ctxt.ss() << "\tj\t$31\n\tnop"                       << std::endl << std::endl;
+  
+  ctxt.ss() << "\t.set\tmacro"                                      << std::endl;
+  ctxt.ss() << "\t.set\treorder"                                    << std::endl;
+  ctxt.ss() << "\t.end\t" << fname                                  << std::endl;
+  ctxt.ss() << "\t.size\t" << fname << ", .-" << fname              << std::endl;
 
-    if (statements != NULL)
-        statements->generate_assembly(context, registers, dest_reg);
-    
-    context->exit_function_scope();
-
-    context->get_stream()   << std::endl
-                            << "\t.set\tmacro"                                      << std::endl
-                            << "\t.set\treorder"                                    << std::endl
-                            << "\t.end\t"<<ID->get_id()                             << std::endl
-                            << "\t.size\t"<<ID->get_id()<<", "<<".-"<<ID->get_id()  << std::endl
-                            << "\t.align\t2"                                        << std::endl 
-                                                                                     << std::endl;
-
+  return return_ctxt;
 }
 
+/* 
+    PRINT PYTHON 
+*/
+void Function::python_print(std::ostream &stream) const {
+    stream << " FUNCTION NEEDS TO BE IMPLEMENTED" << std::endl; 
 
-
-
-
-ast_function_call::ast_function_call(ast_identifier* in_ID, std::vector<ast_base_expression*> in_args_list) {
-    ID = in_ID;
-    args_list = in_args_list;
-
-}
-
-ast_function_call::ast_function_call(ast_identifier* in_ID) {
-    ID = in_ID;
-
-}
-
-void ast_function_call::xmlprint() const {
-    //for (int i = 0; i < args_list.size(); ++i)
-    //{
-    //    args_list[i]->xmlprint();
-    //}
-}
-
-void ast_function_call::prettyprint(std::ostream &stream) const {
-    stream << "Function call:" << std::endl;
-    stream << "ID: ";
-    ID->prettyprint(stream);
-
-    for (unsigned int i = 0; i < args_list.size(); i++) {
-        args_list[i]->prettyprint(stream);
-        stream << " ";
-    }
-    stream << std::endl;
-}
-
-void ast_function_call::generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const {
-    bool temp_save_math_op = save_math_op;
-    save_math_op = false;
-    
-    //Save all the 'Save' registers
-
-
-    int old_a0_mem = registers->get_free_mem();
-    registers->write_mem(old_a0_mem, std::string("temp"), context->get_current_func());
-    int old_a1_mem = registers->get_free_mem();
-    registers->write_mem(old_a1_mem, std::string("temp"), context->get_current_func());
-    int old_a2_mem = registers->get_free_mem();
-    registers->write_mem(old_a2_mem, std::string("temp"), context->get_current_func());
-    int old_a3_mem = registers->get_free_mem();
-    registers->write_mem(old_a3_mem, std::string("temp"), context->get_current_func());
-
-    if ((args_list.size() > 0) && (args_list.size() <= 4)) {
-
-        for (unsigned int i = 0; i < args_list.size(); i++) {
-            if (i == 0){
-                context->get_stream() << "\tsw $a0" << ", " << old_a0_mem*4 << "($fp)"  << std::endl;
-            }
-            else if (i == 1) {
-                context->get_stream() << "\tsw $a1" << ", " << old_a1_mem*4 << "($fp)"  << std::endl;
-            }
-            else if (i == 2) {
-                context->get_stream() << "\tsw $a2" << ", " << old_a2_mem*4 << "($fp)"  << std::endl;
-            }
-            else if (i == 3) {
-                context->get_stream() << "\tsw $a3" << ", " << old_a3_mem*4 << "($fp)"  << std::endl;
-            }
-
-            int temp_reg = registers->get_free_reg();
-            registers->write_reg(temp_reg, std::string("temp"));
-            args_list.at(i)->generate_assembly(context, registers, temp_reg);
-            
-            if (debug_mode) {
-                context->get_stream() << "\t#Calling func call: " << args_list[i]->get_id() << std::endl;
-                context->get_stream() << "\t#Storing this variable: " << i << std::endl;
-                context->get_stream() << "\t#Dest_reg: " <<dest_reg << std::endl;
-
-            }
-
-            //context->insert_parameters("int", args_list[i]->get_id(), i);
-            context->get_stream() << "\tmove $a" << i << ", $"<< temp_reg << std::endl;
-
-            //registers->erase_reg(temp_reg);
-
-            //args_list[i]->get_id()->generate_assembly(context, registers, dest_reg);
-        }
-    }
-
-    context->get_stream() << "\t.option pic0 " << std::endl;
-    context->get_stream() << "\tjal " << ID->get_id() << std::endl;
-    context->get_stream() << "\tnop" << std::endl;
-    context->get_stream() << "\t.option pic2 " << std::endl;
-
-    /*for (int i = 0; i < func_call_store.size(); i++) {
-    //    context->get_stream() << "lw $" << func_call_store.at(i).reg << "," << func_call_store.at(i).mem*4 << "($fp) #THIS ONE!" << std::endl;
-    }*/     
-    registers->reallocate(context->get_current_func());
-
-    //Setting the integer to the return
-    
-    context->get_stream() << "\tmove $" << dest_reg << ", $2" << std::endl;
-    int new_mem = registers->get_free_mem();
-    context->get_stream() << "\tsw $" << dest_reg << ", " << new_mem*4 << "($fp)" << std::endl;
-    registers->write_mem(dest_reg, std::to_string(new_mem), context->get_current_func());
-    
-    //Redeclare variables
-    if ((args_list.size() > 0) && (args_list.size() <= 4)) {
-        for (unsigned int i = 0; i < args_list.size(); i++) {
-            if (i == 0)
-                context->get_stream() << "\tlw $a0, " << old_a0_mem*4 << "($fp)"<< std::endl;
-            else if (i == 1)
-                context->get_stream() << "\tlw $a1, " << old_a1_mem*4 << "($fp)"<< std::endl;
-            else if (i == 2)
-                context->get_stream() << "\tlw $a2, " << old_a2_mem*4 << "($fp)"<< std::endl;
-            else if (i == 3)
-                context->get_stream() << "\tlw $a3, " << old_a3_mem*4 << "($fp)"<< std::endl;
-        }           
-    }
-
-    registers->erase_mem(old_a0_mem);
-    registers->erase_mem(old_a1_mem);
-    registers->erase_mem(old_a2_mem);
-    registers->erase_mem(old_a3_mem);
-
-    save_math_op = temp_save_math_op;
-}
-
-int ast_function_call::constant_fold() const {
-    std::cerr << "Trying to constant fold a function!" << std::endl;
-    return 0;
-}
-
-void ast_function_call::allocate_memory(int& allocated_mem) const {
-    for (unsigned int i = 0; i < args_list.size(); i++) {
-        if (args_list[i] != NULL) {
-            args_list[i]->allocate_memory(allocated_mem);
-        }
-    }
-    
 }

@@ -2,66 +2,36 @@
 #define FUNCTIONS_HPP
 
 #include "baseNode.hpp"
-#include "compound_statement.hpp"
-#include "function_params.hpp"
-
+#include "statement.hpp"
+#include "types.hpp"
 #include <cmath>
 
-class ast_function : public ast_base
-{
+// Components of a Function -> paramList and a statement
+class Function : public baseNode {
 private:
-    std::vector<ast_function_parameters*> ast_parameters;
-    ast_compound_statement* statements;
-    ast_type* return_type;
-    ast_identifier* ID;
+  const Type * type; 
+  std::string id; 
+  const FunctionDeclarator * declarator; 
+  const CompoundStatement *statement;
 
 public:
-    ast_function(ast_type* in_return_type, ast_identifier* in_id, std::vector<ast_function_parameters*> in_params, ast_compound_statement* in_stat) ;
+  virtual ~Function(){};
 
-    ast_function(ast_type* in_return_type, ast_identifier* in_id, ast_compound_statement* in_stat) ;
+  Function(const baseNode *_type, const baseNode *_dec, const baseNode *_stat);
 
-    void xmlprint() const;
+  //! Getters
+  virtual std::string getType() const;
+  virtual std::string getNodeType() const { return "Function"; };
+  virtual std::string getHeader() const;
+  virtual std::string getDetails() const override;
+  virtual std::vector<std::string> getParams() const;
+  virtual std::string getParamString() const;
+  virtual std::vector<const baseNode *> getChildren() const;
+  
+  virtual void setChildDefs() const override;
 
-    void prettyprint(std::ostream &stream) const;
-
-    void allocate_memory(int& allocated_mem) const;
-
-    void generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const;
-
-};
-
-
-//Store memory location before moving from $8 to $2
-struct recursion_template
-{
-    int mem;
-    int reg;
-};
-
-static std::vector<recursion_template> func_call_store;
-
-
-class ast_function_call : public ast_base_expression
-{
-private:
-    std::vector<ast_base_expression*> args_list;
-    ast_identifier* ID;
-
-public:
-    ast_function_call(ast_identifier* in_ID, std::vector<ast_base_expression*> in_args_list) ;
-
-    ast_function_call(ast_identifier* in_ID) ;
-
-    void xmlprint() const;
-
-    void prettyprint(std::ostream &stream) const;
-
-    void generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const;
-
-    int constant_fold() const ;
-
-    void allocate_memory(int& allocated_mem) const;
-
+  virtual void python_print(std::ostream &stream) const;
+  virtual Context generate_assembly(Context ctxt, int d = 2) const;
 };
 
 #endif

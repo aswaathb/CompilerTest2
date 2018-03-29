@@ -1,35 +1,30 @@
 #ifndef ast_hpp
 #define ast_hpp
 
-#include "ast/assignment_expr.hpp"
 #include "ast/base_expr.hpp"
-#include "ast/base_statement.hpp"
 #include "ast/baseNode.hpp"
 #include "ast/binary_operators.hpp"
-#include "ast/compound_statement.hpp"
+#include "ast/constant.hpp"
 #include "ast/context.hpp"
 #include "ast/declaration.hpp"
-#include "ast/forWHILE_statement.hpp"
-#include "ast/function_params.hpp"
 #include "ast/functions.hpp"
-#include "ast/IFELSE_statement.hpp"
+#include "ast/statement.hpp"
 #include "ast/logical_expr.hpp"
-#include "ast/math_operators.hpp"
-#include "ast/register_handler.hpp"
-#include "ast/return_statement.hpp"
-#include "ast/tokens.hpp"
-#include "ast/topNode.hpp"
+#include "ast/types.hpp"
+#include "ast/unary_expr.hpp"
+#include "ast/variabes.hpp"
+
 
 
 // #include <iostream>
 
-extern const Expression *parseAST();
+// extern const Expression *parseAST();
 
 
-class Expression;
-class variable_declaration;
-class return_statement;
-class function_definition;
+// class Expression;
+// class variable_declaration;
+// class return_statement;
+// class function_definition;
 
 
 // class Expression {

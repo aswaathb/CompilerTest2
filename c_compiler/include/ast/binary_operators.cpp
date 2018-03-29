@@ -1,387 +1,206 @@
-
 #include "binary_operators.hpp"
+#include <assert.h>
+#include "context.hpp"
 
-ast_binary_operators::~ast_binary_operators() {
-	delete left;
-	delete right;
+
+BinaryExpression::BinaryExpression(const Expression *_left, const Expression *_right, std::string *_op)
+    : left(_left), right(_right), op(*_op) {}
+
+/* GETTERS */
+
+std::string BinaryExpression::getNodeType() const {
+  return "BinaryExpression"; 
+}
+std::string AssignmentExpression::getNodeType() const { 
+  return "AssignmentExpression"; 
+}
+std::string BinaryExpression::getDetails() const {
+   return " op=\"" + getOp() + "\" " + Node::getDetails();
 }
 
-const ast_base_expression* ast_binary_operators::get_left() const{
-	return left;
+std::string BinaryExpression::getOp() const { return op; };
+std::vector<const baseNode *> BinaryExpression::getChildren() const {
+  return {left, right};
 }
 
-const ast_base_expression* ast_binary_operators::get_right() const{
-	return right;
+std::vector<std::string> BinaryExpression::getTypeVec() const {
+  std::vector<std::string> valA,valB;
+  
+  valA = left->getTypeVec();
+  valB = right->getTypeVec();
+  for (int i = 0; i < 4; i++){
+    assert(valA[i]==valB[i]);
+  }
+  return valA;
 }
 
-ast_binary_operators::ast_binary_operators(const ast_base_expression *_left, const ast_base_expression *_right)
-    : left(_left), right(_right) {}
+
+/* PRINT ASSEMBLY */
+
+Context BinaryExpression::generate_assembly(Context ctxt, int d) const {
+
+  
+  std::string end = "bend" + genUniqueID();
+  if (!(op=="&&" || op=="||")){
+    // Compile the left into a specific register, no short circuiting required.
+    getLeft()->generate_assembly(ctxt,3);
+
+    ctxt.push(3);
+    getRight()->generate_assembly(ctxt,2);
+    ctxt.pop(3);
+  }
+  else if (op=="||"){
+    // SHORT CIRCUITING-> If either side !=0, set to 1
+    
+    // LHS
+    getLeft()->generate_assembly(ctxt,3);
+    ctxt.ss() << "\tsltu\t$" << d << ",$0,$3" <<" # checking if left > zero"    << std::endl;
+    ctxt.ss() << "\tbeq\t$"  << d << ",1," << end <<" # then short circuit"     << std::endl;
+    ctxt.ss() << "\tnop"                             s                          << std::endl;
+
+    // RHS
+    ctxt.push(3);
+    getRight()->generate_assembly(ctxt,2);
+    ctxt.pop(3);
+    ctxt.ss() << "\tsltu\t$" << d << ",$0,$2" <<" # checking if right > zero"   << std::endl;
+    ctxt.ss() << "\tbeq\t$"  << d << ",1," << end << " # then short circuit"    << std::endl;
+    ctxt.ss() << "\tnop"                                                        << std::endl;
+    ctxt.ss() << end << ":"                                                     << std::endl;
+  }
+  else if (op=="&&"){
+    // SHORT CIRCUITING-> If either side = 0, set to 0
+
+    // LHS
+    getLeft()->generate_assembly(ctxt,3);
+    ctxt.ss() << "\txor\t$" << d << ",$3,$0"                                    << std::endl;
+    ctxt.ss() << "\tsltu\t $" << d << ",$0,$3" << " # checking if left > zero"  << std::endl;
+    ctxt.ss() << "\tbeq\t$"  << d << ",$0," << end << " # if=0, short circuit"  << std::endl;
+    ctxt.ss() << "\tnop"                                                        << std::endl;
+    ctxt.pop(3);    
+    
+    // RHS
+    getRight()->generate_assembly(ctxt,2);
+    ctxt.pop(3);
+    ctxt.ss() << "\txor\t$" << d << ",$2,$0"                                    << std::endl;
+    ctxt.ss() << "\tsltu\t $" << d << ",$0,$2" << " # checking if right < 1"    << std::endl;
+    ctxt.ss() << "\tbeq\t$"  << d << ",$0," << end << " # if=0, short circuit"  << std::endl;
+    ctxt.ss() << "\tnop"                                                        << std::endl;
+    ctxt.ss() << end << ":"                                                     << std::endl;
+  }
 
 
+/*
+    NORMAL CASES
+*/
+
+  // Arithmetic 
+  if (op == "+"){
+    ctxt.ss() << "\tadd\t$" << d << ",$3,$2" << " # add $3 and $2 to $" << d    << std::endl;
+  } else if (op=="-"){
+    ctxt.ss() << "\tsub\t$" << d << ",$3,$2" << " # sub $3-$2 to $" << d        << std::endl;
+  } else if (op=="*"){
+    ctxt.ss() << "\tmul\t$" << d << ",$3,$2" << " # mul $3*$2 to $" << d        << std::endl;
+  } else if (op=="/"){
+    ctxt.ss() << "\tdiv\t$" << d << ",$3,$2" << " # div $3/$2to $" << d         << std::endl;
+  } else if (op=="%"){
+    ctxt.ss() << "\tdiv\t$" << d << ",$3,$2" << " # first div $3/$2"            << std::endl;
+    ctxt.ss() << "\tmfhi\t$" << d << " # get modulo component $3%$2 to $" << d  << std::endl;
+  }
 
 
-ast_less_comp::ast_less_comp(const ast_base_expression *_left, const ast_base_expression *_right) 
-    : ast_binary_operators(_left, _right) { }
-//~ast_if_else_statement() {}
+  // Binary 
+  else if (op=="^"){
+    ctxt.ss() << "\txor\t$" << d << ",$3,$2" << " # $3xor$2 to $" << d          << std::endl;
+  }
+  else if (op=="&"){
+    ctxt.ss() << "\tand\t$" << d << ",$3,$2" << " # $3and$2 to $" << d          << std::endl;
+  }
+  else if (op=="|"){
+    ctxt.ss() << "\tor\t$" << d << ",$3,$2" << " # $3or$2 to $" << d            << std::endl;
+  }
+  
 
-void ast_less_comp::xmlprint() const {
-	
+  // Relational
+  else if (op=="<"){
+    ctxt.ss() << "\tsltu\t $" << d << ",$3,$2"                                  << std::endl;
+  }
+  else if (op==">"){
+    ctxt.ss() << "\tsgtu\t $" << d << ",$3,$2"                                  << std::endl;
+  }
+  else if (op=="<="){
+    ctxt.ss() << "\tsleu\t $" << d << ",$3,$2"                                  << std::endl;
+  }
+  else if (op==">="){
+    ctxt.ss() << "\tsgeu\t $" << d << ",$3,$2"                                  << std::endl;
+  }
+
+
+  // Equality
+  else if (op=="=="){
+    ctxt.ss() << "\txor\t $3,$3,$2" << " # left[xor]right"                      << std::endl;
+    ctxt.ss() << "\tsltu\t $" << d << ",$3,1"                                   << std::endl;
+  } else if (op=="!="){
+    ctxt.ss() << "\txor\t $3,$3,$2" << " # xor left[xor]right"                  << std::endl;
+    ctxt.ss() << "\tsltu\t $" << d << ",$0,$3"                                  << std::endl;
+
+  } else {
+    ctxt.ss() << "### INVALID OPERATOR -> \'" << op << "\' <-  CHECK AGAIN  (OR IT ISNT WORKING xD)" << std::endl;
+  }
+  
+  
+  return ctxt;
 }
 
-void ast_less_comp::prettyprint(std::ostream &stream) const {
-	stream << "Doing a less comparison: " << std::endl;
-	stream << "\t Left expr: ";
-	get_left()->prettyprint(stream); 
-	stream << std::endl;
-	stream << "\t Right expr: ";
-	get_right()->prettyprint(stream);
-	stream << std::endl;
-}
 
-void ast_less_comp::generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const {
-        if (debug_mode) {
-           context->get_stream() << "#Adding! " << std::endl;
-           context->get_stream() << "#at dest reg: " << dest_reg << std::endl; 
-        }
 
-        int temp_reg = registers->get_free_reg();
-        registers->write_reg(temp_reg, std::string("temp"));
-        get_left()->generate_assembly(context, registers, temp_reg);
 
-        int temp_reg_2 = registers->get_free_reg();
-        registers->write_reg(temp_reg_2, std::string("temp"));
-        get_right()->generate_assembly(context, registers, temp_reg_2);
-
-        context->get_stream() << "\tslt $" << dest_reg << ", $"<< temp_reg << ", $" << temp_reg_2 << std::endl;
-
-        registers->erase_reg(temp_reg);
-        registers->erase_reg(temp_reg_2);
-
-        if (debug_mode) {
-           context->get_stream() << "#Ending add! " << std::endl;
-        }
-}
-
-int ast_less_comp::constant_fold() const {
-    if (get_left()->constant_fold() < get_right()->constant_fold()){
-        return 1;
+Context AssignmentExpression::generate_assembly(Context ctxt, int d) const {
+  if (op == "=") {
+    getRight()->generate_assembly(ctxt);
+    if (getLeft()->getNodeType()=="SquareOperator"){
+      ctxt.ss() << "\tmove\t$11,$" << 2                     << std::endl;
+      getLeft()->getChildren()[1]->generate_assembly(ctxt,8);
+      ctxt.storeVariable(getLeft()->getId(),8,11);
     }
     else {
-        return 0;
+      ctxt.storeVariable(getLeft()->getId(), 2);
     }
+    return ctxt;
+  } else {
+    // Store left in $3
+    getLeft()->generate_assembly(ctxt,3);
+    ctxt.push(3);
+    // Store right in $2
+    getRight()->generate_assembly(ctxt,2);
+    ctxt.pop(3);
+  }
+  
+  if (op == "*=") {
+    ctxt.ss() << "\tmul\t$2,$3,$2" << " # mul $3*$2"        << std::endl;
+  } else if (op == "/=") {
+    ctxt.ss() << "\tdiv\t$2,$3,$2" << " # div $3/$2"        << std::endl;
+  } else if (op == "%=") {
+    ctxt.ss() << "\tmod\t$2,$3,$2" << " # mod $3%$2"        << std::endl;
+  } else if (op == "+=") {
+    ctxt.ss() << "\tadd\t$2,$3,$2" << " # add $3+$2"        << std::endl;
+  } else if (op == "-=") {
+    ctxt.ss() << "\tsub\t$2,$3,$2" << " # sub $3-$2"        << std::endl;
+  } else if (op == "&=") {
+    ctxt.ss() << "\tand\t$2,$3,$2" << " # and $3&$2"        << std::endl;
+  } else if (op == "|=") {
+    ctxt.ss() << "\tor\t$2,$3,$2" << " # or $3|$2"          << std::endl;
+  } else if (op == "^=") {
+    ctxt.ss() << "\txor\t$2,$3,$2" << " # xor $3^$2"        << std::endl;
+  } else if (op == "<<=") {
+    ctxt.ss() << "\tlsl\t$2,$3,$2" << " # << $3<<$2"        << std::endl;
+  } else    (op == ">>=") {
+    ctxt.ss() << "\tasr\t$2,$3,$2" << " # >> $3>>$2"        << std::endl;
+  }
+  ctxt.storeVariable(getLeft()->getId(), 2);
+  return ctxt;
 }
 
-
-void ast_less_comp::allocate_memory(int& allocated_mem) const {
-    allocated_mem += 4;
-}
-
-
-
-ast_less_equal_comp::ast_less_equal_comp(const ast_base_expression *_left, const ast_base_expression *_right) 
-    : ast_binary_operators(_left, _right) { }
-
-
-void ast_less_equal_comp::xmlprint() const {
-	
-}
-
-void ast_less_equal_comp::prettyprint(std::ostream &stream) const {
-	stream << "Doing a less equal comparison: " << std::endl;
-	stream << "\t Left expr: ";
-	get_left()->prettyprint(stream); 
-	stream << std::endl;
-	stream << "\t Right expr: ";
-	get_right()->prettyprint(stream);
-	stream << std::endl;
-}
-
-void ast_less_equal_comp::generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const {
-    if (debug_mode) {
-       context->get_stream() << "#Adding! " << std::endl;
-       context->get_stream() << "#at dest reg: " << dest_reg << std::endl; 
-    }
-
-    int temp_reg = registers->get_free_reg();
-    registers->write_reg(temp_reg, std::string("temp"));
-    get_left()->generate_assembly(context, registers, temp_reg);
-
-    int temp_reg_2 = registers->get_free_reg();
-    registers->write_reg(temp_reg_2, std::string("temp"));
-    get_right()->generate_assembly(context, registers, temp_reg_2);
-
-    int temp_reg_3 = registers->get_free_reg();
-    registers->write_reg(temp_reg_3, std::string("temp"));
-    context->get_stream() << "\tslt $" << temp_reg_3 << ", $"<< temp_reg << ", $" << temp_reg_2 << std::endl;
-
-    int temp_reg_4 = registers->get_free_reg();
-    registers->write_reg(temp_reg_4, std::string("temp"));
-    context->get_stream() << "\txor $" << temp_reg_4 << ", $"<< temp_reg_2 << ", $" << temp_reg << std::endl;
-    context->get_stream() << "\tsltiu $" << temp_reg_4 << ", $"<< temp_reg_4 << ", 1" << std::endl;
-
-
-    context->get_stream() << "\tor $" << dest_reg << ", $"<< temp_reg_3 << ", $" << temp_reg_4 << std::endl;
-
-    registers->erase_reg(temp_reg);
-    registers->erase_reg(temp_reg_2);
-    registers->erase_reg(temp_reg_3);
-    registers->erase_reg(temp_reg_4);
-
-    if (debug_mode) {
-       context->get_stream() << "#Ending add! " << std::endl;
-    }    
-}
-
-int ast_less_equal_comp::constant_fold() const {
-    if (get_left()->constant_fold() <= get_right()->constant_fold()){
-        return 1;
-    }
-    else {
-        return 0;
-    }
-}
-
-void ast_less_equal_comp::allocate_memory(int& allocated_mem) const {
-    allocated_mem += 4;
-}
-
-
-
-
-ast_greater_comp::ast_greater_comp(const ast_base_expression *_left, const ast_base_expression *_right) 
-: ast_binary_operators(_left, _right) { }
-
-void ast_greater_comp::xmlprint() const {
-	
-}
-
-void ast_greater_comp::prettyprint(std::ostream &stream) const {
-	stream << "Doing a greater comparison: " << std::endl;
-	stream << "\t Left expr: ";
-	get_left()->prettyprint(stream); 
-	stream << std::endl;
-	stream << "\t Right expr: ";
-	get_right()->prettyprint(stream);
-	stream << std::endl;
-}
-
-void ast_greater_comp::generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const {
-    if (debug_mode) {
-       context->get_stream() << "#Adding! " << std::endl;
-       context->get_stream() << "#at dest reg: " << dest_reg << std::endl; 
-    }
-
-    int temp_reg = registers->get_free_reg();
-    registers->write_reg(temp_reg, std::string("temp"));
-    get_left()->generate_assembly(context, registers, temp_reg);
-
-    int temp_reg_2 = registers->get_free_reg();
-    registers->write_reg(temp_reg_2, std::string("temp"));
-    get_right()->generate_assembly(context, registers, temp_reg_2);
-
-    context->get_stream() << "\tslt $" << dest_reg << ", $"<< temp_reg_2 << ", $" << temp_reg << std::endl;
-
-    registers->erase_reg(temp_reg);
-    registers->erase_reg(temp_reg_2);
-
-    if (debug_mode) {
-       context->get_stream() << "#Ending add! " << std::endl;
-    }    
-}
-
-int ast_greater_comp::constant_fold() const {
-    if (get_left()->constant_fold() > get_right()->constant_fold()){
-        return 1;
-    }
-    else {
-        return 0;
-    }
-}
-
-void ast_greater_comp::allocate_memory(int& allocated_mem) const {
-    allocated_mem += 4;
-}
-
-
-
-ast_greater_equal_comp::ast_greater_equal_comp(const ast_base_expression *_left, const ast_base_expression *_right) 
-    : ast_binary_operators(_left, _right) { }
-
-void ast_greater_equal_comp::xmlprint() const {
-	
-}
-
-void ast_greater_equal_comp::prettyprint(std::ostream &stream) const {
-	stream << "Doing a greater equal comparison: " << std::endl;
-	stream << "\t Left expr: ";
-	get_left()->prettyprint(stream); 
-	stream << std::endl;
-	stream << "\t Right expr: ";
-	get_right()->prettyprint(stream);
-	stream << std::endl;
-}
-
-void ast_greater_equal_comp::generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const {
-    if (debug_mode) {
-       context->get_stream() << "#Adding! " << std::endl;
-       context->get_stream() << "#at dest reg: " << dest_reg << std::endl; 
-    }
-
-    int temp_reg = registers->get_free_reg();
-    registers->write_reg(temp_reg, std::string("temp"));
-    get_left()->generate_assembly(context, registers, temp_reg);
-
-    int temp_reg_2 = registers->get_free_reg();
-    registers->write_reg(temp_reg_2, std::string("temp"));
-    get_right()->generate_assembly(context, registers, temp_reg_2);
-
-    context->get_stream() << "\tslt $" << dest_reg << ", $"<< temp_reg << ", $" << temp_reg_2 << std::endl;
-    context->get_stream() << "\txori $" << dest_reg << ", $"<< dest_reg << ", 1" << std::endl;
-
-
-    registers->erase_reg(temp_reg);
-    registers->erase_reg(temp_reg_2);
-
-    if (debug_mode) {
-       context->get_stream() << "#Ending add! " << std::endl;
-    }    
-}
-
-int ast_greater_equal_comp::constant_fold() const {
-    if (get_left()->constant_fold() >= get_right()->constant_fold()){
-        return 1;
-    }
-    else {
-        return 0;
-    }
-}
-
-void ast_greater_equal_comp::allocate_memory(int& allocated_mem) const {
-    allocated_mem += 4;
-}
-
-
-
-
-
-ast_equal_comp::ast_equal_comp(const ast_base_expression *_left, const ast_base_expression *_right) 
-: ast_binary_operators(_left, _right) { }
-//~ast_if_else_statement() {}
-
-void ast_equal_comp::xmlprint() const {
-	
-}
-
-void ast_equal_comp::prettyprint(std::ostream &stream) const {
-	stream << "Doing an equal comparison: " << std::endl;
-	stream << "\t Left expr: ";
-	get_left()->prettyprint(stream); 
-	stream << std::endl;
-	stream << "\t Right expr: ";
-	get_right()->prettyprint(stream);
-	stream << std::endl;
-}
-
-void ast_equal_comp::generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const {
-    if (debug_mode) {
-       context->get_stream() << "#Adding! " << std::endl;
-       context->get_stream() << "#at dest reg: " << dest_reg << std::endl; 
-    }
-
-    int temp_reg = registers->get_free_reg();
-    registers->write_reg(temp_reg, std::string("temp"));
-    get_left()->generate_assembly(context, registers, temp_reg);
-
-    int temp_reg_2 = registers->get_free_reg();
-    registers->write_reg(temp_reg_2, std::string("temp"));
-    get_right()->generate_assembly(context, registers, temp_reg_2);
-
-    context->get_stream() << "\txor $" << dest_reg << ", $"<< temp_reg_2 << ", $" << temp_reg << std::endl;
-    context->get_stream() << "\tsltiu $" << dest_reg << ", $"<< dest_reg << ", 1" << std::endl;
-
-    registers->erase_reg(temp_reg);
-    registers->erase_reg(temp_reg_2);
-
-    if (debug_mode) {
-       context->get_stream() << "#Ending add! " << std::endl;
-    }    
-}
-
-int ast_equal_comp::constant_fold() const {
-    if (get_left()->constant_fold() == get_right()->constant_fold()){
-        return 1;
-    }
-    else {
-        return 0;
-    }
-}
-
-void ast_equal_comp::allocate_memory(int& allocated_mem) const {
-    allocated_mem += 4;
-}
-
-
-
-
-
-ast_not_equal_comp::ast_not_equal_comp(const ast_base_expression *_left, const ast_base_expression *_right) 
-: ast_binary_operators(_left, _right) { }
-//~ast_if_else_statement() {}
-
-void ast_not_equal_comp::xmlprint() const {
-	
-}
-
-void ast_not_equal_comp::prettyprint(std::ostream &stream) const {
-	stream << "Doing a not equal comparison: " << std::endl;
-	stream << "\t Left expr: ";
-	get_left()->prettyprint(stream); 
-	stream << std::endl;
-	stream << "\t Right expr: ";
-	get_right()->prettyprint(stream);
-	stream << std::endl;
-}
-
-void ast_not_equal_comp::generate_assembly(ast_context* context, mips_registers* registers, int& dest_reg) const {
-    if (debug_mode) {
-       context->get_stream() << "#Adding! " << std::endl;
-       context->get_stream() << "#at dest reg: " << dest_reg << std::endl; 
-    }
-
-    int temp_reg = registers->get_free_reg();
-    registers->write_reg(temp_reg, std::string("temp"));
-    get_left()->generate_assembly(context, registers, temp_reg);
-
-    int temp_reg_2 = registers->get_free_reg();
-    registers->write_reg(temp_reg_2, std::string("temp"));
-    get_right()->generate_assembly(context, registers, temp_reg_2);
-
-    int temp_reg_3 = registers->get_free_reg();
-    registers->write_reg(temp_reg_2, std::string("temp"));
-
-    context->get_stream() << "\tslt $" << dest_reg << ", $"<< temp_reg << ", $" << temp_reg_2 << std::endl;
-    context->get_stream() << "\tslt $" << temp_reg_3 << ", $"<< temp_reg_2 << ", $" << temp_reg << std::endl;
-    context->get_stream() << "\txor $" << dest_reg << ", $" << dest_reg << ", $" << temp_reg_3 << std::endl;
-
-
-    registers->erase_reg(temp_reg);
-    registers->erase_reg(temp_reg_2);
-    registers->erase_reg(temp_reg_3);
-
-    if (debug_mode) {
-       context->get_stream() << "#Ending add! " << std::endl;
-    }    
-}
-
-int ast_not_equal_comp::constant_fold() const {
-    if (get_left()->constant_fold() != get_right()->constant_fold()){
-        return 1;
-    }
-    else {
-        return 0;
-    }
-}
-
-void ast_not_equal_comp::allocate_memory(int& allocated_mem) const {
-    allocated_mem += 4;
-}
+void BinaryExpression::python_print(std::ostream &stream) const {
+  
+  stream << "PYTHON NEEDS TO BE IMPLEMENTED" << std::endl;
+};
