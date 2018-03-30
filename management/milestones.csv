@@ -1,20 +1,30 @@
 MilestoneID,             Dependencies, EstimatedEffort(/10), Lead,  Completed, Description
 DefineInitialMilestones,-,0.5,thw116,56ccdbaa54a22084c398f7e6bba58f5b7599af9d,Come up with initial milestones for getting started
-Initial file commits,-,0,thw116,ebb57ebbc74adb6e4b22629685ae865f286fe9c4,Commit all the type files that we will be needing
-Flexer file definitions,-,2,thw116,bab2a2b9d771f197234e33ddd93cff35fffd43e9,Formal definition of viable characters        
-Build Parser,Flexer file definitions,3,thw116,2a444d2272f32c8ff00d2aec662fb8bef6b1b470,Sifting through gramatical hierachy 
-Initial AST structure,Flexer file definitions; Build parser,4,ab5616,2a444d2272f32c8ff00d2aec662fb8bef6b1b470,Writing the actual functions 
-Implement binary functions,Flexer file definitions; Build parser; Initial AST structure,2,thw116,-,"Add operators e.g. subtraction, addition"
-Implement unary functions,Flexer file definitions; Build parser; Initial AST structure,2,ab5616,-,Log Exp operators etc. 
-Implement int main(),Flexer file definitions; Build parser; Initial AST structure,4,ab5616,f3827f1e99936214bc7169ad3ec58413ed53508d,Figure out how to implement main function 
+Initialfilecommits,-,0,thw116,ebb57ebbc74adb6e4b22629685ae865f286fe9c4,Commit all the type files that we will be needing
+FlexerDef,-,2,thw116,bab2a2b9d771f197234e33ddd93cff35fffd43e9,Formal definition of viable characters        
+ParserDev,FlexerDef,3,thw116,2a444d2272f32c8ff00d2aec662fb8bef6b1b470,Sifting through gramatical hierachy 
+InitialASTstruct,FlexerDef; Build parser,4,ab5616,2a444d2272f32c8ff00d2aec662fb8bef6b1b470,Writing the actual functions 
+ImpBinaryFunc,FlexerDef; Build parser; Initial AST structure,2,thw116,-,"Add operators e.g. subtraction, addition"
+ImpUnaryFunc,FlexerDef; Build parser; Initial AST structure,2,ab5616,-,Log Exp operators etc. 
+Imp_int_main(),FlexerDef; Build parser; Initial AST structure,4,ab5616,f3827f1e99936214bc7169ad3ec58413ed53508d,Figure out how to implement main function 
 DefineMidMilestones,1 to 9,0.5,ab5616,Done,Once initial milestones achieved list next milestones to complete
 ,,,,,
-Redeveloping ideas,-,3,thw116,32d27edb4cb8a40229c63eb0e45a5ad38b2cd848,"Having reached a deadend, overhaul of the system is required e.g. Research"
-Rewriting parser,12,5,thw116,1518094d31785fee7dba7cab719f62c7f2f35242,Need to be more complex Base on ASCI Grammar but simplify for ease of use
-Changing flex file to match ,"12, 13",1.5,thw116,63c67546fd2136721cd5b0a43ba0b6a5593cbffa,Overhaul of the flex file to match updated parser
-AST files to match grammar,"12, 13",7,ab5616,Done,Understanding necessary components and how best to structure the tree
-Building the testbench files,-,2,thw116,027c1ad92b6df2f1111412f31320dddd3b91e8fa,Based on initial readme document 
-Creating script for testbench ,16,2.5,thw116,,Based on requirements
-Debugging and testing each ast type,"13, 14, 15",7,ab5616,,Implementing necessary 
+RedevIdeas,-,3,thw116,32d27edb4cb8a40229c63eb0e45a5ad38b2cd848,"Having reached a deadend, overhaul of the system is required e.g. Research"
+RewritParser,RedevIdeas,5,thw116,1518094d31785fee7dba7cab719f62c7f2f35242,Need to be more complex Base on ASCI Grammar but simplify for ease of use
+UpdateFlex,RedevIdeas; RewritParser,1.5,thw116,63c67546fd2136721cd5b0a43ba0b6a5593cbffa,Overhaul of the flex file to match updated parser
+AST files to match grammar,RedevIdeas; RewritParser,7,ab5616,Done,Understanding necessary components and how best to structure the tree
+CreateTB,-,2,thw116,027c1ad92b6df2f1111412f31320dddd3b91e8fa,Based on initial readme document 
+TBScript ,CreateTB,2.5,thw116,,Based on requirements
+DebugAST,"13, 14, 15",7,ab5616,,Implementing necessary 
 Makefile ,-,1,ab5616,d41fa128c733d4bd3dc95c5e852a66cc1a62e7e0,In order to easily build the compiler 
 DefineEndMilestones,12 to 19,0.5,thw116,,How to complete the project to a reasonable standard
+UpdateManage,,,,,
+,,,,,
+ExpandGram,,2,thw116,,
+UpdateAST,,4,ab5616,,
+UpdateFlex2,,1,thw116,,
+Translator,,,,,
+TestDebugTranslator,,,,,
+Codegen,,,,,
+TestDebugCodegen,,,,,
+TestwithCases,,,,,
