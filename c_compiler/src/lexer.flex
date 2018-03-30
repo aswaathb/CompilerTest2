@@ -5,6 +5,8 @@
 extern "C" int fileno(FILE *stream);
 
 #include "parser.tab.hpp"
+#include <string.h>
+
 void yy_colCount();
 %}
 
@@ -53,12 +55,10 @@ goto					    { yylval.string=new std::string("goto"); 		return GOTO;	}
 
 "*"                         { return TIMES; }
 "+"                         { return PLUS; }
-"\^"                        { return EXPONENT; }
+"\^"                        { return XOR; }
 "-"                         { return MINUS; }
 "/"                         { return DIVIDE; }
 
-[-]?[0-9]+([\.][0-9]*)? 	{ yylval.number=strtod(yytext, 0); return NUMBER; }
-[a-z]+          			{ yylval.string=new std::string(yytext); return VARIABLE; }	
 
 
 
