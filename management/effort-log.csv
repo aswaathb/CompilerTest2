@@ -1,1 +1,25 @@
 Date,Effort,Developers,Milestones
+this,0.5,thw116,DefineInitialMilestones
+this,0.5,thw116,Initialfilecommits
+this,1,thw116,FlexerDef
+this,1.5,thw116,ParserDev
+this,1.5,ab5616,InitialASTstruct
+this,3,ab5616,Imp_int_main()
+this,0.5,ab5616,DefineMidMilestones
+this,6,thw116; ab5616,RedevIdeas
+this,3,thw116,RewritParser
+this,2,thw116; ab5616,UpdateFlex
+this,6,ab5616,UpdateAST
+this,2,thw116,CreateTB
+this,3,thw116,TBScript 
+this,7,thw116; ab5616,DebugAST
+this,1.5,ab5616,Makefile 
+this,0.5,thw116,DefineEndMilestones
+this,0.5,thw116,UpdateManage
+this,2,thw116; ab5616,ExpandGram
+this,5,ab5616,UpdateAST2
+this,1.5,thw116; ab5616,UpdateFlex2
+this,3,thw116,Translator
+this,7,ab5616,Codegen
+this,8,ab5616; thw116,TestDebugCodegen
+,,,

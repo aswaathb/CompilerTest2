@@ -1,3 +1,4 @@
+
 #ifndef UNARY_EXPR_HPP
 #define UNARY_EXPR_HPP
 
@@ -14,8 +15,9 @@ public:
   }
   UnaryExpression(const Expression * _child, std::string* _op) : child(_child), op(*_op) {};
   UnaryExpression(const Expression * _child) : child(_child) { op = ""; };
-  UnaryExpression(std::string* _op) : op(*_op) { child = new Expression_Null(); };
-
+  UnaryExpression(std::string* _op) : op(*_op) {
+	  child = new Expression_Null();
+  };
   virtual std::vector<const baseNode *> getChildren() const override { return {child}; }
   virtual std::string getNodeType() const override;
 };
