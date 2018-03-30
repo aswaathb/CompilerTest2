@@ -11,6 +11,7 @@
 %}
 
 digit       [0-9]
+letter		[a-zA-Z]
 word        [a-zA-Z]+
 alphanum	[a-zA-Z0-9]+
 

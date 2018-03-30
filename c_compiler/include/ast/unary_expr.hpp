@@ -16,7 +16,7 @@ public:
   UnaryExpression(const Expression * _child) : child(_child) { op = ""; };
   UnaryExpression(std::string* _op) : op(*_op) { child = new Expression_Null(); };
 
-  virtual std::vector<const baseNode *> getChildren() const override { return {child};}
+  virtual std::vector<const baseNode *> getChildren() const override { return {child}; }
   virtual std::string getNodeType() const override;
 };
 
