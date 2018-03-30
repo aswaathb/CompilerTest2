@@ -17,9 +17,6 @@ alphanum	[a-zA-Z0-9]+
 
 %%
 
-
-
-
 void 						{ return (VOID);	}
 char 						{ return (CHAR);	}
 short 				      	{ return (SHORT); }
@@ -29,8 +26,6 @@ float 				      	{ return (FLOAT); }
 double 				     	{ return (DOUBLE); }
 signed				      	{ return (SIGNED); }
 unsigned					{ return (UNSIGNED); }
-
-
 
 do                          { return (DO); }
 while                       { return (WHILE); }
@@ -68,7 +63,29 @@ sizeof 						{ return (SIZEOF); }
 ":"							{ return (COLON); }
 "."							{ return (DOT); }
 
+"||"  						{ return LOR; }
+"&&"  						{ return LAND; }
+"<="  						{ return LESSEQUAL; }
+">="  						{ return GREATEQUAL; }
+"!="  						{ return NEQUAL; }
+">"   						{ return GREATTHAN; }
+"<"   						{ return LESSTHAN; }
 
+"->"  						{ return ARROW; }
+"++"  						{ return INCR; }
+"--"  						{ return DECR; }
+">>=" 						{ return RR_ASS; }
+"<<=" 						{ return LL_ASS; }
+"+="  						{ return ADD_ASS; }
+"-="  						{ return SUB_ASS; }
+"*="  						{ return MUL_ASS; }
+"/="  						{ return DIV_ASS; }
+"%="  						{ return MOD_ASS; }
+"&="  						{ return AND_ASS; }
+"^="  						{ return XOR_ASS; }
+"|="  						{ return OR_ASS; }
+
+{letter}{alphanum}*        	{ return (IDENTIFIER); }
 
 %%
 /*
