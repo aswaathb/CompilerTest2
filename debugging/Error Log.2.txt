@@ -1,0 +1,691 @@
+ make all
+flex -o bin/lexer.yy.cpp  src/lexer.flex
+src/lexer.flex:53: warning, rule cannot be matched
+mkdir -p bin
+g++ -MMD -Iinclude -o bin/lexer  bin/lexer.yy.cpp
+In file included from /usr/include/c++/5/regex:35:0,
+                 from src/lexer.flex:7:
+/usr/include/c++/5/bits/c++0x_warning.h:32:2: error: #error This file requires compiler and library support for the ISO C++ 2011 standard. This support must be enabled with the -std=c++11 or -std=gnu++11 compiler options.
+ #error This file requires compiler and library support \
+  ^
+In file included from include/ast/baseNode.hpp:8:0,
+                 from include/ast/base_expr.hpp:4,
+                 from include/ast.hpp:4,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+include/ast/context.hpp:30:16: warning: non-static data member initializers only available with -std=c++11 or -std=gnu++11
+   int offset = 0;
+                ^
+include/ast/context.hpp:31:19: warning: non-static data member initializers only available with -std=c++11 or -std=gnu++11
+   std::string f = "";
+                   ^
+include/ast/context.hpp:32:19: warning: non-static data member initializers only available with -std=c++11 or -std=gnu++11
+   std::string b = "";
+                   ^
+include/ast/context.hpp:33:19: warning: non-static data member initializers only available with -std=c++11 or -std=gnu++11
+   std::string c = "";
+                   ^
+In file included from include/ast/base_expr.hpp:4:0,
+                 from include/ast.hpp:4,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+include/ast/baseNode.hpp: In member function ‘virtual std::vector<const baseNode*> baseNode::getChildren() const’:
+include/ast/baseNode.hpp:39:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const { return {};}; //! If not overridden, return empty.
+                                                                      ^
+include/ast/baseNode.hpp: At global scope:
+include/ast/baseNode.hpp:106:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/baseNode.hpp:107:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/baseNode.hpp:115:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/baseNode.hpp:117:51: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void python_print(std::ostream &stream) const override;
+                                                   ^
+include/ast/baseNode.hpp:125:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/baseNode.hpp:127:51: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void python_print(std::ostream &stream) const override;
+                                                   ^
+include/ast/baseNode.hpp:135:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/baseNode.hpp:136:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override;
+                                                       ^
+include/ast/baseNode.hpp:137:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/baseNode.hpp:138:51: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void python_print(std::ostream &stream) const override;
+                                                   ^
+In file included from include/ast.hpp:4:0,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+include/ast/base_expr.hpp:21:51: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void python_print(std::ostream& stream) const override;
+                                                   ^
+include/ast/base_expr.hpp: In member function ‘virtual std::vector<std::__cxx11::basic_string<char> > Expression::getTypeVec() const’:
+include/ast/base_expr.hpp:18:88: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<std::string> getTypeVec() const { return std::vector<std::string>{"Int","0x0","0x0","Signed"}; };
+                                                                                        ^
+include/ast/base_expr.hpp:18:115: error: no matching function for call to ‘std::vector<std::__cxx11::basic_string<char> >::vector(<brace-enclosed initializer list>)’
+   virtual std::vector<std::string> getTypeVec() const { return std::vector<std::string>{"Int","0x0","0x0","Signed"}; };
+                                                                                                                   ^
+In file included from /usr/include/c++/5/vector:64:0,
+                 from include/ast/baseNode.hpp:6,
+                 from include/ast/base_expr.hpp:4,
+                 from include/ast.hpp:4,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+/usr/include/c++/5/bits/stl_vector.h:407:9: note: candidate: template<class _InputIterator> std::vector<_Tp, _Alloc>::vector(_InputIterator, _InputIterator, const allocator_type&)
+         vector(_InputIterator __first, _InputIterator __last,
+         ^
+/usr/include/c++/5/bits/stl_vector.h:407:9: note:   template argument deduction/substitution failed:
+In file included from include/ast.hpp:4:0,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+include/ast/base_expr.hpp:18:115: note:   cannot convert ‘"0x0"’ (type ‘const char [4]’) to type ‘const allocator_type& {aka const std::allocator<std::__cxx11::basic_string<char> >&}’
+   virtual std::vector<std::string> getTypeVec() const { return std::vector<std::string>{"Int","0x0","0x0","Signed"}; };
+                                                                                                                   ^
+In file included from /usr/include/c++/5/vector:64:0,
+                 from include/ast/baseNode.hpp:6,
+                 from include/ast/base_expr.hpp:4,
+                 from include/ast.hpp:4,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+/usr/include/c++/5/bits/stl_vector.h:318:7: note: candidate: std::vector<_Tp, _Alloc>::vector(const std::vector<_Tp, _Alloc>&) [with _Tp = std::__cxx11::basic_string<char>; _Alloc = std::allocator<std::__cxx11::basic_string<char> >]
+       vector(const vector& __x)
+       ^
+/usr/include/c++/5/bits/stl_vector.h:318:7: note:   candidate expects 1 argument, 4 provided
+/usr/include/c++/5/bits/stl_vector.h:303:7: note: candidate: std::vector<_Tp, _Alloc>::vector(std::vector<_Tp, _Alloc>::size_type, const value_type&, const allocator_type&) [with _Tp = std::__cxx11::basic_string<char>; _Alloc = std::allocator<std::__cxx11::basic_string<char> >; std::vector<_Tp, _Alloc>::size_type = long unsigned int; std::vector<_Tp, _Alloc>::value_type = std::__cxx11::basic_string<char>; std::vector<_Tp, _Alloc>::allocator_type = std::allocator<std::__cxx11::basic_string<char> >]
+       vector(size_type __n, const value_type& __value = value_type(),
+       ^
+/usr/include/c++/5/bits/stl_vector.h:303:7: note:   candidate expects 3 arguments, 4 provided
+/usr/include/c++/5/bits/stl_vector.h:264:7: note: candidate: std::vector<_Tp, _Alloc>::vector(const allocator_type&) [with _Tp = std::__cxx11::basic_string<char>; _Alloc = std::allocator<std::__cxx11::basic_string<char> >; std::vector<_Tp, _Alloc>::allocator_type = std::allocator<std::__cxx11::basic_string<char> >]
+       vector(const allocator_type& __a) _GLIBCXX_NOEXCEPT
+       ^
+/usr/include/c++/5/bits/stl_vector.h:264:7: note:   candidate expects 1 argument, 4 provided
+/usr/include/c++/5/bits/stl_vector.h:253:7: note: candidate: std::vector<_Tp, _Alloc>::vector() [with _Tp = std::__cxx11::basic_string<char>; _Alloc = std::allocator<std::__cxx11::basic_string<char> >]
+       vector()
+       ^
+/usr/include/c++/5/bits/stl_vector.h:253:7: note:   candidate expects 0 arguments, 4 provided
+In file included from include/ast.hpp:4:0,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+include/ast/base_expr.hpp: At global scope:
+include/ast/base_expr.hpp:27:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/base_expr.hpp:29:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override { return {}; }
+                                                       ^
+include/ast/base_expr.hpp: In member function ‘virtual std::vector<const baseNode*> Expression_Null::getChildren() const’:
+include/ast/base_expr.hpp:29:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override { return {}; }
+                                                                               ^
+include/ast/base_expr.hpp: At global scope:
+include/ast/base_expr.hpp:44:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/base_expr.hpp:48:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override;
+                                                       ^
+include/ast/base_expr.hpp:49:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+In file included from include/ast.hpp:6:0,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+include/ast/binary_operators.hpp:16:49: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<std::string> getTypeVec() const override;
+                                                 ^
+include/ast/binary_operators.hpp:18:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/binary_operators.hpp:20:36: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getDetails() const override;
+                                    ^
+include/ast/binary_operators.hpp:30:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/binary_operators.hpp:32:51: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void python_print(std::ostream& stream) const override;
+                                                   ^
+include/ast/binary_operators.hpp:38:27: warning: inheriting constructors only available with -std=c++11 or -std=gnu++11
+   using BinaryExpression::BinaryExpression;
+                           ^
+include/ast/binary_operators.hpp:40:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/binary_operators.hpp:42:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+In file included from include/ast.hpp:7:0,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+include/ast/constant.hpp:13:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/constant.hpp:16:31: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getId() const override {return value_in;};
+                               ^
+include/ast/constant.hpp:17:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override {return {};}
+                                                       ^
+include/ast/constant.hpp:18:51: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void python_print(std::ostream &stream) const override;
+                                                   ^
+include/ast/constant.hpp: In member function ‘virtual std::vector<const baseNode*> Constant::getChildren() const’:
+include/ast/constant.hpp:17:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override {return {};}
+                                                                              ^
+include/ast/constant.hpp: At global scope:
+include/ast/constant.hpp:25:29: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   std::string getNodeType() const override;
+                             ^
+include/ast/constant.hpp:26:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/constant.hpp:36:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/constant.hpp:37:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/constant.hpp:46:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/constant.hpp:47:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/constant.hpp:56:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/constant.hpp:63:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/constant.hpp:64:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+In file included from include/ast/declaration.hpp:7:0,
+                 from include/ast.hpp:9,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+include/ast/types.hpp:40:29: warning: non-static data member initializers only available with -std=c++11 or -std=gnu++11
+   mutable unsigned type   = 0x1;  // Defaulted to int
+                             ^
+include/ast/types.hpp:41:29: warning: non-static data member initializers only available with -std=c++11 or -std=gnu++11
+   mutable unsigned qual   = 0;    // Defaulted to none
+                             ^
+include/ast/types.hpp:42:29: warning: non-static data member initializers only available with -std=c++11 or -std=gnu++11
+   mutable unsigned spec   = 0;    // Defaulted to none
+                             ^
+include/ast/types.hpp:43:29: warning: non-static data member initializers only available with -std=c++11 or -std=gnu++11
+   mutable bool sign       = true; // Defaulted to signed value
+                             ^
+include/ast/types.hpp:44:29: warning: non-static data member initializers only available with -std=c++11 or -std=gnu++11
+   mutable bool ptr        = false;// Defaulted to non pointer
+                             ^
+In file included from include/ast.hpp:9:0,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+include/ast/declaration.hpp:15:19: warning: non-static data member initializers only available with -std=c++11 or -std=gnu++11
+ mutable int ptr = 0;
+                   ^
+include/ast/declaration.hpp:19:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/declaration.hpp:20:31: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getId() const override { return child->getId(); };
+                               ^
+include/ast/declaration.hpp:22:24: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual int getPtr() const override { return ptr; }
+                        ^
+include/ast/declaration.hpp:23:31: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void setChildDefs() const override;
+                               ^
+include/ast/declaration.hpp:24:51: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void python_print(std::ostream &stream) const override;
+                                                   ^
+include/ast/declaration.hpp:25:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override { return {child}; }
+                                                       ^
+include/ast/declaration.hpp:27:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/declaration.hpp: In member function ‘virtual std::vector<const baseNode*> Declarator::getChildren() const’:
+include/ast/declaration.hpp:25:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override { return {child}; }
+                                                                               ^
+include/ast/declaration.hpp:25:85: error: could not convert ‘{((const Declarator*)this)->Declarator::child}’ from ‘<brace-enclosed initializer list>’ to ‘std::vector<const baseNode*>’
+   virtual std::vector<const baseNode *> getChildren() const override { return {child}; }
+                                                                                     ^
+include/ast/declaration.hpp: In member function ‘virtual const List* Declarator::getParams() const’:
+include/ast/declaration.hpp:26:60: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   virtual const List * getParams() const { return new List({}); }
+                                                            ^
+include/ast/declaration.hpp:26:62: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   virtual const List * getParams() const { return new List({}); }
+                                                              ^
+include/ast/declaration.hpp: At global scope:
+include/ast/declaration.hpp:34:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/declaration.hpp:36:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/declaration.hpp:43:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/declaration.hpp:44:31: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void setChildDefs() const override;
+                               ^
+include/ast/declaration.hpp:45:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/declaration.hpp:52:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/declaration.hpp:53:36: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual const List * getParams() const override;
+                                    ^
+include/ast/declaration.hpp:54:51: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void python_print(std::ostream &stream) const override;
+                                                   ^
+include/ast/declaration.hpp:63:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/declaration.hpp:69:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override;
+                                                       ^
+include/ast/declaration.hpp:70:51: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<std::string> getChildDefs() const override;
+                                                   ^
+include/ast/declaration.hpp:71:31: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void setChildDefs() const override;
+                               ^
+include/ast/declaration.hpp:73:52: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void python_print(std::ostream &streams) const override;
+                                                    ^
+include/ast/declaration.hpp:74:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+In file included from include/ast/functions.hpp:5:0,
+                 from include/ast.hpp:10,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+include/ast/statement.hpp:16:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override { return "ExprStatement"; };
+                                     ^
+include/ast/statement.hpp:17:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override { return {expr}; }
+                                                       ^
+include/ast/statement.hpp:18:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/statement.hpp:19:51: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void python_print(std::ostream& stream) const override;
+                                                   ^
+include/ast/statement.hpp: In member function ‘virtual std::vector<const baseNode*> ExprStatement::getChildren() const’:
+include/ast/statement.hpp:17:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override { return {expr}; }
+                                                                               ^
+include/ast/statement.hpp:17:84: error: could not convert ‘{((const ExprStatement*)this)->ExprStatement::expr}’ from ‘<brace-enclosed initializer list>’ to ‘std::vector<const baseNode*>’
+   virtual std::vector<const baseNode *> getChildren() const override { return {expr}; }
+                                                                                    ^
+include/ast/statement.hpp: At global scope:
+include/ast/statement.hpp:40:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override { return {stat1}; }
+                                                       ^
+include/ast/statement.hpp: In member function ‘virtual std::vector<const baseNode*> ConditionalStatement::getChildren() const’:
+include/ast/statement.hpp:40:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override { return {stat1}; }
+                                                                               ^
+include/ast/statement.hpp:40:85: error: could not convert ‘{((const ConditionalStatement*)this)->ConditionalStatement::stat1}’ from ‘<brace-enclosed initializer list>’ to ‘std::vector<const baseNode*>’
+   virtual std::vector<const baseNode *> getChildren() const override { return {stat1}; }
+                                                                                     ^
+include/ast/statement.hpp: At global scope:
+include/ast/statement.hpp:61:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:62:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override;
+                                                       ^
+include/ast/statement.hpp:63:51: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void python_print(std::ostream &stream) const override;
+                                                   ^
+include/ast/statement.hpp:64:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/statement.hpp: In constructor ‘CompoundStatement::CompoundStatement()’:
+include/ast/statement.hpp:58:39: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   CompoundStatement() : decl(new List({}) ), stat(new List({}) ) {};
+                                       ^
+include/ast/statement.hpp:58:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   CompoundStatement() : decl(new List({}) ), stat(new List({}) ) {};
+                                         ^
+include/ast/statement.hpp:58:60: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   CompoundStatement() : decl(new List({}) ), stat(new List({}) ) {};
+                                                            ^
+include/ast/statement.hpp:58:62: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   CompoundStatement() : decl(new List({}) ), stat(new List({}) ) {};
+                                                              ^
+include/ast/statement.hpp: At global scope:
+include/ast/statement.hpp:86:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:104:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:105:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/statement.hpp:106:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override { return {stat1,stat2}; }
+                                                       ^
+include/ast/statement.hpp: In member function ‘virtual std::vector<const baseNode*> IfElseStatement::getChildren() const’:
+include/ast/statement.hpp:106:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override { return {stat1,stat2}; }
+                                                                               ^
+include/ast/statement.hpp: At global scope:
+include/ast/statement.hpp:117:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:118:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/statement.hpp:130:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:131:51: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void python_print(std::ostream& stream) const override;
+                                                   ^
+include/ast/statement.hpp:143:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:144:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/statement.hpp:153:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:154:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/statement.hpp:164:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:165:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/statement.hpp:178:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:179:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override;
+                                                       ^
+include/ast/statement.hpp:180:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/statement.hpp:191:29: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   std::string getNodeType() const override;
+                             ^
+include/ast/statement.hpp:192:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/statement.hpp:204:29: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   std::string getNodeType() const override;
+                             ^
+include/ast/statement.hpp:205:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/statement.hpp:216:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override { return "Default";};
+                                     ^
+include/ast/statement.hpp:217:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/statement.hpp:231:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/statement.hpp:244:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:245:58: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const Expression*> getConditions() const override { return {cond}; };
+                                                          ^
+include/ast/statement.hpp:249:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override;
+                                                       ^
+include/ast/statement.hpp: In member function ‘virtual std::vector<const Expression*> WhileStatement::getConditions() const’:
+include/ast/statement.hpp:245:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const Expression*> getConditions() const override { return {cond}; };
+                                                                                  ^
+include/ast/statement.hpp:245:87: error: could not convert ‘{((const WhileStatement*)this)->WhileStatement::cond}’ from ‘<brace-enclosed initializer list>’ to ‘std::vector<const Expression*>’
+   virtual std::vector<const Expression*> getConditions() const override { return {cond}; };
+                                                                                       ^
+include/ast/statement.hpp: At global scope:
+include/ast/statement.hpp:260:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:272:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:275:58: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const Expression*> getConditions() const override {
+                                                          ^
+include/ast/statement.hpp:278:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override;
+                                                       ^
+include/ast/statement.hpp: In member function ‘virtual std::vector<const Expression*> ForStatementBase::getConditions() const’:
+include/ast/statement.hpp:276:12: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+     return {(const Expression*)cond1};
+            ^
+include/ast/statement.hpp:276:37: error: could not convert ‘{((const Expression*)((const ForStatementBase*)this)->ForStatementBase::cond1)}’ from ‘<brace-enclosed initializer list>’ to ‘std::vector<const Expression*>’
+     return {(const Expression*)cond1};
+                                     ^
+include/ast/statement.hpp: At global scope:
+include/ast/statement.hpp:286:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:290:58: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const Expression*> getConditions() const override {
+                                                          ^
+include/ast/statement.hpp:293:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override;
+                                                       ^
+include/ast/statement.hpp: In member function ‘virtual std::vector<const Expression*> ExprExprFor::getConditions() const’:
+include/ast/statement.hpp:291:12: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+     return {(const Expression*)cond2, (const Expression*)cond1 };
+            ^
+include/ast/statement.hpp: At global scope:
+include/ast/statement.hpp:300:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:304:58: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const Expression*> getConditions() const override {
+                                                          ^
+include/ast/statement.hpp:307:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override;
+                                                       ^
+include/ast/statement.hpp: In member function ‘virtual std::vector<const Expression*> ExprExprExprFor::getConditions() const’:
+include/ast/statement.hpp:305:12: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+     return {(const Expression*)cond2, cond3, (const Expression*)cond1 };
+            ^
+include/ast/statement.hpp:305:71: error: could not convert ‘{((const Expression*)((const ExprExprExprFor*)this)->ExprExprExprFor::<anonymous>.ExprExprFor::cond2), ((const ExprExprExprFor*)this)->ExprExprExprFor::cond3, ((const Expression*)((const ExprExprExprFor*)this)->ExprExprExprFor::<anonymous>.ExprExprFor::<anonymous>.ForStatementBase::cond1)}’ from ‘<brace-enclosed initializer list>’ to ‘std::vector<const Expression*>’
+     return {(const Expression*)cond2, cond3, (const Expression*)cond1 };
+                                                                       ^
+include/ast/statement.hpp: At global scope:
+include/ast/statement.hpp:314:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:318:58: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const Expression*> getConditions() const override {
+                                                          ^
+include/ast/statement.hpp:321:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override;
+                                                       ^
+include/ast/statement.hpp: In member function ‘virtual std::vector<const Expression*> DecExprFor::getConditions() const’:
+include/ast/statement.hpp:319:12: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+     return {(const Expression*)cond1};
+            ^
+include/ast/statement.hpp:319:37: error: could not convert ‘{((const Expression*)((const DecExprFor*)this)->DecExprFor::<anonymous>.ForStatementBase::cond1)}’ from ‘<brace-enclosed initializer list>’ to ‘std::vector<const Expression*>’
+     return {(const Expression*)cond1};
+                                     ^
+include/ast/statement.hpp: At global scope:
+include/ast/statement.hpp:329:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/statement.hpp:333:58: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const Expression*> getConditions() const override {
+                                                          ^
+include/ast/statement.hpp:336:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override;
+                                                       ^
+include/ast/statement.hpp: In member function ‘virtual std::vector<const Expression*> DecExprExprFor::getConditions() const’:
+include/ast/statement.hpp:334:12: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+     return {(const Expression*)cond1, cond2};
+            ^
+In file included from include/ast.hpp:10:0,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+include/ast/functions.hpp: At global scope:
+include/ast/functions.hpp:26:36: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getDetails() const override;
+                                    ^
+include/ast/functions.hpp:31:31: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void setChildDefs() const override;
+                               ^
+In file included from include/ast.hpp:13:0,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+include/ast/unary_expr.hpp:19:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override { return {child};}
+                                                       ^
+include/ast/unary_expr.hpp:20:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/unary_expr.hpp: In member function ‘virtual std::vector<const baseNode*> UnaryExpression::getChildren() const’:
+include/ast/unary_expr.hpp:19:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override { return {child};}
+                                                                               ^
+include/ast/unary_expr.hpp:19:85: error: could not convert ‘{((const UnaryExpression*)this)->UnaryExpression::child}’ from ‘<brace-enclosed initializer list>’ to ‘std::vector<const baseNode*>’
+   virtual std::vector<const baseNode *> getChildren() const override { return {child};}
+                                                                                     ^
+include/ast/unary_expr.hpp: At global scope:
+include/ast/unary_expr.hpp:29:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/unary_expr.hpp:30:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/unary_expr.hpp:44:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/unary_expr.hpp:45:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/unary_expr.hpp:52:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/unary_expr.hpp:53:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/unary_expr.hpp:64:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/unary_expr.hpp:66:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/unary_expr.hpp:67:31: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void setParamUses() const override;
+                               ^
+include/ast/unary_expr.hpp: In constructor ‘FunctionCall::FunctionCall(const Expression*)’:
+include/ast/unary_expr.hpp:61:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   FunctionCall(const Expression * _expr) : PostfixExpr(_expr), args(new ExprList({})) {};
+                                                                                  ^
+include/ast/unary_expr.hpp:61:84: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   FunctionCall(const Expression * _expr) : PostfixExpr(_expr), args(new ExprList({})) {};
+                                                                                    ^
+include/ast/unary_expr.hpp: At global scope:
+include/ast/unary_expr.hpp:77:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/unary_expr.hpp:78:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override { return "SquareOperator";} ;
+                                     ^
+include/ast/unary_expr.hpp:79:55: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override { return {child,arg};}
+                                                       ^
+include/ast/unary_expr.hpp:80:31: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getId() const override { return child->getId(); };
+                               ^
+include/ast/unary_expr.hpp: In member function ‘virtual std::vector<const baseNode*> SquareOperator::getChildren() const’:
+include/ast/unary_expr.hpp:79:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11
+   virtual std::vector<const baseNode *> getChildren() const override { return {child,arg};}
+                                                                               ^
+In file included from include/ast.hpp:14:0,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+include/ast/variables.hpp: At global scope:
+include/ast/variables.hpp:11:21: warning: non-static data member initializers only available with -std=c++11 or -std=gnu++11
+   mutable int ptr = 0;
+                     ^
+include/ast/variables.hpp:18:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+include/ast/variables.hpp:19:31: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getId() const override;
+                               ^
+include/ast/variables.hpp:22:51: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual void python_print(std::ostream &stream) const override;
+                                                   ^
+include/ast/variables.hpp:23:62: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+                                                              ^
+include/ast/variables.hpp:30:37: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11
+   virtual std::string getNodeType() const override;
+                                     ^
+In file included from /usr/include/c++/5/vector:62:0,
+                 from include/ast/baseNode.hpp:6,
+                 from include/ast/base_expr.hpp:4,
+                 from include/ast.hpp:4,
+                 from src/parser.y:2,
+                 from src/lexer.flex:4:
+/usr/include/c++/5/bits/stl_construct.h: In instantiation of ‘void std::_Construct(_T1*, const _T2&) [with _T1 = const baseNode*; _T2 = Statement]’:
+/usr/include/c++/5/bits/stl_uninitialized.h:75:18:   required from ‘static _ForwardIterator std::__uninitialized_copy<_TrivialValueTypes>::__uninit_copy(_InputIterator, _InputIterator, _ForwardIterator) [with _InputIterator = const Statement*; _ForwardIterator = const baseNode**; bool _TrivialValueTypes = false]’
+/usr/include/c++/5/bits/stl_uninitialized.h:126:15:   required from ‘_ForwardIterator std::uninitialized_copy(_InputIterator, _InputIterator, _ForwardIterator) [with _InputIterator = const Statement*; _ForwardIterator = const baseNode**]’
+/usr/include/c++/5/bits/stl_uninitialized.h:281:37:   required from ‘_ForwardIterator std::__uninitialized_copy_a(_InputIterator, _InputIterator, _ForwardIterator, std::allocator<_Tp>&) [with _InputIterator = const Statement*; _ForwardIterator = const baseNode**; _Tp = const baseNode*]’
+/usr/include/c++/5/bits/stl_vector.h:1290:33:   required from ‘void std::vector<_Tp, _Alloc>::_M_range_initialize(_ForwardIterator, _ForwardIterator, std::forward_iterator_tag) [with _ForwardIterator = const Statement*; _Tp = const baseNode*; _Alloc = std::allocator<const baseNode*>]’
+/usr/include/c++/5/bits/stl_vector.h:1263:23:   required from ‘void std::vector<_Tp, _Alloc>::_M_initialize_dispatch(_InputIterator, _InputIterator, std::__false_type) [with _InputIterator = const Statement*; _Tp = const baseNode*; _Alloc = std::allocator<const baseNode*>]’
+/usr/include/c++/5/bits/stl_vector.h:413:26:   required from ‘std::vector<_Tp, _Alloc>::vector(_InputIterator, _InputIterator, const allocator_type&) [with _InputIterator = const Statement*; _Tp = const baseNode*; _Alloc = std::allocator<const baseNode*>; std::vector<_Tp, _Alloc>::allocator_type = std::allocator<const baseNode*>]’
+include/ast/statement.hpp:106:91:   required from here
+/usr/include/c++/5/bits/stl_construct.h:83:7: error: cannot convert ‘const Statement’ to ‘const baseNode*’ in initialization
+       ::new(static_cast<void*>(__p)) _T1(__value);
+       ^
+/usr/include/c++/5/bits/stl_construct.h: In instantiation of ‘void std::_Construct(_T1*, const _T2&) [with _T1 = const Expression*; _T2 = Expression]’:
+/usr/include/c++/5/bits/stl_uninitialized.h:75:18:   required from ‘static _ForwardIterator std::__uninitialized_copy<_TrivialValueTypes>::__uninit_copy(_InputIterator, _InputIterator, _ForwardIterator) [with _InputIterator = const Expression*; _ForwardIterator = const Expression**; bool _TrivialValueTypes = false]’
+/usr/include/c++/5/bits/stl_uninitialized.h:126:15:   required from ‘_ForwardIterator std::uninitialized_copy(_InputIterator, _InputIterator, _ForwardIterator) [with _InputIterator = const Expression*; _ForwardIterator = const Expression**]’
+/usr/include/c++/5/bits/stl_uninitialized.h:281:37:   required from ‘_ForwardIterator std::__uninitialized_copy_a(_InputIterator, _InputIterator, _ForwardIterator, std::allocator<_Tp>&) [with _InputIterator = const Expression*; _ForwardIterator = const Expression**; _Tp = const Expression*]’
+/usr/include/c++/5/bits/stl_vector.h:1290:33:   required from ‘void std::vector<_Tp, _Alloc>::_M_range_initialize(_ForwardIterator, _ForwardIterator, std::forward_iterator_tag) [with _ForwardIterator = const Expression*; _Tp = const Expression*; _Alloc = std::allocator<const Expression*>]’
+/usr/include/c++/5/bits/stl_vector.h:1263:23:   required from ‘void std::vector<_Tp, _Alloc>::_M_initialize_dispatch(_InputIterator, _InputIterator, std::__false_type) [with _InputIterator = const Expression*; _Tp = const Expression*; _Alloc = std::allocator<const Expression*>]’
+/usr/include/c++/5/bits/stl_vector.h:413:26:   required from ‘std::vector<_Tp, _Alloc>::vector(_InputIterator, _InputIterator, const allocator_type&) [with _InputIterator = const Expression*; _Tp = const Expression*; _Alloc = std::allocator<const Expression*>; std::vector<_Tp, _Alloc>::allocator_type = std::allocator<const Expression*>]’
+include/ast/statement.hpp:291:64:   required from here
+/usr/include/c++/5/bits/stl_construct.h:83:7: error: cannot convert ‘const Expression’ to ‘const Expression*’ in initialization
+/usr/include/c++/5/bits/stl_construct.h: In instantiation of ‘void std::_Construct(_T1*, const _T2&) [with _T1 = const baseNode*; _T2 = Expression]’:
+/usr/include/c++/5/bits/stl_uninitialized.h:75:18:   required from ‘static _ForwardIterator std::__uninitialized_copy<_TrivialValueTypes>::__uninit_copy(_InputIterator, _InputIterator, _ForwardIterator) [with _InputIterator = const Expression*; _ForwardIterator = const baseNode**; bool _TrivialValueTypes = false]’
+/usr/include/c++/5/bits/stl_uninitialized.h:126:15:   required from ‘_ForwardIterator std::uninitialized_copy(_InputIterator, _InputIterator, _ForwardIterator) [with _InputIterator = const Expression*; _ForwardIterator = const baseNode**]’
+/usr/include/c++/5/bits/stl_uninitialized.h:281:37:   required from ‘_ForwardIterator std::__uninitialized_copy_a(_InputIterator, _InputIterator, _ForwardIterator, std::allocator<_Tp>&) [with _InputIterator = const Expression*; _ForwardIterator = const baseNode**; _Tp = const baseNode*]’
+/usr/include/c++/5/bits/stl_vector.h:1290:33:   required from ‘void std::vector<_Tp, _Alloc>::_M_range_initialize(_ForwardIterator, _ForwardIterator, std::forward_iterator_tag) [with _ForwardIterator = const Expression*; _Tp = const baseNode*; _Alloc = std::allocator<const baseNode*>]’
+/usr/include/c++/5/bits/stl_vector.h:1263:23:   required from ‘void std::vector<_Tp, _Alloc>::_M_initialize_dispatch(_InputIterator, _InputIterator, std::__false_type) [with _InputIterator = const Expression*; _Tp = const baseNode*; _Alloc = std::allocator<const baseNode*>]’
+/usr/include/c++/5/bits/stl_vector.h:413:26:   required from ‘std::vector<_Tp, _Alloc>::vector(_InputIterator, _InputIterator, const allocator_type&) [with _InputIterator = const Expression*; _Tp = const baseNode*; _Alloc = std::allocator<const baseNode*>; std::vector<_Tp, _Alloc>::allocator_type = std::allocator<const baseNode*>]’
+include/ast/unary_expr.hpp:79:89:   required from here
+/usr/include/c++/5/bits/stl_construct.h:83:7: error: cannot convert ‘const Expression’ to ‘const baseNode*’ in initialization
+makefile:24: recipe for target 'bin/lexer' failed
+make: *** [bin/lexer] Error 1
