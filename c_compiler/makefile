@@ -1,4 +1,4 @@
-CXXFLAGS += -std=c++11 -W -Wall -g
+CXXFLAGS += -std=c++11 -W -Wall -g -Wno-unused-parameter -Wno-unused-variable -Wunused-function
 # Set constant directorys
 LSDIR=src	###################
 PSDIR=src	####################
@@ -16,12 +16,12 @@ BIS = $(PSDIR)/parser.tab.c
 ###
 # List of source files for lexer
 #LSRCS= $(LSDIR)/lexer_main.cpp $(FLX)   ########################
-bin/lexer.yy.cpp : src/lexer.flex				###############
-		flex -o bin/lexer.yy.cpp  src/lexer.flex   #######################
+src/lexer.yy.cpp : src/lexer.flex				#########1######
+		flex -o src/lexer.yy.cpp  src/lexer.flex   #######2################
 
-bin/lexer: src/parser.tab.hpp $(LSRCS:%.cpp=%.o) 
+bin/lexer: src/parser.tab.hpp src/lexer.yy.cpp ############3###################
 	mkdir -p bin
-	g++ $(CPPFLAGS) -o bin/lexer -o  bin/lexer.yy.cpp ###################
+	g++ $(CPPFLAGS) -o bin/lexer  src/lexer.yy.cpp #####4##############
 
 src/parser.tab.hpp: src/parser.y
 	bison -d -o src/parser.tab.cpp $^
