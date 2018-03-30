@@ -4,7 +4,6 @@
 	#include "parser.tab.hpp"
 	#include <string>
 	#include <cstdlib>
-	#include <regex>
 
 	
 	// extern "C" int fileno(FILE *stream);
