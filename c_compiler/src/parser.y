@@ -1,6 +1,19 @@
 %code requires{
 	#include "ast.hpp"
+	#include "ast/base_expr.hpp"
+	#include "ast/baseNode.hpp"
+	#include "ast/binary_operators.hpp"
+	#include "ast/constant.hpp"
+	#include "ast/context.hpp"
+	#include "ast/declaration.hpp"
+	#include "ast/functions.hpp"
+	#include "ast/statement.hpp"
+	#include "ast/types.hpp"
+	#include "ast/unary_expr.hpp"
+	#include "ast/variables.hpp"
+
 	#include <string>
+
 	
 
 	extern const baseNode *g_root; // A way of getting the AST out
@@ -8,7 +21,6 @@
 	//! This is to fix problems when generating C++
 	// We are declaring the functions provided by Flex, so
 	// that Bison generated code can call them.
-	int yylex(void);
 	void yyerror(const char *);
 }
 
@@ -19,7 +31,6 @@
 	const Declaration 	*decl;
 	const Expression 	*expr;
 	const ExprStatement *exprstat;
-	const Function 		*func;
 	const List			*list;
 	const Statement 	*stat;
 	const Type 			*type;
