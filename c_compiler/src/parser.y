@@ -23,43 +23,46 @@
 	const Statement 	*stat; 
 	const Type 			*type;
 
-	std::string *literal;
+	std::string *str;
+	std::string literal;
 }
 
 
-%token IDENTIFIER
+%token IDENTIFIER F_CONSTANT I_CONSTANT C_CONSTANT
 
-%token PLUS MINUS TIMES DIVIDE MODULUS
+%token PLUS MINUS TIMES DIVIDE MODULUS 
 %token LOR LAND OR NEQUAL LESSEQUAL LESSTHAN GREATEQUAL GREATTHAN AND XOR L_SHIFT R_SHIFT
 
+%token MUL_ASS DIV_ASS MOD_ASS ADD_ASS SUB_ASS LL_ASS RR_ASS AND_ASS XOR_ASS OR_ASS ARROW DECR INCR
 
-%token VOID CHAR SHORT INT LONG FLOAT DOUBLE SIGNED UNSIGNED
+%token VOID CHAR SHORT INT LONG FLOAT DOUBLE SIGNED UNSIGNED CONST
 
-%token DO WHILE IF ELSE FOR
+%token DO WHILE IF ELSE FOR SWITCH
 %token RETURN CONTINUE BREAK GOTO
 
 %token EQUAL SEMICOLON COMMA L_BRAC R_BRAC L_CURLY R_CURLY L_SQUARE R_SQUARE
 
-%token QUES_MARK COLON  DOT
+%token QUES_MARK COLON DOT STRING SIZEOF 
 
 
 
-%type<node> ROOT EXTERNAL_DECLARATION TRANSLATION_UNIT DECLARATOR DIRECT_DECLARATOR INIT_DECLARATOR paramete IDENTIFIER_LIST PARAMETER_LIST STATEMENT_LIST  DECLARATION_SEQ INIT_DECLARATOR_LIST EXPRESSION_LIST
+%type <node> ROOT EXTERNAL_DECLARATION TRANSLATION_UNIT DECLARATOR DIRECT_DECLARATOR INIT_DECLARATOR IDENTIFIER_LIST PARAMETER_LIST STATEMENT_LIST  DECLARATION_SEQ INIT_DECLARATOR_LIST //add later EXPRESSION_LIST
 
 %type <decl> DECLARATION
 
 %type <func> FUNCTION_DEFINITION
 
-%type <literal> EXPRESSION ASSIGNMENT_EXPRESSION CONDITIONAL_EXPRESSION INITIALIZER LOGICAL_OR_EXPRESSION LOGICAL_AND_EXPRESSION INCLUSIVE_OR_EXPRESSION EXCLUSIVE_OR_EXPRESSION AND_EXPRESSION EQUALITY_EXPRESSION RELATIONAL_EXPRESSION SHIFT_EXPRESSION ADDITIVE_EXPRESSION MULTIPLCATIVE_EXPRESSION CAST_EXPRESSION PREFIX_EXPRESSION POSTFIX_EXPRESSION PRIMARY_EXPRESSION
+%type <expr> EXPRESSION ASSIGNMENT_EXPRESSION CONDITIONAL_EXPRESSION INITIALIZER LOGICAL_OR_EXPRESSION LOGICAL_AND_EXPRESSION INCLUSIVE_OR_EXPRESSION EXCLUSIVE_OR_EXPRESSION AND_EXPRESSION EQUALITY_EXPRESSION RELATIONAL_EXPRESSION SHIFT_EXPRESSION ADDITIVE_EXPRESSION MULTIPLCATIVE_EXPRESSION CAST_EXPRESSION PREFIX_EXPRESSION POSTFIX_EXPRESSION PRIMARY_EXPRESSION
 
 %type <exprstat> EXPRESSION_STATEMENT
 
 %type <stat> STATEMENT COMPOUND_STATEMENT SELECTION_STATEMENT ITERATION_STATEMENT JUMP_STATEMENT
 
-%type <type> DECLARATION_SPECIFIER TYPE_SPECIFIER STORAGE_CLASS_SPECIFIER TYPE_QUALIFIER
+%type <type> DECLARATION_SPECIFIER TYPE_SPECIFIER CONST
 
-%type <literal> ASSIGNMENT_OP TYPE_NAME VOID INT CHAR SHORT LONG FLOAT DOUBLE SIGNED UNSIGNED STRING ID C_CONSTANT F_CONSTANT I_CONSTANT SIZEOF UNARY_OPERATOR
+%type <str> ASSIGNMENT_OP TYPE_NAME 
 
+%type <literal> UNARY_OPERATOR IDENTIFIER EQUAL SEMICOLON COMMA L_BRAC R_BRAC L_CURLY R_CURLY L_SQUARE R_SQUARE QUES_MARK COLON 
 
 %start ROOT
 
@@ -97,15 +100,19 @@ STATEMENT
 	| EXPRESSION_STATEMENT															{ $$ = $1;}
 
 COMPOUND_STATEMENT
-	: L_CURLY R_CURLY																{ $$ = new CompoundStatement();} // needs implementation
-	// | L_CURLY STATEMENT_LIST R_CURLY
-	// | L_CURLY DECLARATION_SEQ R_CURLY
-	// | L_CURLY DECLARATION_SEQ STATEMENT_LIST R_CURLY
+	: L_CURLY R_CURLY																{ $$ = new CompoundStatement();}
+	| L_CURLY DECLARATION_SEQ R_CURLY												{ $$ = new CompoundStatement( $2, new List({}) ); } 
+	| L_CURLY STATEMENT_LIST R_CURLY												{ $$ = new CompoundStatement( new List({}), $2); }
+	| L_CURLY DECLARATION_SEQ STATEMENT_LIST R_CURLY								{ $$ = new CompoundStatement( $2, $3 ); }
+
+STATEMENT_LIST
+	: STATEMENT 																	{ $$ = new List({$1}); }
+	| STATEMENT_LIST STATEMENT 														{ $$ -> add($2); }
 
 SELECTION_STATEMENT
 	: IF L_BRAC EXPRESSION R_BRAC STATEMENT											{ $$ = new IfElseStatement($3, $5, new CompoundStatement());}
 	| IF L_BRAC EXPRESSION R_BRAC STATEMENT ELSE STATEMENT							{ $$ = new IfElseStatement($3, $5, $7);} 
-	// | SWITCH L_BRAC EXPRESSION R_BRAC STATEMENT									{ $$ = new SwitchStatement($3, $5); }
+	| SWITCH L_BRAC EXPRESSION R_BRAC STATEMENT										{ $$ = new SwitchStatement($3, $5); }
 
 ITERATION_STATEMENT // start with one
 	: WHILE L_BRAC EXPRESSION R_BRAC STATEMENT											  { $$ = new WhileStatement($3, $5);} 
@@ -206,20 +213,23 @@ PREFIX_EXPRESSION
 
 
 UNARY_OPERATOR
-	: '&'
-	| '*'
-	| '+'
-	| '-'
-	| '~'
-	| '!'
+	: AND
+	| LAND
+	| TIMES
+	| PLUS
+	| MINUS
+	| OR
+	| LOR
+	| XOR
+	| DIVIDE
 
 POSTFIX_EXPRESSION
 	: PRIMARY_EXPRESSION 															{$$ = $1;}
 	| POSTFIX_EXPRESSION L_SQUARE EXPRESSION R_SQUARE 								{ $$ = new SquareOperator($1, $3); }
 	| POSTFIX_EXPRESSION L_BRAC R_BRAC 												{ $$ = new FunctionCall($1); }
 	//| POSTFIX_EXPRESSION L_BRAC EXPRESSION_LIST L_BRAC 							{ $$ = new FunctionCall($1, $3); } // needs to be implemented in grammar
-	| POSTFIX_EXPRESSION DOT ID 													{ $$ = new DotOperator($1, $3); }
-	| POSTFIX_EXPRESSION ARROW ID 													{ $$ = new ArrowOperator($1, $3); }
+	| POSTFIX_EXPRESSION DOT IDENTIFIER												{ $$ = new DotOperator($1, $3); }
+	| POSTFIX_EXPRESSION ARROW IDENTIFIER											{ $$ = new ArrowOperator($1, $3); }
 	| POSTFIX_EXPRESSION INCR 														{ $$ = new PostfixExpr($1, $2); }
 	| POSTFIX_EXPRESSION DECR 														{ $$ = new PostfixExpr($1, $2); }
 
@@ -263,7 +273,7 @@ ASSIGNMENT_OP
 
 DECLARATION_SEQ
 	: DECLARATION																	{ $$ = new DeclarationList($1);}
-	| DECLARATION_SEQ DECLARATIONS													{ $$ -> add($2); }
+	| DECLARATION_SEQ DECLARATION													{ $$ -> add($2); }
 
 DECLARATION
 	: DECLARATION_SPECIFIER SEMICOLON												{ $$ = new Declaration($1,( new List({}) ) ); }
@@ -271,11 +281,9 @@ DECLARATION
 
 DECLARATION_SPECIFIER	
 	: TYPE_SPECIFIER																{ $$ = $1 ; }
-	| TYPE_QUALIFIER																{ $$ = $1 ; }
-	| STORAGE_CLASS_SPECIFIER														{ $$ = $1 ; }
+	| CONST																			{ $$ = new Type(const) ; }
 	| TYPE_SPECIFIER DECLARATION_SPECIFIER											{ $2->add($1); $$ = $2; delete $1; }
-	| TYPE_QUALIFIER DECLARATION_SPECIFIER											{ $2->add($1); $$ = $2; delete $1; }
-	| STORAGE_CLASS_SPECIFIER DECLARATION_SPECIFIER									{ $2->add($1); $$ = $2; delete $1; }
+	| CONST DECLARATION_SPECIFIER													{ $2->add(new Type(const) ); $$ = $2; delete $1; }
 
 TYPE_SPECIFIER
 	: VOID			          														{ $$ = new Type(Void);}
@@ -304,20 +312,19 @@ DECLARATOR
 	| TIMES DIRECT_DECLARATOR 														{ $$ = $2; ((const Declarator *)$$) -> setPtr();} //Think this rule will work
 
 IDENTIFIER_LIST
-	: ID 																			{ $$ = new List({new Variable($1)}); }
+	: IDENTIFIER																	{ $$ = new List({new Variable($1)}); }
 
 DIRECT_DECLARATOR
 	: L_BRAC DECLARATOR R_BRAC														{ $$ = $2; }
 	| IDENTIFIER																	{ $$ = new Variable($1);}
 	| L_BRAC R_BRAC DECLARATOR														{ $$ = $2; }
 	| DIRECT_DECLARATOR L_SQUARE R_SQUARE											{ $$ = new ArrayDeclarator($1, new Constant("-1")); } 	// Undefined Array 
-	| DIRECT_DECLARATOR L_SQUARE CONSTANT_EXPRESSION R_SQUARE						{ $$ = new ArrayDeclarator($1, $3); }   				// Defined Array 
 	| DIRECT_DECLARATOR L_BRAC R_BRAC												{ $$ = new FunctionDeclarator($1,( new List({}) ) ); } 	// Nullary Function
 	| DIRECT_DECLARATOR L_BRAC PARAMETER_LIST R_BRAC				                { $$ = new FunctionDeclarator($1, $3); } 				// Unary|Binary Function 
 	| DIRECT_DECLARATOR L_BRAC IDENTIFIER_LIST R_BRAC								{ $$ = new FunctionDeclarator($1, $3); } 	//ExtraHard // Complex Unary|Binary Function 
 
 PARAMETER_LIST 
-	: PARAMETER_DECLARATION 														{ $$ = new ParameterList({$1}); }
+	: DECLARATION_SPECIFIER DECLARATOR												{ $$ = new ParameterList({ new Declaration($1, new DeclarationList({ $2 }) ) }); }
 	| PARAMETER_LIST COMMA DECLARATION_SPECIFIER DECLARATOR							{ $$ -> add(new Declaration($1, new DeclarationList({$2}) ) ); }
 
 /////////////////////////////////////////////////////////////////// END OF GRAMMAR RULES /////////////////////////////////////////////////////////////////////////
