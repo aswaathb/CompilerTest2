@@ -1,9 +1,3 @@
-Nonterminals useless in grammar
-
-   DECLARATION_LIST
-   EXPRESSION_LIST
-
-
 State 27 conflicts: 2 shift/reduce
 State 29 conflicts: 2 shift/reduce
 State 74 conflicts: 1 shift/reduce

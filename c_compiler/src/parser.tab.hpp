@@ -43,8 +43,8 @@ extern int yydebug;
 #line 1 "src/parser.y" /* yacc.c:1909  */
 
 	#include "ast.hpp"
-
-	#include <cassert>
+	#include <string>
+	
 
 	extern const baseNode *g_root; // A way of getting the AST out
 
