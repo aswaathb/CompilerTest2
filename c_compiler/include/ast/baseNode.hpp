@@ -16,11 +16,11 @@ class Context;
 // GLOBAL VARIABLES USED TO MOVE VALUES //
 //          LEXER <===> MAIN            //
 
-extern int len;
-extern int yylineno;
-extern int yylcolno;
-extern int yylsourcelino;
-extern std::string yylfile;
+// extern int len;
+// extern int yylineno;
+// extern int yylcolno;
+// extern int yylsourcelino;
+// extern std::string yylfile;
 
 extern int yylex();
 
@@ -46,6 +46,8 @@ public:
   //! Getters
   virtual std::string getNodeType() const;      //! Return the type of the node
   virtual std::string getDetails() const;
+
+  virtual const baseNode * add(const baseNode * child) const;
 
   virtual int getPtr() const {return 0; };
   virtual std::vector<const baseNode *> getChildren() const { return {};}; //! If not overridden, return empty.
@@ -81,7 +83,6 @@ public:
   //! Destructor for list
   virtual ~List();
   
-  //! Add a child
   virtual const baseNode * add(const baseNode * child) const;
   
   
@@ -110,7 +111,7 @@ public:
 
 
 
-//! The root of the ast
+// The root of the ast
 class TranslationUnit : public MultiList {
 public:
   TranslationUnit(std::vector<const baseNode *> _child) : MultiList(_child) {}
@@ -140,7 +141,7 @@ public:
   virtual void python_print(std::ostream &stream) const override;
 };
 
-class ExprList : public List, public baseNode {
+class ExprList : public List {
 public:
   virtual ~ExprList(){};
   ExprList(std::vector<const baseNode *> _child) : List(_child) {}

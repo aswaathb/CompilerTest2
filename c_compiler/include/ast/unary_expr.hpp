@@ -45,10 +45,10 @@ public:
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 };
 
-/*
+
 class CastExpr : public PrefixExpr {
 public:
-  CastExpr(const Expr * _child, std::string* _op) : PrefixExpr(_child,_op) {};
+  CastExpr(const Expression * _child, std::string* _op) : PrefixExpr(_child,_op) {};
   virtual std::string getNodeType() const override;
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 };
@@ -56,10 +56,10 @@ public:
 
 class FunctionCall : public PostfixExpr {
 private:
-  const ExpressionList * args;
+  const ExprList * args;
 public:
-  FunctionCall(const Expression * _expr) : PostfixExpr(_expr), args(new ExpressionList({})) {};
-  FunctionCall(const Expression * _expr, const List * _args) : PostfixExpr(_expr), args((const ExpressionList *)_args) {};
+  FunctionCall(const Expression * _expr) : PostfixExpr(_expr), args(new ExprList({})) {};
+  FunctionCall(const Expression * _expr, const List * _args) : PostfixExpr(_expr), args((const ExprList *)_args) {};
 
   virtual std::string getNodeType() const override;
   virtual std::string getId() const { return child->getId(); };
@@ -72,8 +72,8 @@ class SquareOperator : public PostfixExpr {
 private:
   const Expression * arg;
 public:
-  SquareOperator(const Expression * _expr) : PostfixExpression(_expr) {};
-  SquareOperator(const Expression * _expr, const Expression * _arg) : PostfixExpression(_expr), arg(_arg) {};
+  SquareOperator(const Expression * _expr) : PostfixExpr(_expr) {};
+  SquareOperator(const Expression * _expr, const Expression * _arg) : PostfixExpr(_expr), arg(_arg) {};
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
   virtual std::string getNodeType() const override { return "SquareOperator";} ;
   virtual std::vector<const baseNode *> getChildren() const override { return {child,arg};}
@@ -101,5 +101,5 @@ public:
   ArrowOperator(const Expression * _expr, std::string *_id) : StructOperator(_expr,_id) {};
 };
 
-*/
+
 #endif

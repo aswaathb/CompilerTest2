@@ -1,21 +1,19 @@
 %option noyywrap
 
 %{
-// Avoid error "error: `fileno' was not declared in this scope"
+// Avoid error 'error: `fileno' was not declared in this scope"
 extern "C" int fileno(FILE *stream);
 
 #include "parser.tab.hpp"
 void yy_colCount();
 %}
 
-digit       [0-9]
-word        [a-zA-Z]+
+digit       [09
+word        [a-zAZ+
 
 
 %%
 
-[a-z]+        				{ yylval.string=new std::string(yytext); return VAR; }
-[-]?[0-9]+([\.][0-9]*)? 	{ yylval.number=strtod(yytext, 0); return NUM; }
 
 
 
@@ -42,41 +40,44 @@ continue                    { yylval.string=new std::string("continue"); 		retur
 break                       { yylval.string=new std::string("break"); 		return BREAK; 	}
 goto					    { yylval.string=new std::string("goto"); 		return GOTO;	}
 
-[=]							{ return EQUAL	; }
-[(]							{ return L_BRAC ; }
-[)]							{ return R_BRAC ; }
-[{]							{ return L_CURLY; }
-[}]							{ return R_CURLY; }
-[[]                         { return L_SQUARE; }
-[]]                         { return R_SQUARE; }
-[;]							{ return SEMICOLON; }
-[:]                         { return COLON; }
-[,]							{ return COMMA 	; }
+"="							{ return EQUAL	; }
+"("							{ return L_BRAC ; }
+")"							{ return R_BRAC ; }
+"{"							{ return L_CURLY; }
+"}"							{ return R_CURLY; }
+"["                         { return L_SQUARE; }
+"["                         { return R_SQUARE; }
+";"							{ return SEMICOLON; }
+":"                         { return COLON; }
+","							{ return COMMA 	; }
 
-[*]                         { return TIMES; }
-[+]                         { return PLUS; }
-[\^]                        { return EXPONENT; }
-[-]                         { return MINUS; }
-[/]                         { return DIVIDE; }
+"*"                         { return TIMES; }
+"+"                         { return PLUS; }
+"\^"                        { return EXPONENT; }
+"-"                         { return MINUS; }
+"/"                         { return DIVIDE; }
 
-
+[-]?[0-9]+([\.][0-9]*)? 	{ yylval.number=strtod(yytext, 0); return NUMBER; }
+[a-z]+          			{ yylval.string=new std::string(yytext); return VARIABLE; }	
 
 
 
 %%
-
+/*
 int col = 0;
 
 void yy_colCount(){
-  for (int i = 0; yytext[i] != '\0'; i++)
-		if (yytext[i] == '\n')
+  for (int i = 0; yytexti != '\0'; i++)
+		if (yytexti == '\n')
 			col = 0;
-		else if (yytext[i] == '\t')
+		else if (yytexti == '\t)
 			col += 8 - (col % 8);
 		else
 			col++;
 	ECHO;
 }
+*/
+
 
 void yyerror (char const *s)
 {

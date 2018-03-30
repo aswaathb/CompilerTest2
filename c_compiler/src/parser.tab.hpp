@@ -42,17 +42,17 @@ extern int yydebug;
 /* "%code requires" blocks.  */
 #line 1 "src/parser.y" /* yacc.c:1909  */
 
-  #include "ast.hpp"
+	#include "ast.hpp"
 
-  #include <cassert>
+	#include <cassert>
 
-  extern const Expression *g_root; // A way of getting the AST out
+	extern const baseNode *g_root; // A way of getting the AST out
 
-  //! This is to fix problems when generating C++
-  // We are declaring the functions provided by Flex, so
-  // that Bison generated code can call them.
-  int yylex(void);
-  void yyerror(const char *);
+	//! This is to fix problems when generating C++
+	// We are declaring the functions provided by Flex, so
+	// that Bison generated code can call them.
+	int yylex(void);
+	void yyerror(const char *);
 
 #line 58 "src/parser.tab.hpp" /* yacc.c:1909  */
 
@@ -61,25 +61,74 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    VAR = 258,
-    NUM = 259,
-    EQ = 260,
-    SEMIC = 261,
-    COMMA = 262,
-    L_BRAC = 263,
-    R_BRAC = 264,
-    L_CURLY = 265,
-    R_CURLY = 266,
-    VOID = 267,
-    CHAR = 268,
-    SHORT = 269,
-    INT = 270,
-    LONG = 271,
-    FLOAT = 272,
-    DOUBLE = 273,
-    SIGNED = 274,
-    UNSIGNED = 275,
-    RETURN = 276
+    IDENTIFIER = 258,
+    F_CONST = 259,
+    I_CONST = 260,
+    C_CONST = 261,
+    PLUS = 262,
+    MINUS = 263,
+    TIMES = 264,
+    DIVIDE = 265,
+    MODULUS = 266,
+    LOR = 267,
+    LAND = 268,
+    OR = 269,
+    NEQUAL = 270,
+    LESSEQUAL = 271,
+    LESSTHAN = 272,
+    GREATEQUAL = 273,
+    GREATTHAN = 274,
+    AND = 275,
+    XOR = 276,
+    L_SHIFT = 277,
+    R_SHIFT = 278,
+    MUL_ASS = 279,
+    DIV_ASS = 280,
+    MOD_ASS = 281,
+    ADD_ASS = 282,
+    SUB_ASS = 283,
+    LL_ASS = 284,
+    RR_ASS = 285,
+    AND_ASS = 286,
+    XOR_ASS = 287,
+    OR_ASS = 288,
+    ARROW = 289,
+    DECR = 290,
+    INCR = 291,
+    VOID = 292,
+    CHAR = 293,
+    SHORT = 294,
+    INT = 295,
+    LONG = 296,
+    FLOAT = 297,
+    DOUBLE = 298,
+    SIGNED = 299,
+    UNSIGNED = 300,
+    CONST = 301,
+    DO = 302,
+    WHILE = 303,
+    IF = 304,
+    ELSE = 305,
+    FOR = 306,
+    SWITCH = 307,
+    RETURN = 308,
+    CONTINUE = 309,
+    BREAK = 310,
+    GOTO = 311,
+    EQUAL = 312,
+    SEMICOLON = 313,
+    COMMA = 314,
+    L_BRAC = 315,
+    R_BRAC = 316,
+    L_CURLY = 317,
+    R_CURLY = 318,
+    L_SQUARE = 319,
+    R_SQUARE = 320,
+    QUES_MARK = 321,
+    COLON = 322,
+    DOT = 323,
+    STRING = 324,
+    SIZEOF = 325
   };
 #endif
 
@@ -90,14 +139,18 @@ union YYSTYPE
 {
 #line 17 "src/parser.y" /* yacc.c:1909  */
 
-      const Expression *node;
-      double number;
-      std::string *string;
-      variable_declaration *variable;
-      function_definition *func;
-      return_statement *ret_state;
+	const baseNode 		*node;
+	const Declaration 	*decl;
+	const Expression 	*expr;
+	const ExprStatement *exprstat;
+	const Function 		*func;
+	const List			*list;
+	const Statement 	*stat;
+	const Type 			*type;
 
-#line 101 "src/parser.tab.hpp" /* yacc.c:1909  */
+	std::string 		*str;
+
+#line 154 "src/parser.tab.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

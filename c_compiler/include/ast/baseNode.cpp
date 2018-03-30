@@ -51,6 +51,11 @@ std::vector<std::string> baseNode::getStrings() const {
    SETTERS
  */
 
+const baseNode::add(const baseNode *child) const {
+  children.push_back(child);
+  return this;
+};
+
 //!
 void baseNode::addString(std::string s) const {
   strings.push_back(s);
@@ -155,8 +160,6 @@ List::~List() {
 }
 
 const baseNode *List::add(const baseNode *child) const {
-  sourceline = yylsourcelino;
-  sourcecol = yylcolno;
   children.push_back(child);
   return this;
 };
