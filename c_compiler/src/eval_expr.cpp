@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     const Expression *ast=parseAST();
     
     //python translation
-    ast->translate();
+    ast->python_print();
     std::cout<<std::endl;
     //Python "Footer"
     std::cout<<"if __name__ == \"__main__\": "<<std::endl;
@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     
 
     //MIPS Machine Code
-    //ast->compile();
+    ast->generate_assembly();
     //std::cout<<std::endl;   
     
     return 0;
