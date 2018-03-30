@@ -1,10 +1,30 @@
 #include "ast.hpp"
 
 int main()
-{
-    const baseNode *ast=parseAST();
+{ std::ostream& out = std::cout;
 
-  //  ast->python_print();
+  const baseNode *ast=parseAST();
 
-    return 0;
+/*
+  SETTERS
+*/
+  ast->setChildDefs();
+  ast->setParamUses();
+
+
+/*
+  PRINTERS
+*/  
+  // Print python to cout
+
+  //
+  
+  // Print the assembly output to cout
+  Context ctxt(&out);
+  ast->generate_assembly(ctxt);
+
+  delete ast;
+
+  return 0;
+
 }
