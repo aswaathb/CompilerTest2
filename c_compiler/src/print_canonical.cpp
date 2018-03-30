@@ -7,7 +7,7 @@
 
 
 int main()
-{ std::ostream& out = std::cout;
+{ std::ostream& assembly = std::cout;
 
   const baseNode *ast=parseAST();
 
@@ -26,7 +26,7 @@ int main()
   //
   
   // Print the assembly output to cout
-  Context ctxt(&out);
+  Context ctxt(&assembly);
   ast->generate_assembly(ctxt);
 
   delete ast;
