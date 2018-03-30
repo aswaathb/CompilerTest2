@@ -10,8 +10,6 @@ extern int UNIQUE_ID;
 
 class baseNode;
 
-
-
 std::string makeLabel(std::string base);
 std::string genUniqueID();
 
@@ -21,7 +19,7 @@ struct Var {
   int offset;
   bool global;
   bool pointer;
-  
+
 };
 
 class Context {
@@ -33,28 +31,29 @@ private:
   std::string f = "";
   std::string b = "";
   std::string c = "";
+
 public:
   Context(std::ostream *stream) { out = stream; };
   std::ostream& ss();
-  
+
   void assignVariable(std::string id, std::string type);
   void assignVariable(std::string id, std::string type, int offin);
   void assignVariable(std::string id, std::string type, bool global);
   void assignVariable(std::string id, std::string type, bool global, bool pointer);
   void setVarPtr(std::string id);
   int isPtr(std::string id);
-  
+
   Var  getVariable(std::string id);
   void loadVariable(std::string id, int d);
   void storeVariable(std::string id, int d = 2);
   void storeVariable(std::string id, int s, int d);
   std::string getVarType(std::string id);
   int getVarOffset(std::string id);
-  
+
   void addString(std::string s);
   std::string getString(std::string s);
   void createStrings();
-  
+
   // Control flow statements - hacky but robust and quick solution
   // Return
   void setF(std::string fname){ f = fname; }
@@ -70,7 +69,7 @@ public:
   int getOffset() { return offset; }
   int getAddress(const baseNode * in, int d =2);
 
-  
+
   void push(int reg);
   void pop(int reg);
 };
