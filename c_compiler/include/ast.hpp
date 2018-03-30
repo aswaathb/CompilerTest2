@@ -11,12 +11,12 @@
 #include "ast/statement.hpp"
 #include "ast/types.hpp"
 #include "ast/unary_expr.hpp"
-#include "ast/variabes.hpp"
+#include "ast/variables.hpp"
 
 
 
 // #include <iostream>
-extern const Expression *parseAST();
+extern const baseNode *parseAST();
 
 
 // class Expression;

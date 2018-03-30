@@ -3,7 +3,7 @@
 
 	#include <cassert>
 
-	extern const Expression *g_root; // A way of getting the AST out
+	extern const baseNode *g_root; // A way of getting the AST out
 
 	//! This is to fix problems when generating C++
 	// We are declaring the functions provided by Flex, so
@@ -14,13 +14,9 @@
 
 // Represents the value associated with any kind of
 // AST node.
-%union{ // NEEDS EDITING
-	const Expression *node;
-	double number;
-	std::string *string;
-	variable_declaration *variable;
-	function_definition *func;
-	return_statement *ret_state;
+%union{
+ const baseNode *baseNode;
+
 }
 
 %token PLUS MINUS TIMES DIVIDE MODULUS

@@ -3,85 +3,53 @@
 echo "========================================"
 echo " Cleaning the temporaries and outputs"
 make clean
-echo " Force building bin/print_canonical"
-make bin/print_canonical bin/eval_expr -B
-if [[ "$?" -ne 0 ]]; then
-    echo "Build failed.";
-fi
 
+mkdir -p working
+
+COMPILER=bin/c_compiler
+FAILED=0
+CHECKED=0
 
 for DRIVER in test_deliverable/test_cases/*_driver.c ; do
 	NAME=$(basename $DRIVER _driver.c)
 	TESTCODE=test_deliverable/test_cases/$NAME.c
 
+	# Compile driver with normal GCC
+	mips-linux-gnu-gcc -c $DRIVER -o working/${NAME}_driver.o 2> working/${NAME}_driver.compile.stderr
+	if [[ $? -ne 0 ]]; then
+		echo "Test case: ${NAME}. ERROR : Couldn't compile driver program using GCC."
+		continue
+	fi
 
-#need to edit for these functionalities
+	# Compile test function with compiler to assembly
+	cat $TESTCODE | $COMPILER > working/$NAME.s  2> working/${NAME}.compile.stderr
+	if [[ $? -ne 0 ]]; then
+		echo "Test case: ${NAME}. ERROR : Compiler returned error message."
+		continue
+	fi
 
+	# Link driver object and assembly into executable
+	mips-linux-gnu-gcc -static working/${NAME}.s working/${NAME}_driver.o -o working/${NAME}.elf 2> working/${NAME}.link.stderr
+	if [[ $? -ne 0 ]]; then
+		echo "Test case: ${NAME}. ERROR : Linker returned error message."
+	continue
+	fi
 
-echo "========================================="
-echo "Checking that good expressions are parsed"
+	# Run the actual executable
+	qemu-mips working/${NAME}.elf
+	RESULT=$?
+	echo "${NAME}"
+	if [[ $result -ne 0 ]]; then
+		echo "Test case: ${NAME}. ERROR : Testcase returned ${RESULT}, but expected 0."
+		FAILED=$(( ${FAILED}+1 ));
+	fi
+	echo "passed"
+	CHECKED=$(( ${CHECKED}+1 ));
 
-PASSED=0
-CHECKED=0
-
-if [[ -f test/valid_expressions.got.txt ]]; then
-    rm test/valid_expressions.got.txt
-fi
-while IFS=, read -r INPUT_LINE REF_LINE BINDINGS REF_VALUE; do
-    echo "==========================="
-    echo ""
-    echo "Input : ${INPUT_LINE}"
-    GOT_LINE=$( echo -n "${INPUT_LINE}" | bin/print_canonical )
-    echo "Output : ${GOT_LINE}"
-    if [[ "${GOT_LINE}" != "${REF_LINE}" ]]; then
-        echo ""
-        echo "ERROR"
-    else
-        PASSED=$(( ${PASSED}+1 ));
-    fi
-    CHECKED=$(( ${CHECKED}+1 ));
-
-    echo ""
-    echo "Evaluating with : $BINDINGS"
-    GOT_VALUE=$( echo -n "${INPUT_LINE}" | bin/eval_expr ${BINDINGS} )
-    echo "Value : ${GOT_VALUE}"
-    if [[ "${GOT_VALUE}" != "${REF_VALUE}" ]]; then
-        echo ""
-        echo "ERROR"        
-    else
-        PASSED=$(( ${PASSED}+1 ));
-    fi
-    CHECKED=$(( ${CHECKED}+1 ));
-    
-    echo "${INPUT_LINE},${GOT_LINE},${BINDINGS},${GOT_VALUE}" >> test/valid_expressions.got.txt
-
-done < <( cat test/valid_expressions.input.txt | ${DOS2UNIX})
-
-echo ""
-echo "============================================"
-echo "Checking that bad expressions are not parsed"
-echo ""
-
-while IFS=, read -r INPUT_LINE; do
-    # Strip carriage return if necessary (replace dos2unix)
-    INPUT_LINE=$(echo ${INPUT_LINE})
-    echo "==========================="
-    echo ""
-    echo "Input : ${INPUT_LINE}"
-    GOT_LINE=$( echo -n "${INPUT_LINE}" | bin/print_canonical )
-    CODE=$?;
-    echo "Output : ${GOT_LINE}"
-    if [[ ${CODE} -eq "0" ]]; then
-        echo ""
-        echo "ERROR"
-        PASSED=$(( ${PASSED}-1 ));        
-    fi
-done < <( cat test/invalid_expressions.input.txt | ${DOS2UNIX} )
-
+done
 
 echo "########################################"
-echo "Passed ${PASSED} out of ${CHECKED} checks".
-echo ""
+echo "FAILED ${FAILED} out of ${CHECKED} checks".
 
 RELEASE=$(lsb_release -d)
 if [[ $? -ne 0 ]]; then
