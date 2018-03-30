@@ -13,9 +13,6 @@ public:
   virtual std::string getNodeType() const override;
 
   virtual std::string getValue() const { return value_in; };
-  virtual std::string getHeader() const override {
-    return "<" + getNodeType() + " value=\"" + value_in + "\" " + getDetails() + " />";
-  }
   virtual std::string getId() const override {return value_in;};
   virtual std::vector<const baseNode *> getChildren() const override {return {};}
   virtual void python_print(std::ostream &stream) const override;

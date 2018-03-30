@@ -4,7 +4,7 @@ int main()
 {
     const baseNode *ast=parseAST();
 
-    ast->python_print();
+  //  ast->python_print();
 
     return 0;
 }

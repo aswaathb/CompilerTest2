@@ -45,7 +45,7 @@ public:
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 };
 
-
+/*
 class CastExpr : public PrefixExpr {
 public:
   CastExpr(const Expr * _child, std::string* _op) : PrefixExpr(_child,_op) {};
@@ -101,5 +101,5 @@ public:
   ArrowOperator(const Expression * _expr, std::string *_id) : StructOperator(_expr,_id) {};
 };
 
-
+*/
 #endif

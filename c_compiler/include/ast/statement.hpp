@@ -137,7 +137,7 @@ private:
   std::string targetLabel;
 
 public:
-  GotoStatement(const std::string label) : TargetLabel(label){};
+  GotoStatement(const std::string label) : targetLabel(label){};
   virtual ~GotoStatement(){};
   
   virtual std::string getNodeType() const override;
@@ -271,7 +271,7 @@ protected:
 public:
   virtual std::string getNodeType() const override;
   ForStatementBase(const ExprStatement *c1, const Statement *s1)
-      : IterationStatement(s1), cond1(c1)  {};
+      : Iteration(s1), cond1(c1)  {};
   virtual std::vector<const Expression*> getConditions() const override {
     return {(const Expression*)cond1};
   };

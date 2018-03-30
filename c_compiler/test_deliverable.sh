@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "========================================"
-echo " Cleaning the temporaries and outputs"
+echo "Cleaning the temporaries and outputs"
 make clean
 
 mkdir -p working

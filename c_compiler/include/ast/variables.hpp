@@ -17,7 +17,6 @@ public:
   
   virtual std::string getNodeType() const override;
   virtual std::string getId() const override;
-  virtual std::string getHeader() const override;
   void setPtr() const { ptr++; }
   int getPtr() const { return ptr; }
   virtual void python_print(std::ostream &stream) const override;

@@ -140,8 +140,7 @@ public:
   virtual void python_print(std::ostream &stream) const override;
 };
 
-class ExprList : public List, public Expression {
-
+class ExprList : public List, public baseNode {
 public:
   virtual ~ExprList(){};
   ExprList(std::vector<const baseNode *> _child) : List(_child) {}
