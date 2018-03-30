@@ -9,6 +9,7 @@
 
 class Context;
 
+extern int yylex();
 //! Abstract base class for ast node
 class baseNode {
 private:
