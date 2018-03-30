@@ -5,7 +5,7 @@
 	#include <string>
 	#include <cstdlib>
 
-	
+
 	// extern "C" int fileno(FILE *stream);
 	//void yy_colCount();
 %}
@@ -36,12 +36,17 @@ do                          { return (DO); }
 while                       { return (WHILE); }
 if                          { return (IF); }
 else                        { return (ELSE); }
-for                         { return (FOR); }  
+for                         { return (FOR); }
+switch						{ return (SWITCH); }
 
 return					    { return (RETURN); }
 continue                    { return (CONTINUE); }
 break                       { return (BREAK); }
 goto					    { return (GOTO);	}
+
+string 						{ return (STRING); }
+sizeof 						{ return (SIZEOF); }
+
 
 "="							{ return (EQUAL); }
 "("							{ return (L_BRAC); }
@@ -59,7 +64,9 @@ goto					    { return (GOTO);	}
 "\^"                        { return (XOR); }
 "-"                         { return (MINUS); }
 "/"                         { return (DIVIDE); }
-
+"?"							{ return (QUES_MARK); }
+":"							{ return (COLON); }
+"."							{ return (DOT); }
 
 
 
