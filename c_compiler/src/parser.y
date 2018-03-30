@@ -15,8 +15,15 @@
 // Represents the value associated with any kind of
 // AST node.
 %union{
- const baseNode *baseNode;
+	const baseNode 		*node;
+	const Declaration 	*decl;
+	const Expression 	*expr;
+	const ExprStatement *exprstat;
+	const Function 		*func;
+	const Statement 	*stat; 
+	const Type 			*type;
 
+	std::string *literal;
 }
 
 %token PLUS MINUS TIMES DIVIDE MODULUS
@@ -27,17 +34,23 @@
 %token QUES_MARK COLON LOR LAND OR NEQUAL LESSEQUAL LESSTHAN GREATEQUAL GREATTHAN AND XOR L_SHIFT R_SHIFT DOT 
 
 
-%type <baseNode> ROOT TRANSLATION-UNIT
 
-%type <declaration>
+%type <node> ROOT TRANSLATION_UNIT DECLARATOR DIRECT_DECLARATOR INIT_DECLARATOR paramete IDENTIFIER_LIST PARAMETER_LIST STATEMENT_LIST  DECLARATION_SEQ INIT_DECLARATOR_LIST EXPRESSION_LIST
 
-%type <statement> STATEMENT
-%type <statement> COMPOUND_STATEMENT SELECTION_STATEMENT ITERATION_STATEMENT JUMP_STATEMENT EXPRESSION_STATEMENT
+%type <decl> DECLARATION
 
-%type <expression> EXPRESSION
-%type <expression> ASSIGNMENT_EXPRESSION CONDITIONAL_EXPRESSION LOGICAL_OR_EXPRESSION LOGICAL_AND_EXPRESSION INCLUSIVE_OR_EXPRESSION EXCLUSIVE_OR_EXPRESSION AND_EXPRESSION EQUALITY_EXPRESSION RELATIONAL_EXPRESSION SHIFT_EXPRESSION ADDITIVE_EXPRESSION MULTIPLCATIVE_EXPRESSION CAST_EXPRESSION PREFIX_EXPRESSION POSTFIX_EXPRESSION PRIMARY_EXPRESSION
-//add
-%type <expression> ASSIGNMENT_OP
+%type <func> FUNCTION_DEFINITION
+
+%type <expr> EXPRESSION ASSIGNMENT_EXPRESSION CONDITIONAL_EXPRESSION INITIALIZER LOGICAL_OR_EXPRESSION LOGICAL_AND_EXPRESSION INCLUSIVE_OR_EXPRESSION EXCLUSIVE_OR_EXPRESSION AND_EXPRESSION EQUALITY_EXPRESSION RELATIONAL_EXPRESSION SHIFT_EXPRESSION ADDITIVE_EXPRESSION MULTIPLCATIVE_EXPRESSION CAST_EXPRESSION PREFIX_EXPRESSION POSTFIX_EXPRESSION PRIMARY_EXPRESSION
+
+%type <exprstat> EXPRESSION_STATEMENT
+
+%type <stat> STATEMENT COMPOUND_STATEMENT SELECTION_STATEMENT ITERATION_STATEMENT JUMP_STATEMENT
+
+%type <type> DECLARATION_SPECIFIER TYPE_SPECIFIER STORAGE_CLASS_SPECIFIER TYPE_QUALIFIER
+
+%type <literal> ASSIGNMENT_OP TYPE_NAME VOID INT CHAR SHORT LONG FLOAT DOUBLE SIGNED UNSIGNED STRING ID C_CONSTANT F_CONSTANT I_CONSTANT SIZEOF UNARY_OPERATOR
+
 
 %start ROOT
 
@@ -58,10 +71,10 @@ EXTERNAL_DECLARATION
 // FUNCTIONS - INITIALLY SMALLER TO BE MORE MANAGEABLE
 
 FUNCTION_DEFINITION
-	: DECLARATOR COMPOUND_STATEMENT													{ $$ = new FunctionDefinition($1, $2);} // needs implementation?????
+	: DECLARATOR COMPOUND_STATEMENT													{ $$ = new FunctionDefinition($1, $2);} ///????
 	//| DECLARATION-SPECIFIERS DECLARATOR COMPOUND-STATEMENT						{ $$ = new Function($1, $2, $3);}
 	//| DECLARATION-SPECIFIERS DECLARATOR DECLARATION-LIST COMPOUND-STATEMENT		{ $$ = new Function($2, $3, $4);}
-	//| DECLARATOR DECLARATION-LIST COMPOUND-STATEMENT								{ $$ = new ErrorStopper();}????
+	//| DECLARATOR DECLARATION-LIST COMPOUND-STATEMENT								{ $$ = new ErrorStopper();} ///????
 
 
 ///////////////////////////////////////// STATEMENTS /////////////////////////////////////////////////////////////////////////////////
@@ -268,7 +281,7 @@ TYPE_SPECIFIER
 
 INIT_DECLARATOR_LIST
 	: INIT_DECLARATOR	                                  							{ $$ = new DeclarationList($1); }
-	| INIT_DECLARATOR_LIST COMMA INIT_DECLARATOR									{ $$ = add($3); }
+	| INIT_DECLARATOR_LIST COMMA INIT_DECLARATOR									{ $$ -> add($3); }
 
 INIT_DECLARATOR
 	: DECLARATOR		                      										{ $$ = $1; }
@@ -281,6 +294,9 @@ DECLARATOR
 	: DIRECT_DECLARATOR                                     						{ $$ = $1; }
 	| TIMES DIRECT_DECLARATOR 														{ $$ = $2; ((const Declarator *)$$) -> setPtr();} //Think this rule will work
 
+IDENTIFIER_LIST
+	: ID 																			{ $$ = new List({new Variable($1)}); }
+
 DIRECT_DECLARATOR
 	: L_BRAC DECLARATOR R_BRAC														{ $$ = $2; }
 	| IDENTIFIER																	{ $$ = new Variable($1);}
@@ -289,13 +305,19 @@ DIRECT_DECLARATOR
 	| DIRECT_DECLARATOR L_SQUARE CONSTANT_EXPRESSION R_SQUARE						{ $$ = new ArrayDeclarator($1, $3); }   				// Defined Array 
 	| DIRECT_DECLARATOR L_BRAC R_BRAC												{ $$ = new FunctionDeclarator($1,( new List({}) ) ); } 	// Nullary Function
 	| DIRECT_DECLARATOR L_BRAC PARAMETER_LIST R_BRAC				                { $$ = new FunctionDeclarator($1, $3); } 				// Unary|Binary Function 
-	| DIRECT_DECLARATOR L_BRAC IDENTIFIER LIST R_BRAC								{ $$ = new FunctionDeclarator($1, $3); } 	//ExtraHard // Complex Unary|Binary Function 
+	| DIRECT_DECLARATOR L_BRAC IDENTIFIER_LIST R_BRAC								{ $$ = new FunctionDeclarator($1, $3); } 	//ExtraHard // Complex Unary|Binary Function 
+
+PARAMETER_LIST 
+	: PARAMETER_DECLARATION 														{ $$ = new ParameterList({$1}); }
+	| PARAMETER_LIST COMMA DECLARATION_SPECIFIER DECLARATOR							{ $$ -> add(new Declaration($1, new DeclarationList({$2}) ) ); }
+
+/////////////////////////////////////////////////////////////////// END OF GRAMMAR RULES /////////////////////////////////////////////////////////////////////////
 
 %%
 
-const Expression *g_root; // Definition of variable (to match declaration earlier)
+const baseNode *g_root; 
 
-const Expression *parseAST()
+const baseNode *parseAST()
 {
 	g_root=0;
 	yyparse();
