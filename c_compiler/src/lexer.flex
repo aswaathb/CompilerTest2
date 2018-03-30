@@ -1,18 +1,19 @@
 %option noyywrap
 
 %{
-// Avoid error 'error: `fileno' was not declared in this scope"
-extern "C" int fileno(FILE *stream);
+	#include "parser.tab.hpp"
+	#include <string>
+	#include <cstdlib>
+	#include <regex>
 
-#include "parser.tab.hpp"
-#include <string>
-
-void yy_colCount();
+	
+	// extern "C" int fileno(FILE *stream);
+	//void yy_colCount();
 %}
 
 digit       [0-9]
 word        [a-zA-Z]+
-lphanum	[a-zA-Z0-9]+
+alphanum	[a-zA-Z0-9]+
 
 
 %%
@@ -20,45 +21,45 @@ lphanum	[a-zA-Z0-9]+
 
 
 
-void 						{ yylval.string=new std::string("void"); 		return VOID; 	}
-char 						{ yylval.string=new std::string("char"); 		return CHAR; 	}
-short 				      	{ yylval.string=new std::string("short"); 		return SHORT; 	}
-int 						{ yylval.string=new std::string("int"); 		return INT; 	}
-long 						{ yylval.string=new std::string("long"); 		return LONG; 	}
-float 				      	{ yylval.string=new std::string("float"); 		return FLOAT; 	}
-double 				     	{ yylval.string=new std::string("double"); 		return DOUBLE; 	}
-signed				      	{ yylval.string=new std::string("signed"); 		return SIGNED; 	}
-unsigned					{ yylval.string=new std::string("unsigned"); 	return UNSIGNED;}
+void 						{ return (VOID);	}
+char 						{ return (CHAR);	}
+short 				      	{ return (SHORT); }
+int 						{ return (INT); }
+long 						{ return (LONG); }
+float 				      	{ return (FLOAT); }
+double 				     	{ return (DOUBLE); }
+signed				      	{ return (SIGNED); }
+unsigned					{ return (UNSIGNED); }
 
 
 
-do                          { yylval.string=new std::string("do"); 		   return DO; 	}
-while                       { yylval.string=new std::string("while"); 		return WHILE; 	}
-if                          { yylval.string=new std::string("if"); 		   return IF; 	}
-else                        { yylval.string=new std::string("else"); 		return ELSE; 	}
-for                         { yylval.string=new std::string("for"); 		return FOR; 	}
+do                          { return (DO); }
+while                       { return (WHILE); }
+if                          { return (IF); }
+else                        { return (ELSE); }
+for                         { return (FOR); }  
 
-return					    { yylval.string=new std::string("return"); 		return RETURN;	}
-continue                    { yylval.string=new std::string("continue"); 		return CONTINUE; 	}
-break                       { yylval.string=new std::string("break"); 		return BREAK; 	}
-goto					    { yylval.string=new std::string("goto"); 		return GOTO;	}
+return					    { return (RETURN); }
+continue                    { return (CONTINUE); }
+break                       { return (BREAK); }
+goto					    { return (GOTO);	}
 
-"="							{ return EQUAL	; }
-"("							{ return L_BRAC ; }
-")"							{ return R_BRAC ; }
-"{"							{ return L_CURLY; }
-"}"							{ return R_CURLY; }
-"["                         { return L_SQUARE; }
-"["                         { return R_SQUARE; }
-";"							{ return SEMICOLON; }
-":"                         { return COLON; }
-","							{ return COMMA 	; }
+"="							{ return (EQUAL); }
+"("							{ return (L_BRAC); }
+")"							{ return (R_BRAC); }
+"{"							{ return (L_CURLY); }
+"}"							{ return (R_CURLY); }
+"["                         { return (L_SQUARE); }
+"["                         { return (R_SQUARE); }
+";"							{ return (SEMICOLON); }
+":"                         { return (COLON); }
+","							{ return (COMMA); }
 
-"*"                         { return TIMES; }
-"+"                         { return PLUS; }
-"\^"                        { return XOR; }
-"-"                         { return MINUS; }
-"/"                         { return DIVIDE; }
+"*"                         { return (TIMES); }
+"+"                         { return (PLUS); }
+"\^"                        { return (XOR); }
+"-"                         { return (MINUS); }
+"/"                         { return (DIVIDE); }
 
 
 

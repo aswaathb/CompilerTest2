@@ -9,21 +9,6 @@
 
 class Context;
 
-/*
-    TOKENS
-*/
-
-// GLOBAL VARIABLES USED TO MOVE VALUES //
-//          LEXER <===> MAIN            //
-
-// extern int len;
-// extern int yylineno;
-// extern int yylcolno;
-// extern int yylsourcelino;
-// extern std::string yylfile;
-
-extern int yylex();
-
 //! Abstract base class for ast node
 class baseNode {
 private:

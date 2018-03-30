@@ -43,7 +43,20 @@ extern int yydebug;
 #line 1 "src/parser.y" /* yacc.c:1909  */
 
 	#include "ast.hpp"
+	#include "ast/base_expr.hpp"
+	#include "ast/baseNode.hpp"
+	#include "ast/binary_operators.hpp"
+	#include "ast/constant.hpp"
+	#include "ast/context.hpp"
+	#include "ast/declaration.hpp"
+	#include "ast/functions.hpp"
+	#include "ast/statement.hpp"
+	#include "ast/types.hpp"
+	#include "ast/unary_expr.hpp"
+	#include "ast/variables.hpp"
+
 	#include <string>
+
 	
 
 	extern const baseNode *g_root; // A way of getting the AST out
@@ -51,10 +64,9 @@ extern int yydebug;
 	//! This is to fix problems when generating C++
 	// We are declaring the functions provided by Flex, so
 	// that Bison generated code can call them.
-	int yylex(void);
 	void yyerror(const char *);
 
-#line 58 "src/parser.tab.hpp" /* yacc.c:1909  */
+#line 70 "src/parser.tab.hpp" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -137,20 +149,19 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 17 "src/parser.y" /* yacc.c:1909  */
+#line 29 "src/parser.y" /* yacc.c:1909  */
 
 	const baseNode 		*node;
 	const Declaration 	*decl;
 	const Expression 	*expr;
 	const ExprStatement *exprstat;
-	const Function 		*func;
 	const List			*list;
 	const Statement 	*stat;
 	const Type 			*type;
 
 	std::string 		*str;
 
-#line 154 "src/parser.tab.hpp" /* yacc.c:1909  */
+#line 165 "src/parser.tab.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
