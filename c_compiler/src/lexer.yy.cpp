@@ -818,92 +818,92 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 23 "src/lexer.flex"
-{ return VOID; 	}
+{ yylval.string=new std::string("void"); 		return VOID; 	}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 24 "src/lexer.flex"
-{ return CHAR; 	}
+{ yylval.string=new std::string("char"); 		return CHAR; 	}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 25 "src/lexer.flex"
-{ return SHORT; 	}
+{ yylval.string=new std::string("short"); 		return SHORT; 	}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 26 "src/lexer.flex"
-{ return INT; 	}
+{ yylval.string=new std::string("int"); 		return INT; 	}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 27 "src/lexer.flex"
-{ return LONG; 	}
+{ yylval.string=new std::string("long"); 		return LONG; 	}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 28 "src/lexer.flex"
-{ return FLOAT; 	}
+{ yylval.string=new std::string("float"); 		return FLOAT; 	}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 29 "src/lexer.flex"
-{ return DOUBLE; 	}
+{ yylval.string=new std::string("double"); 		return DOUBLE; 	}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 30 "src/lexer.flex"
-{ return SIGNED; 	}
+{ yylval.string=new std::string("signed"); 		return SIGNED; 	}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 31 "src/lexer.flex"
-{ return UNSIGNED;}
+{ yylval.string=new std::string("unsigned"); 	return UNSIGNED;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 35 "src/lexer.flex"
-{ return DO; 	}
+{ yylval.string=new std::string("do"); 		   return DO; 	}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 36 "src/lexer.flex"
-{ return WHILE; 	}
+{ yylval.string=new std::string("while"); 		return WHILE; 	}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 37 "src/lexer.flex"
-{ return IF; 	}
+{ yylval.string=new std::string("if"); 		   return IF; 	}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 38 "src/lexer.flex"
-{ return ELSE; 	}
+{ yylval.string=new std::string("else"); 		return ELSE; 	}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 39 "src/lexer.flex"
-{ return FOR; 	}
+{ yylval.string=new std::string("for"); 		return FOR; 	}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 41 "src/lexer.flex"
-{ return RETURN;	}
+{ yylval.string=new std::string("return"); 		return RETURN;	}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 42 "src/lexer.flex"
-{ return CONTINUE; 	}
+{ yylval.string=new std::string("continue"); 		return CONTINUE; 	}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 43 "src/lexer.flex"
-{ return BREAK; 	}
+{ yylval.string=new std::string("break"); 		return BREAK; 	}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 44 "src/lexer.flex"
-{ return GOTO;	}
+{ yylval.string=new std::string("goto"); 		return GOTO;	}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP

@@ -12,7 +12,7 @@ void yy_colCount();
 
 digit       [0-9]
 word        [a-zA-Z]+
-alphanum	[a-zA-Z0-9]+
+lphanum	[a-zA-Z0-9]+
 
 
 %%
@@ -20,28 +20,28 @@ alphanum	[a-zA-Z0-9]+
 
 
 
-void 						{ return VOID; 	}
-char 						{ return CHAR; 	}
-short 				      	{ return SHORT; 	}
-int 						{ return INT; 	}
-long 						{ return LONG; 	}
-float 				      	{ return FLOAT; 	}
-double 				     	{ return DOUBLE; 	}
-signed				      	{ return SIGNED; 	}
-unsigned					{ return UNSIGNED;}
+void 						{ yylval.string=new std::string("void"); 		return VOID; 	}
+char 						{ yylval.string=new std::string("char"); 		return CHAR; 	}
+short 				      	{ yylval.string=new std::string("short"); 		return SHORT; 	}
+int 						{ yylval.string=new std::string("int"); 		return INT; 	}
+long 						{ yylval.string=new std::string("long"); 		return LONG; 	}
+float 				      	{ yylval.string=new std::string("float"); 		return FLOAT; 	}
+double 				     	{ yylval.string=new std::string("double"); 		return DOUBLE; 	}
+signed				      	{ yylval.string=new std::string("signed"); 		return SIGNED; 	}
+unsigned					{ yylval.string=new std::string("unsigned"); 	return UNSIGNED;}
 
 
 
-do                          { return DO; 	}
-while                       { return WHILE; 	}
-if                          { return IF; 	}
-else                        { return ELSE; 	}
-for                         { return FOR; 	}
+do                          { yylval.string=new std::string("do"); 		   return DO; 	}
+while                       { yylval.string=new std::string("while"); 		return WHILE; 	}
+if                          { yylval.string=new std::string("if"); 		   return IF; 	}
+else                        { yylval.string=new std::string("else"); 		return ELSE; 	}
+for                         { yylval.string=new std::string("for"); 		return FOR; 	}
 
-return					    { return RETURN;	}
-continue                    { return CONTINUE; 	}
-break                       { return BREAK; 	}
-goto					    { return GOTO;	}
+return					    { yylval.string=new std::string("return"); 		return RETURN;	}
+continue                    { yylval.string=new std::string("continue"); 		return CONTINUE; 	}
+break                       { yylval.string=new std::string("break"); 		return BREAK; 	}
+goto					    { yylval.string=new std::string("goto"); 		return GOTO;	}
 
 "="							{ return EQUAL	; }
 "("							{ return L_BRAC ; }
