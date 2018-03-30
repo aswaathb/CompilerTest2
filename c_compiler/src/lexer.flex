@@ -8,9 +8,15 @@ extern "C" int fileno(FILE *stream);
 void yy_colCount();
 %}
 
+digit       [0-9]
+word        [a-zA-Z]+
 
 
 %%
+
+[a-z]+        				{ yylval.string=new std::string(yytext); return VAR; }
+[-]?[0-9]+([\.][0-9]*)? 	{ yylval.number=strtod(yytext, 0); return NUM; }
+
 
 
 void 						{ yylval.string=new std::string("void"); 		return VOID; 	}
@@ -25,15 +31,16 @@ unsigned					{ yylval.string=new std::string("unsigned"); 	return UNSIGNED;}
 
 
 
-return					    { yylval.string=new std::string("return"); 		return RETURN;	}
-
 do                          { yylval.string=new std::string("do"); 		   return DO; 	}
 while                       { yylval.string=new std::string("while"); 		return WHILE; 	}
 if                          { yylval.string=new std::string("if"); 		   return IF; 	}
 else                        { yylval.string=new std::string("else"); 		return ELSE; 	}
-
 for                         { yylval.string=new std::string("for"); 		return FOR; 	}
 
+return					    { yylval.string=new std::string("return"); 		return RETURN;	}
+continue                    { yylval.string=new std::string("continue"); 		return CONTINUE; 	}
+break                       { yylval.string=new std::string("break"); 		return BREAK; 	}
+goto					    { yylval.string=new std::string("goto"); 		return GOTO;	}
 
 [=]							{ return EQUAL	; }
 [(]							{ return L_BRAC ; }
@@ -53,8 +60,6 @@ for                         { yylval.string=new std::string("for"); 		return FOR
 [/]                         { return DIVIDE; }
 
 
-[a-z]+        				{ yylval.string=new std::string(yytext); return VAR; }
-[-]?[0-9]+([\.][0-9]*)? 	{ yylval.number=strtod(yytext, 0); return NUM; }
 
 
 
