@@ -27,7 +27,7 @@ std::vector<std::string> baseNode::getChildParams() const {
   return childParams;
 }
 
-std::string baseNode::getDetails() const { 
+std::string baseNode::getDetails() const {
   std::string defs = " childDefs=\"";
   if (childDefs.size()){
     for (auto &it : childDefs){
@@ -81,7 +81,7 @@ void baseNode::setParamUses() const {
     if (temp.size()>childParams.size()){
       childParams = temp;
     }
-    
+
     //childParams.insert(childParams.end(), temp.begin(), temp.end());
   }
 }
@@ -108,16 +108,11 @@ Context baseNode::generate_assembly(Context ctxt, int d) const {
   return ctxt;
 }
 
-// void baseNode::python_print(std::ostream &stream) const {
-//   tab(stream);
-//   stream << getHeader() << std::endl;
-//   tab_incr();
-//   for (auto &it : getChildren()){
-//     it->python_print(stream);
-//   }
-//   tab_decr();
-//   tab(stream);
-//   stream << getFooter() << std::endl;
+void baseNode::python_print(std::ostream &stream) const {
+    for (auto &it : getChildren()){
+        it->python_print(stream);
+    }
+}
 
   ///////////////////////////////////////////////////////////////////
 /*
@@ -135,11 +130,11 @@ std::string DeclarationList::getNodeType() const    { return "DeclarationList"; 
 std::string ParameterList::getNodeType() const      { return "ParameterList"; }
 std::string ExprList::getNodeType() const           { return "ExprList"; }
 
-std::vector<const baseNode *> List::getChildren() const { 
+std::vector<const baseNode *> List::getChildren() const {
   if (!children.size()){
       std::cerr << "Does not have any children" << std::endl;
   }
-  return children; 
+  return children;
 };
 
 std::vector<const baseNode *> ExprList::getChildren() const {
@@ -180,15 +175,15 @@ Context TranslationUnit::generate_assembly(Context ctxt, int d) const {
     ctxt.ss() <<  "\t.module	fp=xx"          << std::endl;
     ctxt.ss() <<  "\t.module	nooddspreg"     << std::endl;
     ctxt.ss() <<  "\t.abicalls"               << std::endl;
-    
+
     // Assign string
     for (auto &it: getStrings()){
         ctxt.ss() << "# string " << it << std::endl;
         ctxt.addString(it);
   }
-  
+
   ctxt.createStrings();
-  
+
   for (auto &it : getChildren()){
     if (it->getNodeType()=="Declaration"){
       for (auto &it2 : it->getChildren()){
@@ -212,7 +207,7 @@ Context TranslationUnit::generate_assembly(Context ctxt, int d) const {
       }
     }
   }
-  
+
   ctxt.ss() << "\t.text\n";
   for (auto &it : getChildren()){
     if (it->getNodeType()!="Declaration"){
@@ -227,7 +222,7 @@ Context ExprList::generate_assembly(Context ctxt, int d) const{
     it->generate_assembly(ctxt,d);
   }
   return ctxt;
-} 
+}
 
 /*
    PRINT PYTHON
@@ -242,13 +237,11 @@ void List::python_print(std::ostream &stream) const {
 void MultiList::python_print(std::ostream &stream) const {
   if (getChildren().size() != 0) {
     tab(stream);
-    stream << getHeader() << std::endl;
     tab_incr();
     for (auto &it : getChildren()){
       it->python_print(stream);
     }
     tab(stream,false);
-    stream << getFooter() << std::endl;
   } else {
     tab_decr();
   }
@@ -264,7 +257,6 @@ void ParameterList::python_print(std::ostream &stream) const{
   }
 };
 
-void ExprList::python_print(std::ostream &stream) const{  
+void ExprList::python_print(std::ostream &stream) const{
     List::python_print(sstream);
 };
-

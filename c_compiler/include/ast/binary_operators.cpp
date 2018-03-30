@@ -9,10 +9,10 @@ BinaryExpression::BinaryExpression(const Expression *_left, const Expression *_r
 /* GETTERS */
 
 std::string BinaryExpression::getNodeType() const {
-  return "BinaryExpression"; 
+  return "BinaryExpression";
 }
-std::string AssignmentExpression::getNodeType() const { 
-  return "AssignmentExpression"; 
+std::string AssignmentExpression::getNodeType() const {
+  return "AssignmentExpression";
 }
 std::string BinaryExpression::getDetails() const {
    return " op=\"" + getOp() + "\" " + Node::getDetails();
@@ -25,7 +25,7 @@ std::vector<const baseNode *> BinaryExpression::getChildren() const {
 
 std::vector<std::string> BinaryExpression::getTypeVec() const {
   std::vector<std::string> valA,valB;
-  
+
   valA = left->getTypeVec();
   valB = right->getTypeVec();
   for (int i = 0; i < 4; i++){
@@ -39,7 +39,7 @@ std::vector<std::string> BinaryExpression::getTypeVec() const {
 
 Context BinaryExpression::generate_assembly(Context ctxt, int d) const {
 
-  
+
   std::string end = "bend" + genUniqueID();
   if (!(op=="&&" || op=="||")){
     // Compile the left into a specific register, no short circuiting required.
@@ -51,7 +51,7 @@ Context BinaryExpression::generate_assembly(Context ctxt, int d) const {
   }
   else if (op=="||"){
     // SHORT CIRCUITING-> If either side !=0, set to 1
-    
+
     // LHS
     getLeft()->generate_assembly(ctxt,3);
     ctxt.ss() << "\tsltu\t$" << d << ",$0,$3" <<" # checking if left > zero"    << std::endl;
@@ -76,8 +76,8 @@ Context BinaryExpression::generate_assembly(Context ctxt, int d) const {
     ctxt.ss() << "\tsltu\t $" << d << ",$0,$3" << " # checking if left > zero"  << std::endl;
     ctxt.ss() << "\tbeq\t$"  << d << ",$0," << end << " # if=0, short circuit"  << std::endl;
     ctxt.ss() << "\tnop"                                                        << std::endl;
-    ctxt.pop(3);    
-    
+    ctxt.pop(3);
+
     // RHS
     getRight()->generate_assembly(ctxt,2);
     ctxt.pop(3);
@@ -93,7 +93,7 @@ Context BinaryExpression::generate_assembly(Context ctxt, int d) const {
     NORMAL CASES
 */
 
-  // Arithmetic 
+  // Arithmetic
   if (op == "+"){
     ctxt.ss() << "\tadd\t$" << d << ",$3,$2" << " # add $3 and $2 to $" << d    << std::endl;
   } else if (op=="-"){
@@ -108,7 +108,7 @@ Context BinaryExpression::generate_assembly(Context ctxt, int d) const {
   }
 
 
-  // Binary 
+  // Binary
   else if (op=="^"){
     ctxt.ss() << "\txor\t$" << d << ",$3,$2" << " # $3xor$2 to $" << d          << std::endl;
   }
@@ -118,7 +118,7 @@ Context BinaryExpression::generate_assembly(Context ctxt, int d) const {
   else if (op=="|"){
     ctxt.ss() << "\tor\t$" << d << ",$3,$2" << " # $3or$2 to $" << d            << std::endl;
   }
-  
+
 
   // Relational
   else if (op=="<"){
@@ -146,8 +146,8 @@ Context BinaryExpression::generate_assembly(Context ctxt, int d) const {
   } else {
     ctxt.ss() << "### INVALID OPERATOR -> \'" << op << "\' <-  CHECK AGAIN  (OR IT ISNT WORKING xD)" << std::endl;
   }
-  
-  
+
+
   return ctxt;
 }
 
@@ -174,7 +174,7 @@ Context AssignmentExpression::generate_assembly(Context ctxt, int d) const {
     getRight()->generate_assembly(ctxt,2);
     ctxt.pop(3);
   }
-  
+
   if (op == "*=") {
     ctxt.ss() << "\tmul\t$2,$3,$2" << " # mul $3*$2"        << std::endl;
   } else if (op == "/=") {
@@ -201,6 +201,5 @@ Context AssignmentExpression::generate_assembly(Context ctxt, int d) const {
 }
 
 void BinaryExpression::python_print(std::ostream &stream) const {
-  
-  stream << "PYTHON NEEDS TO BE IMPLEMENTED" << std::endl;
+    std::cout << left->python_print(stream); << op << right->python_print(stream); endline
 };
