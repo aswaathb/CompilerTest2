@@ -186,7 +186,7 @@ private:
   const Statement *stat;
 public:
   virtual ~LabeledStatement(){};
-  LabeledStatement(std::string *_id, const Statement *_stat) : stat(_stat), id(*_id) {};
+  LabeledStatement(std::string *_id, const Statement *_stat) : id(*_id), stat(_stat) {};
 
   std::string getNodeType() const override;
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;

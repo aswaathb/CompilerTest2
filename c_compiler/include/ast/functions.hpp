@@ -11,7 +11,7 @@ class Function : public baseNode {
 private:
   const Type * type; 
   std::string id; 
-  const FunctionDeclarator * declarator; 
+  const FunctionDeclarator *declarator; 
   const CompoundStatement *statement;
 
 public:

@@ -46,7 +46,7 @@
 
 
 
-%type <node> ROOT TRANSLATION_UNIT EXTERNAL_DECLARATION DECLARATOR DIRECT_DECLARATOR INIT_DECLARATOR  
+%type <node> ROOT TRANSLATION_UNIT EXTERNAL_DECLARATION DECLARATOR DIRECT_DECLARATOR INIT_DECLARATOR  PARAMETER_DECLARATOR
 
 %type <decl> DECLARATION
 
@@ -54,9 +54,9 @@
 
 %type <exprstat> EXPRESSION_STATEMENT
 
-%type <func> FUNCTION_DEFINITION
+//%type <func> FUNCTION_DEFINITION
 
-%type <list> IDENTIFIER_LIST PARAMETER_LIST STATEMENT_LIST DECLARATION_SEQ INIT_DECLARATOR_LIST  EXPRESSION_LIST
+%type <list> IDENTIFIER_LIST PARAMETER_LIST STATEMENT_LIST DECLARATION_SEQ INIT_DECLARATOR_LIST EXPRESSION_LIST DECLARATION_LIST
 
 %type <stat> STATEMENT COMPOUND_STATEMENT SELECTION_STATEMENT ITERATION_STATEMENT JUMP_STATEMENT
 
@@ -77,18 +77,16 @@ TRANSLATION_UNIT
 	| TRANSLATION_UNIT EXTERNAL_DECLARATION											{ $$->add($2);}
 
 // EXTERNAL DECLARATIONS
+
 EXTERNAL_DECLARATION
 	: DECLARATION             														{ $$ = $1;}
-	| FUNCTION_DEFINITION     														{ $$ = $1;}
+	| DECLARATION_SPECIFIER DECLARATOR COMPOUND_STATEMENT    						{ $$ = new Function($1, $2, $3);}
 
 // FUNCTIONS - INITIALLY SMALLER TO BE MORE MANAGEABLE
 
-FUNCTION_DEFINITION
-	: DECLARATOR COMPOUND_STATEMENT													{ $$ = new FunctionDefinition($1, $2);} ///????
-	// | DECLARATION-SPECIFIERS DECLARATOR COMPOUND-STATEMENT						{ $$ = new Function($1, $2, $3);}
-	// | DECLARATION-SPECIFIERS DECLARATOR DECLARATION-LIST COMPOUND-STATEMENT		{ $$ = new Function($2, $3, $4);}
-	// | DECLARATOR DECLARATION-LIST COMPOUND-STATEMENT								{ $$ = new ErrorStopper();} ///????
-
+//FUNCTION_DEFINITION
+	//| 							{ $$ = new Function($1, $2, $3);}
+	//| DECLARATION_SPECIFIER DECLARATOR DECLARATION_LIST COMPOUND_STATEMENT			{ $$ = new Function($2, $3, $4);}
 
 ///////////////////////////////////////// STATEMENTS /////////////////////////////////////////////////////////////////////////////////
 
@@ -117,7 +115,7 @@ SELECTION_STATEMENT
 
 ITERATION_STATEMENT // start with one
 	: WHILE L_BRAC EXPRESSION R_BRAC STATEMENT											  { $$ = new WhileStatement($3, $5);} 
-	| DO STATEMENT WHILE L_BRAC EXPRESSION R_BRAC										  { $$ = new DoWhileStatement($2, $5);} 
+	| DO STATEMENT WHILE L_BRAC EXPRESSION R_BRAC										  { $$ = new DoWhileStatement($5, $2);} 
 	| FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT R_BRAC STATEMENT				  { $$ = new ExprExprFor($3, $4, $6);}
 	| FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT	  { $$ = new ExprExprExprFor($3, $4, $5, $7);} 
 	| FOR L_BRAC DECLARATION EXPRESSION_STATEMENT R_BRAC STATEMENT						  { $$ = new DecExprFor($3, $4, $6);} 
@@ -273,7 +271,7 @@ ASSIGNMENT_OP
 ///////////////////////////////////////////////////////////////// DECLARATIONS ///////////////////////////////////////////////////////////////////
 
 DECLARATION_SEQ
-	: DECLARATION																	{ $$ = new DeclarationList($1);}
+	: DECLARATION																	{ $$ = new DeclarationList({$1});}
 	| DECLARATION_SEQ DECLARATION													{ $$ -> add($2); }
 
 DECLARATION
@@ -282,9 +280,9 @@ DECLARATION
 
 DECLARATION_SPECIFIER	
 	: TYPE_SPECIFIER																{ $$ = $1 ; }
-	| CONST																			{ $$ = new Type(const) ; }
+	| CONST																			{ $$ = new Type(Const) ; }
 	| TYPE_SPECIFIER DECLARATION_SPECIFIER											{ $2->add($1); $$ = $2; delete $1; }
-	| CONST DECLARATION_SPECIFIER													{ $2->add(new Type(const) ); $$ = $2; delete $1; }
+	| CONST DECLARATION_SPECIFIER													{ $2->add(new Type(Const) ); $$ = $2; delete $1; }
 
 TYPE_SPECIFIER
 	: VOID			          														{ $$ = new Type(Void);}
@@ -294,16 +292,16 @@ TYPE_SPECIFIER
 	| LONG			        														{ $$ = new Type(Long);}
 	| FLOAT			          														{ $$ = new Type(Float);}
 	| DOUBLE		        														{ $$ = new Type(Double);}
-	| SIGNED		        														{ $$ = new Type(Signed);}
-	| UNSIGNED		      															{ $$ = new Type(Unsigned);}
+	| SIGNED		        														{ $$ = new Type(1);}
+	| UNSIGNED		      															{ $$ = new Type(0);}
 
 INIT_DECLARATOR_LIST
-	: INIT_DECLARATOR	                                  							{ $$ = new DeclarationList($1); }
+	: INIT_DECLARATOR	                                  							{ $$ = new DeclarationList({$1}); }
 	| INIT_DECLARATOR_LIST COMMA INIT_DECLARATOR									{ $$ -> add($3); }
 
 INIT_DECLARATOR
 	: DECLARATOR		                      										{ $$ = $1; }
-	//| DECLARATOR EQUAL INITIALIZER													{ $$ = new InitDeclarator($1,$3); if ($1->getPtr()){$$->setPtr();} } //TOO HARD!!!!
+	| DECLARATOR EQUAL INITIALIZER													{ $$ = new InitDeclarator($1,$3); if ($1->getPtr()){$$->setPtr();} } //TOO HARD!!!!
 
 INITIALIZER
 	: ASSIGNMENT_EXPRESSION															{ $$ = $1; }
@@ -318,7 +316,7 @@ IDENTIFIER_LIST
 DIRECT_DECLARATOR
 	: L_BRAC DECLARATOR R_BRAC														{ $$ = $2; }
 	| IDENTIFIER																	{ $$ = new Variable($1);}
-	| L_BRAC R_BRAC DECLARATOR														{ $$ = $2; }
+	| L_BRAC R_BRAC DECLARATOR														{ $$ = $3; }
 	| DIRECT_DECLARATOR L_SQUARE R_SQUARE											{ $$ = new ArrayDeclarator($1, new Constant("-1")); } 	// Undefined Array 
 	| DIRECT_DECLARATOR L_BRAC R_BRAC												{ $$ = new FunctionDeclarator($1,( new List({}) ) ); } 	// Nullary Function
 	| DIRECT_DECLARATOR L_BRAC PARAMETER_LIST R_BRAC				                { $$ = new FunctionDeclarator($1, $3); } 				// Unary|Binary Function 
@@ -326,7 +324,12 @@ DIRECT_DECLARATOR
 
 PARAMETER_LIST 
 	: DECLARATION_SPECIFIER DECLARATOR												{ $$ = new ParameterList({ new Declaration($1, new DeclarationList({ $2 }) ) }); }
-	| PARAMETER_LIST COMMA DECLARATION_SPECIFIER DECLARATOR							{ $$ -> add(new Declaration($1, new DeclarationList({$2}) ) ); }
+	//| PARAMETER_LIST COMMA DECLARATION_SPECIFIER DECLARATOR							{ $$ -> add(new Declaration($1, add(new DeclarationList({$4}) )) ); }
+	| PARAMETER_LIST COMMA PARAMETER_DECLARATOR										{ $$ -> add($3); }
+
+PARAMETER_DECLARATOR
+	: DECLARATION_SPECIFIER DECLARATOR												{ $$ = new Declaration($1, new DeclarationList({$2}) ); }
+
 
 /////////////////////////////////////////////////////////////////// END OF GRAMMAR RULES /////////////////////////////////////////////////////////////////////////
 
