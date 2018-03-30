@@ -1,0 +1,204 @@
+g++ -std=c++11 -W -Wall -g -Wno-unused-parameter -I include -o bin/print_canonical src/print_canonical.o src/parser.tab.o src/lexer.yy.o
+src/parser.tab.o: In function `yyparse()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:95: undefined reference to `Function::Function(baseNode const*, baseNode const*, baseNode const*)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:164: undefined reference to `BinaryExpression::BinaryExpression(Expression const*, Expression const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:169: undefined reference to `BinaryExpression::BinaryExpression(Expression const*, Expression const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:174: undefined reference to `BinaryExpression::BinaryExpression(Expression const*, Expression const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:178: undefined reference to `BinaryExpression::BinaryExpression(Expression const*, Expression const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:182: undefined reference to `BinaryExpression::BinaryExpression(Expression const*, Expression const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)'
+src/parser.tab.o:/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:186: more undefined references to `BinaryExpression::BinaryExpression(Expression const*, Expression const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)' follow
+src/parser.tab.o: In function `yyparse()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:260: undefined reference to `StringLiteral::StringLiteral(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:265: undefined reference to `IntConstant::IntConstant(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:266: undefined reference to `FloatConstant::FloatConstant(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:267: undefined reference to `CharConstant::CharConstant(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:295: undefined reference to `Type::Type(int)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:296: undefined reference to `Type::add(Type const*) const'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:297: undefined reference to `Type::Type(int)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:297: undefined reference to `Type::add(Type const*) const'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:300: undefined reference to `Type::Type(int)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:301: undefined reference to `Type::Type(int)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:302: undefined reference to `Type::Type(int)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:303: undefined reference to `Type::Type(int)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:304: undefined reference to `Type::Type(int)'
+src/parser.tab.o:/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:305: more undefined references to `Type::Type(int)' follow
+src/parser.tab.o: In function `yyparse()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/src/parser.y:332: undefined reference to `Constant::Constant(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)'
+src/parser.tab.o: In function `Statement::~Statement()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/base_expr.hpp:9: undefined reference to `baseNode::~baseNode()'
+src/parser.tab.o: In function `Expression::~Expression()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/base_expr.hpp:16: undefined reference to `vtable for Expression'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/base_expr.hpp:16: undefined reference to `vtable for Expression'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/base_expr.hpp:16: undefined reference to `baseNode::~baseNode()'
+src/parser.tab.o: In function `Expression::Expression()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/base_expr.hpp:14: undefined reference to `baseNode::baseNode()'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/base_expr.hpp:14: undefined reference to `vtable for Expression'
+src/parser.tab.o: In function `Expression_Null::Expression_Null()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/base_expr.hpp:28: undefined reference to `vtable for Expression_Null'
+src/parser.tab.o: In function `TernaryExpression::TernaryExpression(Expression const*, Expression const*, Expression const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/base_expr.hpp:47: undefined reference to `vtable for TernaryExpression'
+src/parser.tab.o: In function `List::List(std::vector<baseNode const*, std::allocator<baseNode const*> >)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/lists.hpp:18: undefined reference to `baseNode::baseNode()'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/lists.hpp:18: undefined reference to `vtable for List'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/lists.hpp:18: undefined reference to `baseNode::~baseNode()'
+src/parser.tab.o: In function `MultiList::MultiList(std::vector<baseNode const*, std::allocator<baseNode const*> >)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/lists.hpp:40: undefined reference to `vtable for MultiList'
+src/parser.tab.o: In function `TranslationUnit::TranslationUnit(std::vector<baseNode const*, std::allocator<baseNode const*> >)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/lists.hpp:54: undefined reference to `vtable for TranslationUnit'
+src/parser.tab.o: In function `DeclarationList::DeclarationList(std::vector<baseNode const*, std::allocator<baseNode const*> >)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/lists.hpp:64: undefined reference to `vtable for DeclarationList'
+src/parser.tab.o: In function `ParameterList::ParameterList(std::vector<baseNode const*, std::allocator<baseNode const*> >)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/lists.hpp:74: undefined reference to `vtable for ParameterList'
+src/parser.tab.o: In function `ExprList::ExprList(std::vector<baseNode const*, std::allocator<baseNode const*> >)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/lists.hpp:84: undefined reference to `vtable for ExprList'
+src/parser.tab.o: In function `DeclaratorBase::DeclaratorBase()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/declaration.hpp:12: undefined reference to `baseNode::baseNode()'
+src/parser.tab.o: In function `DeclaratorBase::~DeclaratorBase()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/declaration.hpp:12: undefined reference to `baseNode::~baseNode()'
+src/parser.tab.o: In function `Declarator::Declarator(baseNode const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/declaration.hpp:19: undefined reference to `vtable for Declarator'
+src/parser.tab.o: In function `InitDeclarator::InitDeclarator(baseNode const*, Expression const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/declaration.hpp:35: undefined reference to `vtable for InitDeclarator'
+src/parser.tab.o: In function `ArrayDeclarator::ArrayDeclarator(baseNode const*, Expression const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/declaration.hpp:44: undefined reference to `vtable for ArrayDeclarator'
+src/parser.tab.o: In function `FunctionDeclarator::FunctionDeclarator(baseNode const*, List const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/declaration.hpp:53: undefined reference to `vtable for FunctionDeclarator'
+src/parser.tab.o: In function `Declaration::Declaration(Type const*, List const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/declaration.hpp:64: undefined reference to `vtable for Declaration'
+src/parser.tab.o: In function `Statement::Statement()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/base_expr.hpp:7: undefined reference to `baseNode::baseNode()'
+src/parser.tab.o: In function `ExprStatement::ExprStatement(Expression const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:15: undefined reference to `vtable for ExprStatement'
+src/parser.tab.o: In function `ConditionalStatement::ConditionalStatement(Statement const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:37: undefined reference to `vtable for ConditionalStatement'
+src/parser.tab.o: In function `CompoundStatement::CompoundStatement()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:60: undefined reference to `vtable for CompoundStatement'
+src/parser.tab.o: In function `CompoundStatement::CompoundStatement(List const*, List const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:61: undefined reference to `vtable for CompoundStatement'
+src/parser.tab.o: In function `SelectionStatement::SelectionStatement(Expression const*, Statement const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:75: undefined reference to `vtable for SelectionStatement'
+src/parser.tab.o: In function `IfStatement::IfStatement(Expression const*, Statement const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:90: undefined reference to `vtable for IfStatement'
+src/parser.tab.o: In function `IfElseStatement::IfElseStatement(Expression const*, Statement const*, Statement const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:104: undefined reference to `vtable for IfElseStatement'
+src/parser.tab.o: In function `SwitchStatement::SwitchStatement(Expression const*, Statement const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:117: undefined reference to `vtable for SwitchStatement'
+src/parser.tab.o: In function `JumpStatement::JumpStatement()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:129: undefined reference to `vtable for JumpStatement'
+src/parser.tab.o: In function `JumpStatement::~JumpStatement()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:130: undefined reference to `vtable for JumpStatement'
+src/parser.tab.o: In function `GotoStatement::GotoStatement(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:142: undefined reference to `vtable for GotoStatement'
+src/parser.tab.o: In function `ContinueStatement::ContinueStatement()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:152: undefined reference to `vtable for ContinueStatement'
+src/parser.tab.o: In function `BreakStatement::BreakStatement()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:163: undefined reference to `vtable for BreakStatement'
+src/parser.tab.o: In function `ReturnStatement::ReturnStatement(ExprStatement const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:178: undefined reference to `vtable for ReturnStatement'
+src/parser.tab.o: In function `Iteration::Iteration(Statement const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:231: undefined reference to `vtable for Iteration'
+src/parser.tab.o: In function `WhileStatement::WhileStatement(Expression const*, Statement const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:250: undefined reference to `vtable for WhileStatement'
+src/parser.tab.o: In function `DoWhileStatement::DoWhileStatement(Expression const*, Statement const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:264: undefined reference to `vtable for DoWhileStatement'
+src/parser.tab.o: In function `ForStatementBase::ForStatementBase(ExprStatement const*, Statement const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:276: undefined reference to `vtable for ForStatementBase'
+src/parser.tab.o: In function `ExprExprFor::ExprExprFor(ExprStatement const*, ExprStatement const*, Statement const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:290: undefined reference to `vtable for ExprExprFor'
+src/parser.tab.o: In function `ExprExprExprFor::ExprExprExprFor(ExprStatement const*, ExprStatement const*, Expression const*, Statement const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:304: undefined reference to `vtable for ExprExprExprFor'
+src/parser.tab.o: In function `DecExprFor::DecExprFor(Declaration const*, ExprStatement const*, Statement const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:318: undefined reference to `vtable for DecExprFor'
+src/parser.tab.o: In function `DecExprExprFor::DecExprExprFor(Declaration const*, ExprStatement const*, Expression const*, Statement const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/statement.hpp:333: undefined reference to `vtable for DecExprExprFor'
+src/parser.tab.o: In function `UnaryExpression::~UnaryExpression()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/unary_expr.hpp:14: undefined reference to `vtable for UnaryExpression'
+src/parser.tab.o: In function `UnaryExpression::UnaryExpression(Expression const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/unary_expr.hpp:17: undefined reference to `vtable for UnaryExpression'
+src/parser.tab.o: In function `UnaryExpression::UnaryExpression(Expression const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/unary_expr.hpp:18: undefined reference to `vtable for UnaryExpression'
+src/parser.tab.o: In function `UnaryExpression::UnaryExpression(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/unary_expr.hpp:19: undefined reference to `vtable for UnaryExpression'
+src/parser.tab.o: In function `PostfixExpr::PostfixExpr(Expression const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/unary_expr.hpp:28: undefined reference to `vtable for PostfixExpr'
+src/parser.tab.o: In function `PostfixExpr::PostfixExpr(Expression const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/unary_expr.hpp:29: undefined reference to `vtable for PostfixExpr'
+src/parser.tab.o: In function `PrefixExpr::PrefixExpr(Expression const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/unary_expr.hpp:40: undefined reference to `vtable for PrefixExpr'
+src/parser.tab.o: In function `PrefixExpr::PrefixExpr(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/unary_expr.hpp:43: undefined reference to `vtable for PrefixExpr'
+src/parser.tab.o: In function `CastExpr::CastExpr(Expression const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/unary_expr.hpp:53: undefined reference to `vtable for CastExpr'
+src/parser.tab.o: In function `PostfixExpr::~PostfixExpr()':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/unary_expr.hpp:26: undefined reference to `vtable for PostfixExpr'
+src/parser.tab.o: In function `FunctionCall::FunctionCall(Expression const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/unary_expr.hpp:63: undefined reference to `vtable for FunctionCall'
+src/parser.tab.o: In function `SquareOperator::SquareOperator(Expression const*, Expression const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/unary_expr.hpp:78: undefined reference to `vtable for SquareOperator'
+src/parser.tab.o: In function `Variable::Variable(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/variables.hpp:15: undefined reference to `vtable for Variable'
+src/parser.tab.o: In function `AssignmentExpression::AssignmentExpression(Expression const*, Expression const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)':
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/binary_operators.hpp:38: undefined reference to `BinaryExpression::BinaryExpression(Expression const*, Expression const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*)'
+/mnt/c/Users/aswaa/OneDrive/Documents/GitHub/langproc-2017-cw-Fsociety/c_compiler/include/ast/binary_operators.hpp:38: undefined reference to `vtable for AssignmentExpression'
+src/parser.tab.o:(.rodata._ZTV13ArrowOperator[_ZTV13ArrowOperator]+0x20): undefined reference to `PostfixExpr::getNodeType[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV13ArrowOperator[_ZTV13ArrowOperator]+0x28): undefined reference to `baseNode::getDetails[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV13ArrowOperator[_ZTV13ArrowOperator]+0x30): undefined reference to `baseNode::add(baseNode const*) const'
+src/parser.tab.o:(.rodata._ZTV13ArrowOperator[_ZTV13ArrowOperator]+0x50): undefined reference to `baseNode::getChildDefs[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV13ArrowOperator[_ZTV13ArrowOperator]+0x58): undefined reference to `baseNode::getChildParams[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV13ArrowOperator[_ZTV13ArrowOperator]+0x60): undefined reference to `baseNode::addString(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) const'
+src/parser.tab.o:(.rodata._ZTV13ArrowOperator[_ZTV13ArrowOperator]+0x68): undefined reference to `baseNode::getStrings[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV13ArrowOperator[_ZTV13ArrowOperator]+0x70): undefined reference to `baseNode::setChildDefs() const'
+src/parser.tab.o:(.rodata._ZTV13ArrowOperator[_ZTV13ArrowOperator]+0x78): undefined reference to `baseNode::setParamUses() const'
+src/parser.tab.o:(.rodata._ZTV13ArrowOperator[_ZTV13ArrowOperator]+0x80): undefined reference to `Expression::python_print(std::ostream&) const'
+src/parser.tab.o:(.rodata._ZTV13ArrowOperator[_ZTV13ArrowOperator]+0x88): undefined reference to `PostfixExpr::generate_assembly(Context, int) const'
+src/parser.tab.o:(.rodata._ZTV11DotOperator[_ZTV11DotOperator]+0x20): undefined reference to `PostfixExpr::getNodeType[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV11DotOperator[_ZTV11DotOperator]+0x28): undefined reference to `baseNode::getDetails[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV11DotOperator[_ZTV11DotOperator]+0x30): undefined reference to `baseNode::add(baseNode const*) const'
+src/parser.tab.o:(.rodata._ZTV11DotOperator[_ZTV11DotOperator]+0x50): undefined reference to `baseNode::getChildDefs[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV11DotOperator[_ZTV11DotOperator]+0x58): undefined reference to `baseNode::getChildParams[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV11DotOperator[_ZTV11DotOperator]+0x60): undefined reference to `baseNode::addString(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) const'
+src/parser.tab.o:(.rodata._ZTV11DotOperator[_ZTV11DotOperator]+0x68): undefined reference to `baseNode::getStrings[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV11DotOperator[_ZTV11DotOperator]+0x70): undefined reference to `baseNode::setChildDefs() const'
+src/parser.tab.o:(.rodata._ZTV11DotOperator[_ZTV11DotOperator]+0x78): undefined reference to `baseNode::setParamUses() const'
+src/parser.tab.o:(.rodata._ZTV11DotOperator[_ZTV11DotOperator]+0x80): undefined reference to `Expression::python_print(std::ostream&) const'
+src/parser.tab.o:(.rodata._ZTV11DotOperator[_ZTV11DotOperator]+0x88): undefined reference to `PostfixExpr::generate_assembly(Context, int) const'
+src/parser.tab.o:(.rodata._ZTV14StructOperator[_ZTV14StructOperator]+0x20): undefined reference to `PostfixExpr::getNodeType[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV14StructOperator[_ZTV14StructOperator]+0x28): undefined reference to `baseNode::getDetails[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV14StructOperator[_ZTV14StructOperator]+0x30): undefined reference to `baseNode::add(baseNode const*) const'
+src/parser.tab.o:(.rodata._ZTV14StructOperator[_ZTV14StructOperator]+0x50): undefined reference to `baseNode::getChildDefs[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV14StructOperator[_ZTV14StructOperator]+0x58): undefined reference to `baseNode::getChildParams[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV14StructOperator[_ZTV14StructOperator]+0x60): undefined reference to `baseNode::addString(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) const'
+src/parser.tab.o:(.rodata._ZTV14StructOperator[_ZTV14StructOperator]+0x68): undefined reference to `baseNode::getStrings[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV14StructOperator[_ZTV14StructOperator]+0x70): undefined reference to `baseNode::setChildDefs() const'
+src/parser.tab.o:(.rodata._ZTV14StructOperator[_ZTV14StructOperator]+0x78): undefined reference to `baseNode::setParamUses() const'
+src/parser.tab.o:(.rodata._ZTV14StructOperator[_ZTV14StructOperator]+0x80): undefined reference to `Expression::python_print(std::ostream&) const'
+src/parser.tab.o:(.rodata._ZTV14StructOperator[_ZTV14StructOperator]+0x88): undefined reference to `PostfixExpr::generate_assembly(Context, int) const'
+src/parser.tab.o:(.rodata._ZTV14DeclaratorBase[_ZTV14DeclaratorBase]+0x20): undefined reference to `baseNode::getNodeType[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV14DeclaratorBase[_ZTV14DeclaratorBase]+0x28): undefined reference to `baseNode::getDetails[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV14DeclaratorBase[_ZTV14DeclaratorBase]+0x30): undefined reference to `baseNode::add(baseNode const*) const'
+src/parser.tab.o:(.rodata._ZTV14DeclaratorBase[_ZTV14DeclaratorBase]+0x48): undefined reference to `baseNode::getId[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV14DeclaratorBase[_ZTV14DeclaratorBase]+0x50): undefined reference to `baseNode::getChildDefs[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV14DeclaratorBase[_ZTV14DeclaratorBase]+0x58): undefined reference to `baseNode::getChildParams[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV14DeclaratorBase[_ZTV14DeclaratorBase]+0x60): undefined reference to `baseNode::addString(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) const'
+src/parser.tab.o:(.rodata._ZTV14DeclaratorBase[_ZTV14DeclaratorBase]+0x68): undefined reference to `baseNode::getStrings[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV14DeclaratorBase[_ZTV14DeclaratorBase]+0x70): undefined reference to `baseNode::setChildDefs() const'
+src/parser.tab.o:(.rodata._ZTV14DeclaratorBase[_ZTV14DeclaratorBase]+0x78): undefined reference to `baseNode::setParamUses() const'
+src/parser.tab.o:(.rodata._ZTV14DeclaratorBase[_ZTV14DeclaratorBase]+0x80): undefined reference to `baseNode::python_print(std::ostream&) const'
+src/parser.tab.o:(.rodata._ZTV14DeclaratorBase[_ZTV14DeclaratorBase]+0x88): undefined reference to `baseNode::generate_assembly(Context, int) const'
+src/parser.tab.o:(.rodata._ZTV9Statement[_ZTV9Statement]+0x28): undefined reference to `baseNode::getDetails[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV9Statement[_ZTV9Statement]+0x30): undefined reference to `baseNode::add(baseNode const*) const'
+src/parser.tab.o:(.rodata._ZTV9Statement[_ZTV9Statement]+0x48): undefined reference to `baseNode::getId[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV9Statement[_ZTV9Statement]+0x50): undefined reference to `baseNode::getChildDefs[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV9Statement[_ZTV9Statement]+0x58): undefined reference to `baseNode::getChildParams[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV9Statement[_ZTV9Statement]+0x60): undefined reference to `baseNode::addString(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) const'
+src/parser.tab.o:(.rodata._ZTV9Statement[_ZTV9Statement]+0x68): undefined reference to `baseNode::getStrings[abi:cxx11]() const'
+src/parser.tab.o:(.rodata._ZTV9Statement[_ZTV9Statement]+0x70): undefined reference to `baseNode::setChildDefs() const'
+src/parser.tab.o:(.rodata._ZTV9Statement[_ZTV9Statement]+0x78): undefined reference to `baseNode::setParamUses() const'
+src/parser.tab.o:(.rodata._ZTV9Statement[_ZTV9Statement]+0x80): undefined reference to `baseNode::python_print(std::ostream&) const'
+src/parser.tab.o:(.rodata._ZTV9Statement[_ZTV9Statement]+0x88): undefined reference to `baseNode::generate_assembly(Context, int) const'
+src/parser.tab.o:(.rodata._ZTI14StructOperator[_ZTI14StructOperator]+0x10): undefined reference to `typeinfo for PostfixExpr'
+src/parser.tab.o:(.rodata._ZTI14DeclaratorBase[_ZTI14DeclaratorBase]+0x10): undefined reference to `typeinfo for baseNode'
+src/parser.tab.o:(.rodata._ZTI9Statement[_ZTI9Statement]+0x10): undefined reference to `typeinfo for baseNode'
+collect2: error: ld returned 1 exit status
+makefile:13: recipe for target 'bin/print_canonical' failed
+make: *** [bin/print_canonical] Error 1
