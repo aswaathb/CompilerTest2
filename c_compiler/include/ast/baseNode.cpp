@@ -3,8 +3,6 @@
 #include "declaration.hpp"
 #include "statement.hpp"
 
-baseNode::baseNode() : sourceline(yylsourcelino), sourcecol(yylcolno) {};
-
 /*
    GETTERS
  */
