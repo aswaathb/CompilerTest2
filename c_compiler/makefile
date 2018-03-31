@@ -1,4 +1,6 @@
-CPPFLAGS += -std=c++11 -W -Wall -g -Wno-unused-parameter
+CPPFLAGS += -std=c++11 -W -Wall -g -Wno-unused-parameter -D_GLIBCXX_USE_CXX11_ABI=0
+
+
 CPPFLAGS += -I include
 
 all : bin/print_canonical bin/eval_expr
