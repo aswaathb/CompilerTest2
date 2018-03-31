@@ -9,7 +9,6 @@
 	#include "ast/functions.hpp"
 	#include "ast/statement.hpp"
 	#include "ast/types.hpp"
-	#include "ast/unary_expr.hpp"
 	#include "ast/variables.hpp"
 
 	#include <string>
@@ -28,6 +27,7 @@
 // AST node.
 %union{
 	const baseNode 		*node;
+	const CompoundStatement *compstat;
 	const Declaration 	*decl;
 	const Expression 	*expr;
 	const ExprStatement *exprstat;
@@ -68,7 +68,9 @@
 
 %type <list> IDENTIFIER_LIST PARAMETER_LIST STATEMENT_LIST DECLARATION_SEQ INIT_DECLARATOR_LIST
 
-%type <stat> STATEMENT COMPOUND_STATEMENT SELECTION_STATEMENT ITERATION_STATEMENT JUMP_STATEMENT
+%type <stat> STATEMENT  SELECTION_STATEMENT ITERATION_STATEMENT JUMP_STATEMENT
+
+%type <compstat> COMPOUND_STATEMENT
 
 %type <type> DECLARATION_SPECIFIER TYPE_SPECIFIER CONST
 
@@ -290,12 +292,12 @@ DECLARATION_SPECIFIER
 	// | CONST DECLARATION_SPECIFIER													{ $2->add(new Type(Const) ); $$ = $2; delete $1; }
 
 TYPE_SPECIFIER
-	: VOID			          														{ $$ = new Type(Void);}
+	: VOID			          														{ $$ = new Type(0x2);}
 	// | CHAR			        														{ $$ = new Type(Char);}
-	| INT			            													{ $$ = new Type(Int);}
+	| INT			            													{ $$ = new Type(0x1);}
 	// | SHORT			        														{ $$ = new Type(Short);}
 	// | LONG			        														{ $$ = new Type(Long);}
-	| FLOAT			          														{ $$ = new Type(Float);}
+	| FLOAT			          														{ $$ = new Type(0x4);}
 	// | DOUBLE		        														{ $$ = new Type(Double);}
 	// | SIGNED		        														{ $$ = new Type(1);}
 	// | UNSIGNED		      															{ $$ = new Type(0);}

@@ -1,8 +1,8 @@
 #include "functions.hpp"
 
 
-Function::Function(const baseNode *_type, const baseNode *_dec, const baseNode *_stat)
-    : type((const Type *)_type), declarator((const FunctionDeclarator *)_dec), statement((const CompoundStatement *)_stat) {
+Function::Function(const Type *_type, const baseNode *_dec, const CompoundStatement *_stat)
+    : type(_type), declarator((const FunctionDeclarator *)_dec), statement(_stat) {
         id = declarator->getId(); //! Returns id of first child, won't have declaration lists of functions
       };
 

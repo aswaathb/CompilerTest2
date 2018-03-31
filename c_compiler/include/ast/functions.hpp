@@ -17,7 +17,7 @@ private:
 public:
   virtual ~Function(){};
 
-  Function(const baseNode *_type, const baseNode *_dec, const baseNode *_stat);
+  Function(const Type *_type, const baseNode *_dec, const Statement *_stat);
 
   //! Getters
   virtual std::string getType() const;
