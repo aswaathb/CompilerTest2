@@ -26,9 +26,9 @@ protected:
   mutable int p;
 
 public:
-  virtual ~baseNode(){} ;
+  virtual ~baseNode() { };
 
-  baseNode(){};
+  baseNode();
   //! Getters
   virtual std::string getNodeType() const;      //! Return the type of the node
   virtual std::string getDetails() const;
@@ -65,8 +65,7 @@ class List : public baseNode {
 protected:
   mutable std::vector<const baseNode *> children;
 public:
-  //! Initialise using brace initializer new List({arg1, arg2, arg3})
-  List(std::vector<const baseNode *> _children): children(_children) {};
+  List(std::vector<const baseNode *> _children): children(_children){ } ;
   
   //! Destructor for list
    virtual ~List(){};
