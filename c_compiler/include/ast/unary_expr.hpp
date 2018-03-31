@@ -68,38 +68,38 @@ public:
 };
 
 
-class SquareOperator : public PostfixExpr {
-private:
-  const Expression * arg;
-public:
-  SquareOperator(const Expression * _expr) : PostfixExpr(_expr) {};
-  SquareOperator(const Expression * _expr, const Expression * _arg) : PostfixExpr(_expr), arg(_arg) {};
-  virtual Context generate_assembly(Context ctxt, int d = 2) const override;
-  virtual std::string getNodeType() const override { return "SquareOperator";} ;
-  virtual std::vector<const baseNode *> getChildren() const override { return {child,arg};}
-  virtual std::string getId() const override { return child->getId(); };
-};
+// class SquareOperator : public PostfixExpr {
+// private:
+//   const Expression * arg;
+// public:
+//   SquareOperator(const Expression * _expr) : PostfixExpr(_expr) {};
+//   SquareOperator(const Expression * _expr, const Expression * _arg) : PostfixExpr(_expr), arg(_arg) {};
+//   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+//   virtual std::string getNodeType() const override { return "SquareOperator";} ;
+//   virtual std::vector<const baseNode *> getChildren() const override { return {child,arg};}
+//   virtual std::string getId() const override { return child->getId(); };
+// };
 
 
-class StructOperator : public PostfixExpr {
-private:
-  std::string id;
-public:
-  StructOperator(const Expression * _expr, std::string *_id) : PostfixExpr(_expr), id(*_id) {};
-};
+// class StructOperator : public PostfixExpr {
+// private:
+//   std::string id;
+// public:
+//   StructOperator(const Expression * _expr, std::string *_id) : PostfixExpr(_expr), id(*_id) {};
+// };
 
 
-class DotOperator : public StructOperator {
-public:
-  DotOperator(const Expression * _expr, std::string *_id) : StructOperator(_expr,_id) {};
-};
+// class DotOperator : public StructOperator {
+// public:
+//   DotOperator(const Expression * _expr, std::string *_id) : StructOperator(_expr,_id) {};
+// };
 
 
 
-class ArrowOperator : public StructOperator {
-public:
-  ArrowOperator(const Expression * _expr, std::string *_id) : StructOperator(_expr,_id) {};
-};
+// class ArrowOperator : public StructOperator {
+// public:
+//   ArrowOperator(const Expression * _expr, std::string *_id) : StructOperator(_expr,_id) {};
+// };
 
 
 #endif

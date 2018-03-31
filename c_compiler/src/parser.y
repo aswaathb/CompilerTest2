@@ -231,11 +231,11 @@ PREFIX_EXPRESSION
 
 POSTFIX_EXPRESSION
 	: PRIMARY_EXPRESSION 															{$$ = $1;}
-	| POSTFIX_EXPRESSION L_SQUARE EXPRESSION R_SQUARE 								{ $$ = new SquareOperator($1, $3); }
+	// | POSTFIX_EXPRESSION L_SQUARE EXPRESSION R_SQUARE 								{ $$ = new SquareOperator($1, $3); }
 	| POSTFIX_EXPRESSION L_BRAC R_BRAC 												{ $$ = new FunctionCall($1); }
 	//| POSTFIX_EXPRESSION L_BRAC EXPRESSION_LIST L_BRAC 							{ $$ = new FunctionCall($1, $3); } // needs to be implemented in grammar
-	| POSTFIX_EXPRESSION DOT IDENTIFIER												{ $$ = new DotOperator($1, $3); }
-	| POSTFIX_EXPRESSION ARROW IDENTIFIER											{ $$ = new ArrowOperator($1, $3); }
+	// | POSTFIX_EXPRESSION DOT IDENTIFIER												{ $$ = new DotOperator($1, $3); }
+	// | POSTFIX_EXPRESSION ARROW IDENTIFIER											{ $$ = new ArrowOperator($1, $3); }
 	| POSTFIX_EXPRESSION INCR 														{ $$ = new PostfixExpr($1, $2); }
 	| POSTFIX_EXPRESSION DECR 														{ $$ = new PostfixExpr($1, $2); }
 

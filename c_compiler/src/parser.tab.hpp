@@ -52,7 +52,6 @@ extern int yydebug;
 	#include "ast/functions.hpp"
 	#include "ast/statement.hpp"
 	#include "ast/types.hpp"
-	#include "ast/unary_expr.hpp"
 	#include "ast/variables.hpp"
 
 	#include <string>
@@ -66,7 +65,7 @@ extern int yydebug;
 	// that Bison generated code can call them.
 	void yyerror(const char *);
 
-#line 70 "src/parser.tab.hpp" /* yacc.c:1909  */
+#line 69 "src/parser.tab.hpp" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -149,9 +148,10 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 29 "src/parser.y" /* yacc.c:1909  */
+#line 28 "src/parser.y" /* yacc.c:1909  */
 
 	const baseNode 		*node;
+	const CompoundStatement *compstat;
 	const Declaration 	*decl;
 	const Expression 	*expr;
 	const ExprStatement *exprstat;

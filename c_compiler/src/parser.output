@@ -12,6 +12,7 @@ Terminals unused in grammar
    F_CONST
    I_CONST
    C_CONST
+   ARROW
    SHORT
    LONG
    DOUBLE
@@ -22,21 +23,24 @@ Terminals unused in grammar
    CONTINUE
    BREAK
    GOTO
+   L_SQUARE
+   R_SQUARE
+   DOT
    SIZEOF
 
 
 Rules useless in grammar
 
-  105 IDENTIFIER_LIST: IDENTIFIER
+  102 IDENTIFIER_LIST: IDENTIFIER
 
-  106 PARAMETER_LIST: DECLARATION_SPECIFIER DECLARATOR
-  107               | PARAMETER_LIST COMMA PARAMETER_DECLARATOR
+  103 PARAMETER_LIST: DECLARATION_SPECIFIER DECLARATOR
+  104               | PARAMETER_LIST COMMA PARAMETER_DECLARATOR
 
-  108 PARAMETER_DECLARATOR: DECLARATION_SPECIFIER DECLARATOR
+  105 PARAMETER_DECLARATOR: DECLARATION_SPECIFIER DECLARATOR
 
 
 State 47 conflicts: 1 shift/reduce
-State 168 conflicts: 1 shift/reduce
+State 161 conflicts: 1 shift/reduce
 
 
 Grammar
@@ -133,70 +137,67 @@ Grammar
    64                  | DECR PREFIX_EXPRESSION
 
    65 POSTFIX_EXPRESSION: PRIMARY_EXPRESSION
-   66                   | POSTFIX_EXPRESSION L_SQUARE EXPRESSION R_SQUARE
-   67                   | POSTFIX_EXPRESSION L_BRAC R_BRAC
-   68                   | POSTFIX_EXPRESSION DOT IDENTIFIER
-   69                   | POSTFIX_EXPRESSION ARROW IDENTIFIER
-   70                   | POSTFIX_EXPRESSION INCR
-   71                   | POSTFIX_EXPRESSION DECR
+   66                   | POSTFIX_EXPRESSION L_BRAC R_BRAC
+   67                   | POSTFIX_EXPRESSION INCR
+   68                   | POSTFIX_EXPRESSION DECR
 
-   72 TYPE_NAME: VOID
-   73          | CHAR
-   74          | INT
+   69 TYPE_NAME: VOID
+   70          | CHAR
+   71          | INT
 
-   75 PRIMARY_EXPRESSION: VARIABLE_CONSTANT
-   76                   | STRING
-   77                   | L_BRAC EXPRESSION R_BRAC
+   72 PRIMARY_EXPRESSION: VARIABLE_CONSTANT
+   73                   | STRING
+   74                   | L_BRAC EXPRESSION R_BRAC
 
-   78 VARIABLE_CONSTANT: IDENTIFIER
+   75 VARIABLE_CONSTANT: IDENTIFIER
 
-   79 ASSIGNMENT_OP: EQUAL
-   80              | MUL_ASS
-   81              | DIV_ASS
-   82              | MOD_ASS
-   83              | ADD_ASS
-   84              | SUB_ASS
-   85              | LL_ASS
-   86              | RR_ASS
-   87              | AND_ASS
-   88              | XOR_ASS
-   89              | OR_ASS
+   76 ASSIGNMENT_OP: EQUAL
+   77              | MUL_ASS
+   78              | DIV_ASS
+   79              | MOD_ASS
+   80              | ADD_ASS
+   81              | SUB_ASS
+   82              | LL_ASS
+   83              | RR_ASS
+   84              | AND_ASS
+   85              | XOR_ASS
+   86              | OR_ASS
 
-   90 DECLARATION: DECLARATION_SPECIFIER SEMICOLON
-   91            | DECLARATION_SPECIFIER INIT_DECLARATOR_LIST SEMICOLON
+   87 DECLARATION: DECLARATION_SPECIFIER SEMICOLON
+   88            | DECLARATION_SPECIFIER INIT_DECLARATOR_LIST SEMICOLON
 
-   92 DECLARATION_SPECIFIER: TYPE_SPECIFIER
+   89 DECLARATION_SPECIFIER: TYPE_SPECIFIER
 
-   93 TYPE_SPECIFIER: VOID
-   94               | INT
-   95               | FLOAT
+   90 TYPE_SPECIFIER: VOID
+   91               | INT
+   92               | FLOAT
 
-   96 INIT_DECLARATOR_LIST: INIT_DECLARATOR
+   93 INIT_DECLARATOR_LIST: INIT_DECLARATOR
 
-   97 INIT_DECLARATOR: DECLARATOR
-   98                | DECLARATOR EQUAL INITIALIZER
+   94 INIT_DECLARATOR: DECLARATOR
+   95                | DECLARATOR EQUAL INITIALIZER
 
-   99 INITIALIZER: ASSIGNMENT_EXPRESSION
+   96 INITIALIZER: ASSIGNMENT_EXPRESSION
 
-  100 DECLARATOR: DIRECT_DECLARATOR
-  101           | TIMES DIRECT_DECLARATOR
+   97 DECLARATOR: DIRECT_DECLARATOR
+   98           | TIMES DIRECT_DECLARATOR
 
-  102 DIRECT_DECLARATOR: L_BRAC DECLARATOR R_BRAC
-  103                  | IDENTIFIER
-  104                  | L_BRAC R_BRAC DECLARATOR
+   99 DIRECT_DECLARATOR: L_BRAC DECLARATOR R_BRAC
+  100                  | IDENTIFIER
+  101                  | L_BRAC R_BRAC DECLARATOR
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
 error (256)
-IDENTIFIER (258) 68 69 78 103
+IDENTIFIER (258) 75 100
 F_CONST (259)
 I_CONST (260)
 C_CONST (261)
 PLUS (262) 54
 MINUS (263) 55
-TIMES (264) 57 101
+TIMES (264) 57 98
 DIVIDE (265) 58
 MODULUS (266) 59
 LOR (267) 33
@@ -211,25 +212,25 @@ AND (275) 41
 XOR (276) 39
 L_SHIFT (277) 51
 R_SHIFT (278) 52
-MUL_ASS (279) 80
-DIV_ASS (280) 81
-MOD_ASS (281) 82
-ADD_ASS (282) 83
-SUB_ASS (283) 84
-LL_ASS (284) 85
-RR_ASS (285) 86
-AND_ASS (286) 87
-XOR_ASS (287) 88
-OR_ASS (288) 89
-ARROW (289) 69
-DECR (290) 64 71
-INCR (291) 63 70
-VOID (292) 72 93
-CHAR (293) 73
+MUL_ASS (279) 77
+DIV_ASS (280) 78
+MOD_ASS (281) 79
+ADD_ASS (282) 80
+SUB_ASS (283) 81
+LL_ASS (284) 82
+RR_ASS (285) 83
+AND_ASS (286) 84
+XOR_ASS (287) 85
+OR_ASS (288) 86
+ARROW (289)
+DECR (290) 64 68
+INCR (291) 63 67
+VOID (292) 69 90
+CHAR (293) 70
 SHORT (294)
-INT (295) 74 94
+INT (295) 71 91
 LONG (296)
-FLOAT (297) 95
+FLOAT (297) 92
 DOUBLE (298)
 SIGNED (299)
 UNSIGNED (300)
@@ -244,19 +245,19 @@ RETURN (308) 23
 CONTINUE (309)
 BREAK (310)
 GOTO (311)
-EQUAL (312) 43 79 98
-SEMICOLON (313) 24 25 90 91
+EQUAL (312) 43 76 95
+SEMICOLON (313) 24 25 87 88
 COMMA (314) 27
-L_BRAC (315) 15 16 17 18 19 20 21 22 60 67 77 102 104
-R_BRAC (316) 15 16 17 18 19 20 21 22 60 67 77 102 104
+L_BRAC (315) 15 16 17 18 19 20 21 22 60 66 74 99 101
+R_BRAC (316) 15 16 17 18 19 20 21 22 60 66 74 99 101
 L_CURLY (317) 11 12
 R_CURLY (318) 11 12
-L_SQUARE (319) 66
-R_SQUARE (320) 66
+L_SQUARE (319)
+R_SQUARE (320)
 QUES_MARK (321) 31
 COLON (322) 31
-DOT (323) 68
-STRING (324) 76
+DOT (323)
+STRING (324) 73
 SIZEOF (325)
 
 
@@ -285,9 +286,9 @@ JUMP_STATEMENT (80)
 EXPRESSION_STATEMENT (81)
     on left: 24 25, on right: 10 19 20 21 22 23
 EXPRESSION (82)
-    on left: 26 27, on right: 15 16 17 18 20 22 25 27 31 66 77
+    on left: 26 27, on right: 15 16 17 18 20 22 25 27 31 74
 ASSIGNMENT_EXPRESSION (83)
-    on left: 28 29, on right: 26 27 29 99
+    on left: 28 29, on right: 26 27 29 96
 CONDITIONAL_EXPRESSION (84)
     on left: 30 31, on right: 28 31
 LOGICAL_OR_EXPRESSION (85)
@@ -315,31 +316,31 @@ CAST_EXPRESSION (95)
 PREFIX_EXPRESSION (96)
     on left: 62 63 64, on right: 29 61 63 64
 POSTFIX_EXPRESSION (97)
-    on left: 65 66 67 68 69 70 71, on right: 62 66 67 68 69 70 71
+    on left: 65 66 67 68, on right: 62 66 67 68
 TYPE_NAME (98)
-    on left: 72 73 74, on right: 60
+    on left: 69 70 71, on right: 60
 PRIMARY_EXPRESSION (99)
-    on left: 75 76 77, on right: 65
+    on left: 72 73 74, on right: 65
 VARIABLE_CONSTANT (100)
-    on left: 78, on right: 75
+    on left: 75, on right: 72
 ASSIGNMENT_OP (101)
-    on left: 79 80 81 82 83 84 85 86 87 88 89, on right: 29
+    on left: 76 77 78 79 80 81 82 83 84 85 86, on right: 29
 DECLARATION (102)
-    on left: 90 91, on right: 4 21 22
+    on left: 87 88, on right: 4 21 22
 DECLARATION_SPECIFIER (103)
-    on left: 92, on right: 5 90 91
+    on left: 89, on right: 5 87 88
 TYPE_SPECIFIER (104)
-    on left: 93 94 95, on right: 92
+    on left: 90 91 92, on right: 89
 INIT_DECLARATOR_LIST (105)
-    on left: 96, on right: 91
+    on left: 93, on right: 88
 INIT_DECLARATOR (106)
-    on left: 97 98, on right: 96
+    on left: 94 95, on right: 93
 INITIALIZER (107)
-    on left: 99, on right: 98
+    on left: 96, on right: 95
 DECLARATOR (108)
-    on left: 100 101, on right: 5 97 98 102 104
+    on left: 97 98, on right: 5 94 95 99 101
 DIRECT_DECLARATOR (109)
-    on left: 102 103 104, on right: 100 101
+    on left: 99 100 101, on right: 97 98
 
 
 State 0
@@ -360,23 +361,23 @@ State 0
 
 State 1
 
-   93 TYPE_SPECIFIER: VOID .
+   90 TYPE_SPECIFIER: VOID .
 
-    $default  reduce using rule 93 (TYPE_SPECIFIER)
+    $default  reduce using rule 90 (TYPE_SPECIFIER)
 
 
 State 2
 
-   94 TYPE_SPECIFIER: INT .
+   91 TYPE_SPECIFIER: INT .
 
-    $default  reduce using rule 94 (TYPE_SPECIFIER)
+    $default  reduce using rule 91 (TYPE_SPECIFIER)
 
 
 State 3
 
-   95 TYPE_SPECIFIER: FLOAT .
+   92 TYPE_SPECIFIER: FLOAT .
 
-    $default  reduce using rule 95 (TYPE_SPECIFIER)
+    $default  reduce using rule 92 (TYPE_SPECIFIER)
 
 
 State 4
@@ -420,8 +421,8 @@ State 7
 State 8
 
     5 EXTERNAL_DECLARATION: DECLARATION_SPECIFIER . DECLARATOR COMPOUND_STATEMENT
-   90 DECLARATION: DECLARATION_SPECIFIER . SEMICOLON
-   91            | DECLARATION_SPECIFIER . INIT_DECLARATOR_LIST SEMICOLON
+   87 DECLARATION: DECLARATION_SPECIFIER . SEMICOLON
+   88            | DECLARATION_SPECIFIER . INIT_DECLARATOR_LIST SEMICOLON
 
     IDENTIFIER  shift, and go to state 12
     TIMES       shift, and go to state 13
@@ -436,9 +437,9 @@ State 8
 
 State 9
 
-   92 DECLARATION_SPECIFIER: TYPE_SPECIFIER .
+   89 DECLARATION_SPECIFIER: TYPE_SPECIFIER .
 
-    $default  reduce using rule 92 (DECLARATION_SPECIFIER)
+    $default  reduce using rule 89 (DECLARATION_SPECIFIER)
 
 
 State 10
@@ -457,14 +458,14 @@ State 11
 
 State 12
 
-  103 DIRECT_DECLARATOR: IDENTIFIER .
+  100 DIRECT_DECLARATOR: IDENTIFIER .
 
-    $default  reduce using rule 103 (DIRECT_DECLARATOR)
+    $default  reduce using rule 100 (DIRECT_DECLARATOR)
 
 
 State 13
 
-  101 DECLARATOR: TIMES . DIRECT_DECLARATOR
+   98 DECLARATOR: TIMES . DIRECT_DECLARATOR
 
     IDENTIFIER  shift, and go to state 12
     L_BRAC      shift, and go to state 15
@@ -474,15 +475,15 @@ State 13
 
 State 14
 
-   90 DECLARATION: DECLARATION_SPECIFIER SEMICOLON .
+   87 DECLARATION: DECLARATION_SPECIFIER SEMICOLON .
 
-    $default  reduce using rule 90 (DECLARATION)
+    $default  reduce using rule 87 (DECLARATION)
 
 
 State 15
 
-  102 DIRECT_DECLARATOR: L_BRAC . DECLARATOR R_BRAC
-  104                  | L_BRAC . R_BRAC DECLARATOR
+   99 DIRECT_DECLARATOR: L_BRAC . DECLARATOR R_BRAC
+  101                  | L_BRAC . R_BRAC DECLARATOR
 
     IDENTIFIER  shift, and go to state 12
     TIMES       shift, and go to state 13
@@ -495,49 +496,49 @@ State 15
 
 State 16
 
-   91 DECLARATION: DECLARATION_SPECIFIER INIT_DECLARATOR_LIST . SEMICOLON
+   88 DECLARATION: DECLARATION_SPECIFIER INIT_DECLARATOR_LIST . SEMICOLON
 
     SEMICOLON  shift, and go to state 23
 
 
 State 17
 
-   96 INIT_DECLARATOR_LIST: INIT_DECLARATOR .
+   93 INIT_DECLARATOR_LIST: INIT_DECLARATOR .
 
-    $default  reduce using rule 96 (INIT_DECLARATOR_LIST)
+    $default  reduce using rule 93 (INIT_DECLARATOR_LIST)
 
 
 State 18
 
     5 EXTERNAL_DECLARATION: DECLARATION_SPECIFIER DECLARATOR . COMPOUND_STATEMENT
-   97 INIT_DECLARATOR: DECLARATOR .
-   98                | DECLARATOR . EQUAL INITIALIZER
+   94 INIT_DECLARATOR: DECLARATOR .
+   95                | DECLARATOR . EQUAL INITIALIZER
 
     EQUAL    shift, and go to state 24
     L_CURLY  shift, and go to state 25
 
-    $default  reduce using rule 97 (INIT_DECLARATOR)
+    $default  reduce using rule 94 (INIT_DECLARATOR)
 
     COMPOUND_STATEMENT  go to state 26
 
 
 State 19
 
-  100 DECLARATOR: DIRECT_DECLARATOR .
+   97 DECLARATOR: DIRECT_DECLARATOR .
 
-    $default  reduce using rule 100 (DECLARATOR)
+    $default  reduce using rule 97 (DECLARATOR)
 
 
 State 20
 
-  101 DECLARATOR: TIMES DIRECT_DECLARATOR .
+   98 DECLARATOR: TIMES DIRECT_DECLARATOR .
 
-    $default  reduce using rule 101 (DECLARATOR)
+    $default  reduce using rule 98 (DECLARATOR)
 
 
 State 21
 
-  104 DIRECT_DECLARATOR: L_BRAC R_BRAC . DECLARATOR
+  101 DIRECT_DECLARATOR: L_BRAC R_BRAC . DECLARATOR
 
     IDENTIFIER  shift, and go to state 12
     TIMES       shift, and go to state 13
@@ -549,21 +550,21 @@ State 21
 
 State 22
 
-  102 DIRECT_DECLARATOR: L_BRAC DECLARATOR . R_BRAC
+   99 DIRECT_DECLARATOR: L_BRAC DECLARATOR . R_BRAC
 
     R_BRAC  shift, and go to state 28
 
 
 State 23
 
-   91 DECLARATION: DECLARATION_SPECIFIER INIT_DECLARATOR_LIST SEMICOLON .
+   88 DECLARATION: DECLARATION_SPECIFIER INIT_DECLARATOR_LIST SEMICOLON .
 
-    $default  reduce using rule 91 (DECLARATION)
+    $default  reduce using rule 88 (DECLARATION)
 
 
 State 24
 
-   98 INIT_DECLARATOR: DECLARATOR EQUAL . INITIALIZER
+   95 INIT_DECLARATOR: DECLARATOR EQUAL . INITIALIZER
 
     IDENTIFIER  shift, and go to state 29
     DECR        shift, and go to state 30
@@ -646,23 +647,23 @@ State 26
 
 State 27
 
-  104 DIRECT_DECLARATOR: L_BRAC R_BRAC DECLARATOR .
+  101 DIRECT_DECLARATOR: L_BRAC R_BRAC DECLARATOR .
 
-    $default  reduce using rule 104 (DIRECT_DECLARATOR)
+    $default  reduce using rule 101 (DIRECT_DECLARATOR)
 
 
 State 28
 
-  102 DIRECT_DECLARATOR: L_BRAC DECLARATOR R_BRAC .
+   99 DIRECT_DECLARATOR: L_BRAC DECLARATOR R_BRAC .
 
-    $default  reduce using rule 102 (DIRECT_DECLARATOR)
+    $default  reduce using rule 99 (DIRECT_DECLARATOR)
 
 
 State 29
 
-   78 VARIABLE_CONSTANT: IDENTIFIER .
+   75 VARIABLE_CONSTANT: IDENTIFIER .
 
-    $default  reduce using rule 78 (VARIABLE_CONSTANT)
+    $default  reduce using rule 75 (VARIABLE_CONSTANT)
 
 
 State 30
@@ -700,7 +701,7 @@ State 31
 State 32
 
    60 CAST_EXPRESSION: L_BRAC . TYPE_NAME R_BRAC CAST_EXPRESSION
-   77 PRIMARY_EXPRESSION: L_BRAC . EXPRESSION R_BRAC
+   74 PRIMARY_EXPRESSION: L_BRAC . EXPRESSION R_BRAC
 
     IDENTIFIER  shift, and go to state 29
     DECR        shift, and go to state 30
@@ -734,16 +735,16 @@ State 32
 
 State 33
 
-   76 PRIMARY_EXPRESSION: STRING .
+   73 PRIMARY_EXPRESSION: STRING .
 
-    $default  reduce using rule 76 (PRIMARY_EXPRESSION)
+    $default  reduce using rule 73 (PRIMARY_EXPRESSION)
 
 
 State 34
 
-   99 INITIALIZER: ASSIGNMENT_EXPRESSION .
+   96 INITIALIZER: ASSIGNMENT_EXPRESSION .
 
-    $default  reduce using rule 99 (INITIALIZER)
+    $default  reduce using rule 96 (INITIALIZER)
 
 
 State 35
@@ -904,19 +905,13 @@ State 47
 State 48
 
    62 PREFIX_EXPRESSION: POSTFIX_EXPRESSION .
-   66 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION . L_SQUARE EXPRESSION R_SQUARE
-   67                   | POSTFIX_EXPRESSION . L_BRAC R_BRAC
-   68                   | POSTFIX_EXPRESSION . DOT IDENTIFIER
-   69                   | POSTFIX_EXPRESSION . ARROW IDENTIFIER
-   70                   | POSTFIX_EXPRESSION . INCR
-   71                   | POSTFIX_EXPRESSION . DECR
+   66 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION . L_BRAC R_BRAC
+   67                   | POSTFIX_EXPRESSION . INCR
+   68                   | POSTFIX_EXPRESSION . DECR
 
-    ARROW     shift, and go to state 107
-    DECR      shift, and go to state 108
-    INCR      shift, and go to state 109
-    L_BRAC    shift, and go to state 110
-    L_SQUARE  shift, and go to state 111
-    DOT       shift, and go to state 112
+    DECR    shift, and go to state 107
+    INCR    shift, and go to state 108
+    L_BRAC  shift, and go to state 109
 
     $default  reduce using rule 62 (PREFIX_EXPRESSION)
 
@@ -930,16 +925,16 @@ State 49
 
 State 50
 
-   75 PRIMARY_EXPRESSION: VARIABLE_CONSTANT .
+   72 PRIMARY_EXPRESSION: VARIABLE_CONSTANT .
 
-    $default  reduce using rule 75 (PRIMARY_EXPRESSION)
+    $default  reduce using rule 72 (PRIMARY_EXPRESSION)
 
 
 State 51
 
-   98 INIT_DECLARATOR: DECLARATOR EQUAL INITIALIZER .
+   95 INIT_DECLARATOR: DECLARATOR EQUAL INITIALIZER .
 
-    $default  reduce using rule 98 (INIT_DECLARATOR)
+    $default  reduce using rule 95 (INIT_DECLARATOR)
 
 
 State 52
@@ -959,7 +954,7 @@ State 52
     L_CURLY     shift, and go to state 25
     STRING      shift, and go to state 33
 
-    STATEMENT                 go to state 113
+    STATEMENT                 go to state 110
     COMPOUND_STATEMENT        go to state 60
     SELECTION_STATEMENT       go to state 62
     ITERATION_STATEMENT       go to state 63
@@ -989,7 +984,7 @@ State 53
 
    17 ITERATION_STATEMENT: WHILE . L_BRAC EXPRESSION R_BRAC STATEMENT
 
-    L_BRAC  shift, and go to state 114
+    L_BRAC  shift, and go to state 111
 
 
 State 54
@@ -997,7 +992,7 @@ State 54
    15 SELECTION_STATEMENT: IF . L_BRAC EXPRESSION R_BRAC STATEMENT
    16                    | IF . L_BRAC EXPRESSION R_BRAC STATEMENT ELSE STATEMENT
 
-    L_BRAC  shift, and go to state 115
+    L_BRAC  shift, and go to state 112
 
 
 State 55
@@ -1007,7 +1002,7 @@ State 55
    21                    | FOR . L_BRAC DECLARATION EXPRESSION_STATEMENT R_BRAC STATEMENT
    22                    | FOR . L_BRAC DECLARATION EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT
 
-    L_BRAC  shift, and go to state 116
+    L_BRAC  shift, and go to state 113
 
 
 State 56
@@ -1021,7 +1016,7 @@ State 56
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    EXPRESSION_STATEMENT      go to state 117
+    EXPRESSION_STATEMENT      go to state 114
     EXPRESSION                go to state 66
     ASSIGNMENT_EXPRESSION     go to state 67
     CONDITIONAL_EXPRESSION    go to state 35
@@ -1086,10 +1081,10 @@ State 61
     SEMICOLON   shift, and go to state 57
     L_BRAC      shift, and go to state 32
     L_CURLY     shift, and go to state 25
-    R_CURLY     shift, and go to state 118
+    R_CURLY     shift, and go to state 115
     STRING      shift, and go to state 33
 
-    STATEMENT                 go to state 119
+    STATEMENT                 go to state 116
     COMPOUND_STATEMENT        go to state 60
     SELECTION_STATEMENT       go to state 62
     ITERATION_STATEMENT       go to state 63
@@ -1148,8 +1143,8 @@ State 66
    25 EXPRESSION_STATEMENT: EXPRESSION . SEMICOLON
    27 EXPRESSION: EXPRESSION . COMMA ASSIGNMENT_EXPRESSION
 
-    SEMICOLON  shift, and go to state 120
-    COMMA      shift, and go to state 121
+    SEMICOLON  shift, and go to state 117
+    COMMA      shift, and go to state 118
 
 
 State 67
@@ -1161,7 +1156,7 @@ State 67
 
 State 68
 
-   77 PRIMARY_EXPRESSION: L_BRAC . EXPRESSION R_BRAC
+   74 PRIMARY_EXPRESSION: L_BRAC . EXPRESSION R_BRAC
 
     IDENTIFIER  shift, and go to state 29
     DECR        shift, and go to state 30
@@ -1205,39 +1200,39 @@ State 70
 
 State 71
 
-   72 TYPE_NAME: VOID .
+   69 TYPE_NAME: VOID .
 
-    $default  reduce using rule 72 (TYPE_NAME)
+    $default  reduce using rule 69 (TYPE_NAME)
 
 
 State 72
 
-   73 TYPE_NAME: CHAR .
+   70 TYPE_NAME: CHAR .
 
-    $default  reduce using rule 73 (TYPE_NAME)
+    $default  reduce using rule 70 (TYPE_NAME)
 
 
 State 73
 
-   74 TYPE_NAME: INT .
+   71 TYPE_NAME: INT .
 
-    $default  reduce using rule 74 (TYPE_NAME)
+    $default  reduce using rule 71 (TYPE_NAME)
 
 
 State 74
 
    27 EXPRESSION: EXPRESSION . COMMA ASSIGNMENT_EXPRESSION
-   77 PRIMARY_EXPRESSION: L_BRAC EXPRESSION . R_BRAC
+   74 PRIMARY_EXPRESSION: L_BRAC EXPRESSION . R_BRAC
 
-    COMMA   shift, and go to state 121
-    R_BRAC  shift, and go to state 122
+    COMMA   shift, and go to state 118
+    R_BRAC  shift, and go to state 119
 
 
 State 75
 
    60 CAST_EXPRESSION: L_BRAC TYPE_NAME . R_BRAC CAST_EXPRESSION
 
-    R_BRAC  shift, and go to state 123
+    R_BRAC  shift, and go to state 120
 
 
 State 76
@@ -1250,7 +1245,7 @@ State 76
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    LOGICAL_AND_EXPRESSION    go to state 124
+    LOGICAL_AND_EXPRESSION    go to state 121
     INCLUSIVE_OR_EXPRESSION   go to state 38
     EXCLUSIVE_OR_EXPRESSION   go to state 39
     AND_EXPRESSION            go to state 40
@@ -1260,7 +1255,7 @@ State 76
     ADDITIVE_EXPRESSION       go to state 44
     MULTIPLCATIVE_EXPRESSION  go to state 45
     CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
+    PREFIX_EXPRESSION         go to state 122
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
@@ -1276,7 +1271,7 @@ State 77
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    EXPRESSION                go to state 126
+    EXPRESSION                go to state 123
     ASSIGNMENT_EXPRESSION     go to state 67
     CONDITIONAL_EXPRESSION    go to state 35
     LOGICAL_OR_EXPRESSION     go to state 36
@@ -1306,7 +1301,7 @@ State 78
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    INCLUSIVE_OR_EXPRESSION   go to state 127
+    INCLUSIVE_OR_EXPRESSION   go to state 124
     EXCLUSIVE_OR_EXPRESSION   go to state 39
     AND_EXPRESSION            go to state 40
     EQUALITY_EXPRESSION       go to state 41
@@ -1315,7 +1310,7 @@ State 78
     ADDITIVE_EXPRESSION       go to state 44
     MULTIPLCATIVE_EXPRESSION  go to state 45
     CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
+    PREFIX_EXPRESSION         go to state 122
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
@@ -1331,7 +1326,7 @@ State 79
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    EXCLUSIVE_OR_EXPRESSION   go to state 128
+    EXCLUSIVE_OR_EXPRESSION   go to state 125
     AND_EXPRESSION            go to state 40
     EQUALITY_EXPRESSION       go to state 41
     RELATIONAL_EXPRESSION     go to state 42
@@ -1339,7 +1334,7 @@ State 79
     ADDITIVE_EXPRESSION       go to state 44
     MULTIPLCATIVE_EXPRESSION  go to state 45
     CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
+    PREFIX_EXPRESSION         go to state 122
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
@@ -1355,14 +1350,14 @@ State 80
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    AND_EXPRESSION            go to state 129
+    AND_EXPRESSION            go to state 126
     EQUALITY_EXPRESSION       go to state 41
     RELATIONAL_EXPRESSION     go to state 42
     SHIFT_EXPRESSION          go to state 43
     ADDITIVE_EXPRESSION       go to state 44
     MULTIPLCATIVE_EXPRESSION  go to state 45
     CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
+    PREFIX_EXPRESSION         go to state 122
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
@@ -1378,13 +1373,13 @@ State 81
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    EQUALITY_EXPRESSION       go to state 130
+    EQUALITY_EXPRESSION       go to state 127
     RELATIONAL_EXPRESSION     go to state 42
     SHIFT_EXPRESSION          go to state 43
     ADDITIVE_EXPRESSION       go to state 44
     MULTIPLCATIVE_EXPRESSION  go to state 45
     CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
+    PREFIX_EXPRESSION         go to state 122
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
@@ -1400,12 +1395,12 @@ State 82
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    RELATIONAL_EXPRESSION     go to state 131
+    RELATIONAL_EXPRESSION     go to state 128
     SHIFT_EXPRESSION          go to state 43
     ADDITIVE_EXPRESSION       go to state 44
     MULTIPLCATIVE_EXPRESSION  go to state 45
     CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
+    PREFIX_EXPRESSION         go to state 122
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
@@ -1421,12 +1416,12 @@ State 83
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    RELATIONAL_EXPRESSION     go to state 132
+    RELATIONAL_EXPRESSION     go to state 129
     SHIFT_EXPRESSION          go to state 43
     ADDITIVE_EXPRESSION       go to state 44
     MULTIPLCATIVE_EXPRESSION  go to state 45
     CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
+    PREFIX_EXPRESSION         go to state 122
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
@@ -1442,11 +1437,11 @@ State 84
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    SHIFT_EXPRESSION          go to state 133
+    SHIFT_EXPRESSION          go to state 130
     ADDITIVE_EXPRESSION       go to state 44
     MULTIPLCATIVE_EXPRESSION  go to state 45
     CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
+    PREFIX_EXPRESSION         go to state 122
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
@@ -1462,11 +1457,11 @@ State 85
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    SHIFT_EXPRESSION          go to state 134
+    SHIFT_EXPRESSION          go to state 131
     ADDITIVE_EXPRESSION       go to state 44
     MULTIPLCATIVE_EXPRESSION  go to state 45
     CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
+    PREFIX_EXPRESSION         go to state 122
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
@@ -1482,11 +1477,11 @@ State 86
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    SHIFT_EXPRESSION          go to state 135
+    SHIFT_EXPRESSION          go to state 132
     ADDITIVE_EXPRESSION       go to state 44
     MULTIPLCATIVE_EXPRESSION  go to state 45
     CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
+    PREFIX_EXPRESSION         go to state 122
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
@@ -1502,11 +1497,11 @@ State 87
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    SHIFT_EXPRESSION          go to state 136
+    SHIFT_EXPRESSION          go to state 133
     ADDITIVE_EXPRESSION       go to state 44
     MULTIPLCATIVE_EXPRESSION  go to state 45
     CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
+    PREFIX_EXPRESSION         go to state 122
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
@@ -1522,10 +1517,10 @@ State 88
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    ADDITIVE_EXPRESSION       go to state 137
+    ADDITIVE_EXPRESSION       go to state 134
     MULTIPLCATIVE_EXPRESSION  go to state 45
     CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
+    PREFIX_EXPRESSION         go to state 122
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
@@ -1541,10 +1536,10 @@ State 89
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    ADDITIVE_EXPRESSION       go to state 138
+    ADDITIVE_EXPRESSION       go to state 135
     MULTIPLCATIVE_EXPRESSION  go to state 45
     CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
+    PREFIX_EXPRESSION         go to state 122
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
@@ -1560,9 +1555,9 @@ State 90
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    MULTIPLCATIVE_EXPRESSION  go to state 139
+    MULTIPLCATIVE_EXPRESSION  go to state 136
     CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
+    PREFIX_EXPRESSION         go to state 122
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
@@ -1578,9 +1573,9 @@ State 91
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    MULTIPLCATIVE_EXPRESSION  go to state 140
+    MULTIPLCATIVE_EXPRESSION  go to state 137
     CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
+    PREFIX_EXPRESSION         go to state 122
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
@@ -1596,8 +1591,8 @@ State 92
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    CAST_EXPRESSION     go to state 141
-    PREFIX_EXPRESSION   go to state 125
+    CAST_EXPRESSION     go to state 138
+    PREFIX_EXPRESSION   go to state 122
     POSTFIX_EXPRESSION  go to state 48
     PRIMARY_EXPRESSION  go to state 49
     VARIABLE_CONSTANT   go to state 50
@@ -1613,8 +1608,8 @@ State 93
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    CAST_EXPRESSION     go to state 142
-    PREFIX_EXPRESSION   go to state 125
+    CAST_EXPRESSION     go to state 139
+    PREFIX_EXPRESSION   go to state 122
     POSTFIX_EXPRESSION  go to state 48
     PRIMARY_EXPRESSION  go to state 49
     VARIABLE_CONSTANT   go to state 50
@@ -1630,8 +1625,8 @@ State 94
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    CAST_EXPRESSION     go to state 143
-    PREFIX_EXPRESSION   go to state 125
+    CAST_EXPRESSION     go to state 140
+    PREFIX_EXPRESSION   go to state 122
     POSTFIX_EXPRESSION  go to state 48
     PRIMARY_EXPRESSION  go to state 49
     VARIABLE_CONSTANT   go to state 50
@@ -1639,79 +1634,79 @@ State 94
 
 State 95
 
-   80 ASSIGNMENT_OP: MUL_ASS .
+   77 ASSIGNMENT_OP: MUL_ASS .
 
-    $default  reduce using rule 80 (ASSIGNMENT_OP)
+    $default  reduce using rule 77 (ASSIGNMENT_OP)
 
 
 State 96
 
-   81 ASSIGNMENT_OP: DIV_ASS .
+   78 ASSIGNMENT_OP: DIV_ASS .
 
-    $default  reduce using rule 81 (ASSIGNMENT_OP)
+    $default  reduce using rule 78 (ASSIGNMENT_OP)
 
 
 State 97
 
-   82 ASSIGNMENT_OP: MOD_ASS .
+   79 ASSIGNMENT_OP: MOD_ASS .
 
-    $default  reduce using rule 82 (ASSIGNMENT_OP)
+    $default  reduce using rule 79 (ASSIGNMENT_OP)
 
 
 State 98
 
-   83 ASSIGNMENT_OP: ADD_ASS .
+   80 ASSIGNMENT_OP: ADD_ASS .
 
-    $default  reduce using rule 83 (ASSIGNMENT_OP)
+    $default  reduce using rule 80 (ASSIGNMENT_OP)
 
 
 State 99
 
-   84 ASSIGNMENT_OP: SUB_ASS .
+   81 ASSIGNMENT_OP: SUB_ASS .
 
-    $default  reduce using rule 84 (ASSIGNMENT_OP)
+    $default  reduce using rule 81 (ASSIGNMENT_OP)
 
 
 State 100
 
-   85 ASSIGNMENT_OP: LL_ASS .
+   82 ASSIGNMENT_OP: LL_ASS .
 
-    $default  reduce using rule 85 (ASSIGNMENT_OP)
+    $default  reduce using rule 82 (ASSIGNMENT_OP)
 
 
 State 101
 
-   86 ASSIGNMENT_OP: RR_ASS .
+   83 ASSIGNMENT_OP: RR_ASS .
 
-    $default  reduce using rule 86 (ASSIGNMENT_OP)
+    $default  reduce using rule 83 (ASSIGNMENT_OP)
 
 
 State 102
 
-   87 ASSIGNMENT_OP: AND_ASS .
+   84 ASSIGNMENT_OP: AND_ASS .
 
-    $default  reduce using rule 87 (ASSIGNMENT_OP)
+    $default  reduce using rule 84 (ASSIGNMENT_OP)
 
 
 State 103
 
-   88 ASSIGNMENT_OP: XOR_ASS .
+   85 ASSIGNMENT_OP: XOR_ASS .
 
-    $default  reduce using rule 88 (ASSIGNMENT_OP)
+    $default  reduce using rule 85 (ASSIGNMENT_OP)
 
 
 State 104
 
-   89 ASSIGNMENT_OP: OR_ASS .
+   86 ASSIGNMENT_OP: OR_ASS .
 
-    $default  reduce using rule 89 (ASSIGNMENT_OP)
+    $default  reduce using rule 86 (ASSIGNMENT_OP)
 
 
 State 105
 
-   79 ASSIGNMENT_OP: EQUAL .
+   76 ASSIGNMENT_OP: EQUAL .
 
-    $default  reduce using rule 79 (ASSIGNMENT_OP)
+    $default  reduce using rule 76 (ASSIGNMENT_OP)
 
 
 State 106
@@ -1724,7 +1719,7 @@ State 106
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    ASSIGNMENT_EXPRESSION     go to state 144
+    ASSIGNMENT_EXPRESSION     go to state 141
     CONDITIONAL_EXPRESSION    go to state 35
     LOGICAL_OR_EXPRESSION     go to state 36
     LOGICAL_AND_EXPRESSION    go to state 37
@@ -1745,35 +1740,35 @@ State 106
 
 State 107
 
-   69 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION ARROW . IDENTIFIER
+   68 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION DECR .
 
-    IDENTIFIER  shift, and go to state 145
+    $default  reduce using rule 68 (POSTFIX_EXPRESSION)
 
 
 State 108
 
-   71 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION DECR .
+   67 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION INCR .
 
-    $default  reduce using rule 71 (POSTFIX_EXPRESSION)
+    $default  reduce using rule 67 (POSTFIX_EXPRESSION)
 
 
 State 109
 
-   70 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION INCR .
+   66 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION L_BRAC . R_BRAC
 
-    $default  reduce using rule 70 (POSTFIX_EXPRESSION)
+    R_BRAC  shift, and go to state 142
 
 
 State 110
 
-   67 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION L_BRAC . R_BRAC
+   18 ITERATION_STATEMENT: DO STATEMENT . WHILE L_BRAC EXPRESSION R_BRAC
 
-    R_BRAC  shift, and go to state 146
+    WHILE  shift, and go to state 143
 
 
 State 111
 
-   66 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION L_SQUARE . EXPRESSION R_SQUARE
+   17 ITERATION_STATEMENT: WHILE L_BRAC . EXPRESSION R_BRAC STATEMENT
 
     IDENTIFIER  shift, and go to state 29
     DECR        shift, and go to state 30
@@ -1781,7 +1776,7 @@ State 111
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    EXPRESSION                go to state 147
+    EXPRESSION                go to state 144
     ASSIGNMENT_EXPRESSION     go to state 67
     CONDITIONAL_EXPRESSION    go to state 35
     LOGICAL_OR_EXPRESSION     go to state 36
@@ -1803,50 +1798,6 @@ State 111
 
 State 112
 
-   68 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION DOT . IDENTIFIER
-
-    IDENTIFIER  shift, and go to state 148
-
-
-State 113
-
-   18 ITERATION_STATEMENT: DO STATEMENT . WHILE L_BRAC EXPRESSION R_BRAC
-
-    WHILE  shift, and go to state 149
-
-
-State 114
-
-   17 ITERATION_STATEMENT: WHILE L_BRAC . EXPRESSION R_BRAC STATEMENT
-
-    IDENTIFIER  shift, and go to state 29
-    DECR        shift, and go to state 30
-    INCR        shift, and go to state 31
-    L_BRAC      shift, and go to state 32
-    STRING      shift, and go to state 33
-
-    EXPRESSION                go to state 150
-    ASSIGNMENT_EXPRESSION     go to state 67
-    CONDITIONAL_EXPRESSION    go to state 35
-    LOGICAL_OR_EXPRESSION     go to state 36
-    LOGICAL_AND_EXPRESSION    go to state 37
-    INCLUSIVE_OR_EXPRESSION   go to state 38
-    EXCLUSIVE_OR_EXPRESSION   go to state 39
-    AND_EXPRESSION            go to state 40
-    EQUALITY_EXPRESSION       go to state 41
-    RELATIONAL_EXPRESSION     go to state 42
-    SHIFT_EXPRESSION          go to state 43
-    ADDITIVE_EXPRESSION       go to state 44
-    MULTIPLCATIVE_EXPRESSION  go to state 45
-    CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 47
-    POSTFIX_EXPRESSION        go to state 48
-    PRIMARY_EXPRESSION        go to state 49
-    VARIABLE_CONSTANT         go to state 50
-
-
-State 115
-
    15 SELECTION_STATEMENT: IF L_BRAC . EXPRESSION R_BRAC STATEMENT
    16                    | IF L_BRAC . EXPRESSION R_BRAC STATEMENT ELSE STATEMENT
 
@@ -1856,7 +1807,7 @@ State 115
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    EXPRESSION                go to state 151
+    EXPRESSION                go to state 145
     ASSIGNMENT_EXPRESSION     go to state 67
     CONDITIONAL_EXPRESSION    go to state 35
     LOGICAL_OR_EXPRESSION     go to state 36
@@ -1876,7 +1827,7 @@ State 115
     VARIABLE_CONSTANT         go to state 50
 
 
-State 116
+State 113
 
    19 ITERATION_STATEMENT: FOR L_BRAC . EXPRESSION_STATEMENT EXPRESSION_STATEMENT R_BRAC STATEMENT
    20                    | FOR L_BRAC . EXPRESSION_STATEMENT EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT
@@ -1893,7 +1844,7 @@ State 116
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    EXPRESSION_STATEMENT      go to state 152
+    EXPRESSION_STATEMENT      go to state 146
     EXPRESSION                go to state 66
     ASSIGNMENT_EXPRESSION     go to state 67
     CONDITIONAL_EXPRESSION    go to state 35
@@ -1912,40 +1863,40 @@ State 116
     POSTFIX_EXPRESSION        go to state 48
     PRIMARY_EXPRESSION        go to state 49
     VARIABLE_CONSTANT         go to state 50
-    DECLARATION               go to state 153
-    DECLARATION_SPECIFIER     go to state 154
+    DECLARATION               go to state 147
+    DECLARATION_SPECIFIER     go to state 148
     TYPE_SPECIFIER            go to state 9
 
 
-State 117
+State 114
 
    23 JUMP_STATEMENT: RETURN EXPRESSION_STATEMENT .
 
     $default  reduce using rule 23 (JUMP_STATEMENT)
 
 
-State 118
+State 115
 
    12 COMPOUND_STATEMENT: L_CURLY STATEMENT_LIST R_CURLY .
 
     $default  reduce using rule 12 (COMPOUND_STATEMENT)
 
 
-State 119
+State 116
 
    14 STATEMENT_LIST: STATEMENT_LIST STATEMENT .
 
     $default  reduce using rule 14 (STATEMENT_LIST)
 
 
-State 120
+State 117
 
    25 EXPRESSION_STATEMENT: EXPRESSION SEMICOLON .
 
     $default  reduce using rule 25 (EXPRESSION_STATEMENT)
 
 
-State 121
+State 118
 
    27 EXPRESSION: EXPRESSION COMMA . ASSIGNMENT_EXPRESSION
 
@@ -1955,7 +1906,7 @@ State 121
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    ASSIGNMENT_EXPRESSION     go to state 155
+    ASSIGNMENT_EXPRESSION     go to state 149
     CONDITIONAL_EXPRESSION    go to state 35
     LOGICAL_OR_EXPRESSION     go to state 36
     LOGICAL_AND_EXPRESSION    go to state 37
@@ -1974,14 +1925,14 @@ State 121
     VARIABLE_CONSTANT         go to state 50
 
 
-State 122
+State 119
 
-   77 PRIMARY_EXPRESSION: L_BRAC EXPRESSION R_BRAC .
+   74 PRIMARY_EXPRESSION: L_BRAC EXPRESSION R_BRAC .
 
-    $default  reduce using rule 77 (PRIMARY_EXPRESSION)
+    $default  reduce using rule 74 (PRIMARY_EXPRESSION)
 
 
-State 123
+State 120
 
    60 CAST_EXPRESSION: L_BRAC TYPE_NAME R_BRAC . CAST_EXPRESSION
 
@@ -1991,14 +1942,14 @@ State 123
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    CAST_EXPRESSION     go to state 156
-    PREFIX_EXPRESSION   go to state 125
+    CAST_EXPRESSION     go to state 150
+    PREFIX_EXPRESSION   go to state 122
     POSTFIX_EXPRESSION  go to state 48
     PRIMARY_EXPRESSION  go to state 49
     VARIABLE_CONSTANT   go to state 50
 
 
-State 124
+State 121
 
    33 LOGICAL_OR_EXPRESSION: LOGICAL_OR_EXPRESSION LOR LOGICAL_AND_EXPRESSION .
    35 LOGICAL_AND_EXPRESSION: LOGICAL_AND_EXPRESSION . LAND INCLUSIVE_OR_EXPRESSION
@@ -2008,23 +1959,23 @@ State 124
     $default  reduce using rule 33 (LOGICAL_OR_EXPRESSION)
 
 
-State 125
+State 122
 
    61 CAST_EXPRESSION: PREFIX_EXPRESSION .
 
     $default  reduce using rule 61 (CAST_EXPRESSION)
 
 
-State 126
+State 123
 
    27 EXPRESSION: EXPRESSION . COMMA ASSIGNMENT_EXPRESSION
    31 CONDITIONAL_EXPRESSION: LOGICAL_OR_EXPRESSION QUES_MARK EXPRESSION . COLON CONDITIONAL_EXPRESSION
 
-    COMMA  shift, and go to state 121
-    COLON  shift, and go to state 157
+    COMMA  shift, and go to state 118
+    COLON  shift, and go to state 151
 
 
-State 127
+State 124
 
    35 LOGICAL_AND_EXPRESSION: LOGICAL_AND_EXPRESSION LAND INCLUSIVE_OR_EXPRESSION .
    37 INCLUSIVE_OR_EXPRESSION: INCLUSIVE_OR_EXPRESSION . OR EXCLUSIVE_OR_EXPRESSION
@@ -2034,7 +1985,7 @@ State 127
     $default  reduce using rule 35 (LOGICAL_AND_EXPRESSION)
 
 
-State 128
+State 125
 
    37 INCLUSIVE_OR_EXPRESSION: INCLUSIVE_OR_EXPRESSION OR EXCLUSIVE_OR_EXPRESSION .
    39 EXCLUSIVE_OR_EXPRESSION: EXCLUSIVE_OR_EXPRESSION . XOR AND_EXPRESSION
@@ -2044,7 +1995,7 @@ State 128
     $default  reduce using rule 37 (INCLUSIVE_OR_EXPRESSION)
 
 
-State 129
+State 126
 
    39 EXCLUSIVE_OR_EXPRESSION: EXCLUSIVE_OR_EXPRESSION XOR AND_EXPRESSION .
    41 AND_EXPRESSION: AND_EXPRESSION . AND EQUALITY_EXPRESSION
@@ -2054,7 +2005,7 @@ State 129
     $default  reduce using rule 39 (EXCLUSIVE_OR_EXPRESSION)
 
 
-State 130
+State 127
 
    41 AND_EXPRESSION: AND_EXPRESSION AND EQUALITY_EXPRESSION .
    43 EQUALITY_EXPRESSION: EQUALITY_EXPRESSION . EQUAL RELATIONAL_EXPRESSION
@@ -2066,7 +2017,7 @@ State 130
     $default  reduce using rule 41 (AND_EXPRESSION)
 
 
-State 131
+State 128
 
    44 EQUALITY_EXPRESSION: EQUALITY_EXPRESSION NEQUAL RELATIONAL_EXPRESSION .
    46 RELATIONAL_EXPRESSION: RELATIONAL_EXPRESSION . LESSTHAN SHIFT_EXPRESSION
@@ -2082,7 +2033,7 @@ State 131
     $default  reduce using rule 44 (EQUALITY_EXPRESSION)
 
 
-State 132
+State 129
 
    43 EQUALITY_EXPRESSION: EQUALITY_EXPRESSION EQUAL RELATIONAL_EXPRESSION .
    46 RELATIONAL_EXPRESSION: RELATIONAL_EXPRESSION . LESSTHAN SHIFT_EXPRESSION
@@ -2098,7 +2049,7 @@ State 132
     $default  reduce using rule 43 (EQUALITY_EXPRESSION)
 
 
-State 133
+State 130
 
    47 RELATIONAL_EXPRESSION: RELATIONAL_EXPRESSION LESSEQUAL SHIFT_EXPRESSION .
    51 SHIFT_EXPRESSION: SHIFT_EXPRESSION . L_SHIFT ADDITIVE_EXPRESSION
@@ -2110,7 +2061,7 @@ State 133
     $default  reduce using rule 47 (RELATIONAL_EXPRESSION)
 
 
-State 134
+State 131
 
    46 RELATIONAL_EXPRESSION: RELATIONAL_EXPRESSION LESSTHAN SHIFT_EXPRESSION .
    51 SHIFT_EXPRESSION: SHIFT_EXPRESSION . L_SHIFT ADDITIVE_EXPRESSION
@@ -2122,7 +2073,7 @@ State 134
     $default  reduce using rule 46 (RELATIONAL_EXPRESSION)
 
 
-State 135
+State 132
 
    49 RELATIONAL_EXPRESSION: RELATIONAL_EXPRESSION GREATEQUAL SHIFT_EXPRESSION .
    51 SHIFT_EXPRESSION: SHIFT_EXPRESSION . L_SHIFT ADDITIVE_EXPRESSION
@@ -2134,7 +2085,7 @@ State 135
     $default  reduce using rule 49 (RELATIONAL_EXPRESSION)
 
 
-State 136
+State 133
 
    48 RELATIONAL_EXPRESSION: RELATIONAL_EXPRESSION GREATTHAN SHIFT_EXPRESSION .
    51 SHIFT_EXPRESSION: SHIFT_EXPRESSION . L_SHIFT ADDITIVE_EXPRESSION
@@ -2146,7 +2097,7 @@ State 136
     $default  reduce using rule 48 (RELATIONAL_EXPRESSION)
 
 
-State 137
+State 134
 
    51 SHIFT_EXPRESSION: SHIFT_EXPRESSION L_SHIFT ADDITIVE_EXPRESSION .
    54 ADDITIVE_EXPRESSION: ADDITIVE_EXPRESSION . PLUS MULTIPLCATIVE_EXPRESSION
@@ -2158,7 +2109,7 @@ State 137
     $default  reduce using rule 51 (SHIFT_EXPRESSION)
 
 
-State 138
+State 135
 
    52 SHIFT_EXPRESSION: SHIFT_EXPRESSION R_SHIFT ADDITIVE_EXPRESSION .
    54 ADDITIVE_EXPRESSION: ADDITIVE_EXPRESSION . PLUS MULTIPLCATIVE_EXPRESSION
@@ -2170,7 +2121,7 @@ State 138
     $default  reduce using rule 52 (SHIFT_EXPRESSION)
 
 
-State 139
+State 136
 
    54 ADDITIVE_EXPRESSION: ADDITIVE_EXPRESSION PLUS MULTIPLCATIVE_EXPRESSION .
    57 MULTIPLCATIVE_EXPRESSION: MULTIPLCATIVE_EXPRESSION . TIMES CAST_EXPRESSION
@@ -2184,7 +2135,7 @@ State 139
     $default  reduce using rule 54 (ADDITIVE_EXPRESSION)
 
 
-State 140
+State 137
 
    55 ADDITIVE_EXPRESSION: ADDITIVE_EXPRESSION MINUS MULTIPLCATIVE_EXPRESSION .
    57 MULTIPLCATIVE_EXPRESSION: MULTIPLCATIVE_EXPRESSION . TIMES CAST_EXPRESSION
@@ -2198,91 +2149,68 @@ State 140
     $default  reduce using rule 55 (ADDITIVE_EXPRESSION)
 
 
-State 141
+State 138
 
    57 MULTIPLCATIVE_EXPRESSION: MULTIPLCATIVE_EXPRESSION TIMES CAST_EXPRESSION .
 
     $default  reduce using rule 57 (MULTIPLCATIVE_EXPRESSION)
 
 
-State 142
+State 139
 
    58 MULTIPLCATIVE_EXPRESSION: MULTIPLCATIVE_EXPRESSION DIVIDE CAST_EXPRESSION .
 
     $default  reduce using rule 58 (MULTIPLCATIVE_EXPRESSION)
 
 
-State 143
+State 140
 
    59 MULTIPLCATIVE_EXPRESSION: MULTIPLCATIVE_EXPRESSION MODULUS CAST_EXPRESSION .
 
     $default  reduce using rule 59 (MULTIPLCATIVE_EXPRESSION)
 
 
-State 144
+State 141
 
    29 ASSIGNMENT_EXPRESSION: PREFIX_EXPRESSION ASSIGNMENT_OP ASSIGNMENT_EXPRESSION .
 
     $default  reduce using rule 29 (ASSIGNMENT_EXPRESSION)
 
 
-State 145
+State 142
 
-   69 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION ARROW IDENTIFIER .
+   66 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION L_BRAC R_BRAC .
 
-    $default  reduce using rule 69 (POSTFIX_EXPRESSION)
-
-
-State 146
-
-   67 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION L_BRAC R_BRAC .
-
-    $default  reduce using rule 67 (POSTFIX_EXPRESSION)
+    $default  reduce using rule 66 (POSTFIX_EXPRESSION)
 
 
-State 147
-
-   27 EXPRESSION: EXPRESSION . COMMA ASSIGNMENT_EXPRESSION
-   66 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION L_SQUARE EXPRESSION . R_SQUARE
-
-    COMMA     shift, and go to state 121
-    R_SQUARE  shift, and go to state 158
-
-
-State 148
-
-   68 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION DOT IDENTIFIER .
-
-    $default  reduce using rule 68 (POSTFIX_EXPRESSION)
-
-
-State 149
+State 143
 
    18 ITERATION_STATEMENT: DO STATEMENT WHILE . L_BRAC EXPRESSION R_BRAC
 
-    L_BRAC  shift, and go to state 159
+    L_BRAC  shift, and go to state 152
 
 
-State 150
+State 144
 
    17 ITERATION_STATEMENT: WHILE L_BRAC EXPRESSION . R_BRAC STATEMENT
    27 EXPRESSION: EXPRESSION . COMMA ASSIGNMENT_EXPRESSION
 
-    COMMA   shift, and go to state 121
-    R_BRAC  shift, and go to state 160
+    COMMA   shift, and go to state 118
+    R_BRAC  shift, and go to state 153
 
 
-State 151
+State 145
 
    15 SELECTION_STATEMENT: IF L_BRAC EXPRESSION . R_BRAC STATEMENT
    16                    | IF L_BRAC EXPRESSION . R_BRAC STATEMENT ELSE STATEMENT
    27 EXPRESSION: EXPRESSION . COMMA ASSIGNMENT_EXPRESSION
 
-    COMMA   shift, and go to state 121
-    R_BRAC  shift, and go to state 161
+    COMMA   shift, and go to state 118
+    R_BRAC  shift, and go to state 154
 
 
-State 152
+State 146
 
    19 ITERATION_STATEMENT: FOR L_BRAC EXPRESSION_STATEMENT . EXPRESSION_STATEMENT R_BRAC STATEMENT
    20                    | FOR L_BRAC EXPRESSION_STATEMENT . EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT
@@ -2294,8 +2222,129 @@ State 152
     L_BRAC      shift, and go to state 32
     STRING      shift, and go to state 33
 
-    EXPRESSION_STATEMENT      go to state 162
+    EXPRESSION_STATEMENT      go to state 155
     EXPRESSION                go to state 66
+    ASSIGNMENT_EXPRESSION     go to state 67
+    CONDITIONAL_EXPRESSION    go to state 35
+    LOGICAL_OR_EXPRESSION     go to state 36
+    LOGICAL_AND_EXPRESSION    go to state 37
+    INCLUSIVE_OR_EXPRESSION   go to state 38
+    EXCLUSIVE_OR_EXPRESSION   go to state 39
+    AND_EXPRESSION            go to state 40
+    EQUALITY_EXPRESSION       go to state 41
+    RELATIONAL_EXPRESSION     go to state 42
+    SHIFT_EXPRESSION          go to state 43
+    ADDITIVE_EXPRESSION       go to state 44
+    MULTIPLCATIVE_EXPRESSION  go to state 45
+    CAST_EXPRESSION           go to state 46
+    PREFIX_EXPRESSION         go to state 47
+    POSTFIX_EXPRESSION        go to state 48
+    PRIMARY_EXPRESSION        go to state 49
+    VARIABLE_CONSTANT         go to state 50
+
+
+State 147
+
+   21 ITERATION_STATEMENT: FOR L_BRAC DECLARATION . EXPRESSION_STATEMENT R_BRAC STATEMENT
+   22                    | FOR L_BRAC DECLARATION . EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT
+
+    IDENTIFIER  shift, and go to state 29
+    DECR        shift, and go to state 30
+    INCR        shift, and go to state 31
+    SEMICOLON   shift, and go to state 57
+    L_BRAC      shift, and go to state 32
+    STRING      shift, and go to state 33
+
+    EXPRESSION_STATEMENT      go to state 156
+    EXPRESSION                go to state 66
+    ASSIGNMENT_EXPRESSION     go to state 67
+    CONDITIONAL_EXPRESSION    go to state 35
+    LOGICAL_OR_EXPRESSION     go to state 36
+    LOGICAL_AND_EXPRESSION    go to state 37
+    INCLUSIVE_OR_EXPRESSION   go to state 38
+    EXCLUSIVE_OR_EXPRESSION   go to state 39
+    AND_EXPRESSION            go to state 40
+    EQUALITY_EXPRESSION       go to state 41
+    RELATIONAL_EXPRESSION     go to state 42
+    SHIFT_EXPRESSION          go to state 43
+    ADDITIVE_EXPRESSION       go to state 44
+    MULTIPLCATIVE_EXPRESSION  go to state 45
+    CAST_EXPRESSION           go to state 46
+    PREFIX_EXPRESSION         go to state 47
+    POSTFIX_EXPRESSION        go to state 48
+    PRIMARY_EXPRESSION        go to state 49
+    VARIABLE_CONSTANT         go to state 50
+
+
+State 148
+
+   87 DECLARATION: DECLARATION_SPECIFIER . SEMICOLON
+   88            | DECLARATION_SPECIFIER . INIT_DECLARATOR_LIST SEMICOLON
+
+    IDENTIFIER  shift, and go to state 12
+    TIMES       shift, and go to state 13
+    SEMICOLON   shift, and go to state 14
+    L_BRAC      shift, and go to state 15
+
+    INIT_DECLARATOR_LIST  go to state 16
+    INIT_DECLARATOR       go to state 17
+    DECLARATOR            go to state 157
+    DIRECT_DECLARATOR     go to state 19
+
+
+State 149
+
+   27 EXPRESSION: EXPRESSION COMMA ASSIGNMENT_EXPRESSION .
+
+    $default  reduce using rule 27 (EXPRESSION)
+
+
+State 150
+
+   60 CAST_EXPRESSION: L_BRAC TYPE_NAME R_BRAC CAST_EXPRESSION .
+
+    $default  reduce using rule 60 (CAST_EXPRESSION)
+
+
+State 151
+
+   31 CONDITIONAL_EXPRESSION: LOGICAL_OR_EXPRESSION QUES_MARK EXPRESSION COLON . CONDITIONAL_EXPRESSION
+
+    IDENTIFIER  shift, and go to state 29
+    DECR        shift, and go to state 30
+    INCR        shift, and go to state 31
+    L_BRAC      shift, and go to state 32
+    STRING      shift, and go to state 33
+
+    CONDITIONAL_EXPRESSION    go to state 158
+    LOGICAL_OR_EXPRESSION     go to state 36
+    LOGICAL_AND_EXPRESSION    go to state 37
+    INCLUSIVE_OR_EXPRESSION   go to state 38
+    EXCLUSIVE_OR_EXPRESSION   go to state 39
+    AND_EXPRESSION            go to state 40
+    EQUALITY_EXPRESSION       go to state 41
+    RELATIONAL_EXPRESSION     go to state 42
+    SHIFT_EXPRESSION          go to state 43
+    ADDITIVE_EXPRESSION       go to state 44
+    MULTIPLCATIVE_EXPRESSION  go to state 45
+    CAST_EXPRESSION           go to state 46
+    PREFIX_EXPRESSION         go to state 122
+    POSTFIX_EXPRESSION        go to state 48
+    PRIMARY_EXPRESSION        go to state 49
+    VARIABLE_CONSTANT         go to state 50
+
+
+State 152
+
+   18 ITERATION_STATEMENT: DO STATEMENT WHILE L_BRAC . EXPRESSION R_BRAC
+
+    IDENTIFIER  shift, and go to state 29
+    DECR        shift, and go to state 30
+    INCR        shift, and go to state 31
+    L_BRAC      shift, and go to state 32
+    STRING      shift, and go to state 33
+
+    EXPRESSION                go to state 159
     ASSIGNMENT_EXPRESSION     go to state 67
     CONDITIONAL_EXPRESSION    go to state 35
     LOGICAL_OR_EXPRESSION     go to state 36
@@ -2317,134 +2366,6 @@ State 152
 
 State 153
 
-   21 ITERATION_STATEMENT: FOR L_BRAC DECLARATION . EXPRESSION_STATEMENT R_BRAC STATEMENT
-   22                    | FOR L_BRAC DECLARATION . EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT
-
-    IDENTIFIER  shift, and go to state 29
-    DECR        shift, and go to state 30
-    INCR        shift, and go to state 31
-    SEMICOLON   shift, and go to state 57
-    L_BRAC      shift, and go to state 32
-    STRING      shift, and go to state 33
-
-    EXPRESSION_STATEMENT      go to state 163
-    EXPRESSION                go to state 66
-    ASSIGNMENT_EXPRESSION     go to state 67
-    CONDITIONAL_EXPRESSION    go to state 35
-    LOGICAL_OR_EXPRESSION     go to state 36
-    LOGICAL_AND_EXPRESSION    go to state 37
-    INCLUSIVE_OR_EXPRESSION   go to state 38
-    EXCLUSIVE_OR_EXPRESSION   go to state 39
-    AND_EXPRESSION            go to state 40
-    EQUALITY_EXPRESSION       go to state 41
-    RELATIONAL_EXPRESSION     go to state 42
-    SHIFT_EXPRESSION          go to state 43
-    ADDITIVE_EXPRESSION       go to state 44
-    MULTIPLCATIVE_EXPRESSION  go to state 45
-    CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 47
-    POSTFIX_EXPRESSION        go to state 48
-    PRIMARY_EXPRESSION        go to state 49
-    VARIABLE_CONSTANT         go to state 50
-
-
-State 154
-
-   90 DECLARATION: DECLARATION_SPECIFIER . SEMICOLON
-   91            | DECLARATION_SPECIFIER . INIT_DECLARATOR_LIST SEMICOLON
-
-    IDENTIFIER  shift, and go to state 12
-    TIMES       shift, and go to state 13
-    SEMICOLON   shift, and go to state 14
-    L_BRAC      shift, and go to state 15
-
-    INIT_DECLARATOR_LIST  go to state 16
-    INIT_DECLARATOR       go to state 17
-    DECLARATOR            go to state 164
-    DIRECT_DECLARATOR     go to state 19
-
-
-State 155
-
-   27 EXPRESSION: EXPRESSION COMMA ASSIGNMENT_EXPRESSION .
-
-    $default  reduce using rule 27 (EXPRESSION)
-
-
-State 156
-
-   60 CAST_EXPRESSION: L_BRAC TYPE_NAME R_BRAC CAST_EXPRESSION .
-
-    $default  reduce using rule 60 (CAST_EXPRESSION)
-
-
-State 157
-
-   31 CONDITIONAL_EXPRESSION: LOGICAL_OR_EXPRESSION QUES_MARK EXPRESSION COLON . CONDITIONAL_EXPRESSION
-
-    IDENTIFIER  shift, and go to state 29
-    DECR        shift, and go to state 30
-    INCR        shift, and go to state 31
-    L_BRAC      shift, and go to state 32
-    STRING      shift, and go to state 33
-
-    CONDITIONAL_EXPRESSION    go to state 165
-    LOGICAL_OR_EXPRESSION     go to state 36
-    LOGICAL_AND_EXPRESSION    go to state 37
-    INCLUSIVE_OR_EXPRESSION   go to state 38
-    EXCLUSIVE_OR_EXPRESSION   go to state 39
-    AND_EXPRESSION            go to state 40
-    EQUALITY_EXPRESSION       go to state 41
-    RELATIONAL_EXPRESSION     go to state 42
-    SHIFT_EXPRESSION          go to state 43
-    ADDITIVE_EXPRESSION       go to state 44
-    MULTIPLCATIVE_EXPRESSION  go to state 45
-    CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 125
-    POSTFIX_EXPRESSION        go to state 48
-    PRIMARY_EXPRESSION        go to state 49
-    VARIABLE_CONSTANT         go to state 50
-
-
-State 158
-
-   66 POSTFIX_EXPRESSION: POSTFIX_EXPRESSION L_SQUARE EXPRESSION R_SQUARE .
-
-    $default  reduce using rule 66 (POSTFIX_EXPRESSION)
-
-
-State 159
-
-   18 ITERATION_STATEMENT: DO STATEMENT WHILE L_BRAC . EXPRESSION R_BRAC
-
-    IDENTIFIER  shift, and go to state 29
-    DECR        shift, and go to state 30
-    INCR        shift, and go to state 31
-    L_BRAC      shift, and go to state 32
-    STRING      shift, and go to state 33
-
-    EXPRESSION                go to state 166
-    ASSIGNMENT_EXPRESSION     go to state 67
-    CONDITIONAL_EXPRESSION    go to state 35
-    LOGICAL_OR_EXPRESSION     go to state 36
-    LOGICAL_AND_EXPRESSION    go to state 37
-    INCLUSIVE_OR_EXPRESSION   go to state 38
-    EXCLUSIVE_OR_EXPRESSION   go to state 39
-    AND_EXPRESSION            go to state 40
-    EQUALITY_EXPRESSION       go to state 41
-    RELATIONAL_EXPRESSION     go to state 42
-    SHIFT_EXPRESSION          go to state 43
-    ADDITIVE_EXPRESSION       go to state 44
-    MULTIPLCATIVE_EXPRESSION  go to state 45
-    CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 47
-    POSTFIX_EXPRESSION        go to state 48
-    PRIMARY_EXPRESSION        go to state 49
-    VARIABLE_CONSTANT         go to state 50
-
-
-State 160
-
    17 ITERATION_STATEMENT: WHILE L_BRAC EXPRESSION R_BRAC . STATEMENT
 
     IDENTIFIER  shift, and go to state 29
@@ -2460,7 +2381,7 @@ State 160
     L_CURLY     shift, and go to state 25
     STRING      shift, and go to state 33
 
-    STATEMENT                 go to state 167
+    STATEMENT                 go to state 160
     COMPOUND_STATEMENT        go to state 60
     SELECTION_STATEMENT       go to state 62
     ITERATION_STATEMENT       go to state 63
@@ -2486,10 +2407,161 @@ State 160
     VARIABLE_CONSTANT         go to state 50
 
 
-State 161
+State 154
 
    15 SELECTION_STATEMENT: IF L_BRAC EXPRESSION R_BRAC . STATEMENT
    16                    | IF L_BRAC EXPRESSION R_BRAC . STATEMENT ELSE STATEMENT
+
+    IDENTIFIER  shift, and go to state 29
+    DECR        shift, and go to state 30
+    INCR        shift, and go to state 31
+    DO          shift, and go to state 52
+    WHILE       shift, and go to state 53
+    IF          shift, and go to state 54
+    FOR         shift, and go to state 55
+    RETURN      shift, and go to state 56
+    SEMICOLON   shift, and go to state 57
+    L_BRAC      shift, and go to state 32
+    L_CURLY     shift, and go to state 25
+    STRING      shift, and go to state 33
+
+    STATEMENT                 go to state 161
+    COMPOUND_STATEMENT        go to state 60
+    SELECTION_STATEMENT       go to state 62
+    ITERATION_STATEMENT       go to state 63
+    JUMP_STATEMENT            go to state 64
+    EXPRESSION_STATEMENT      go to state 65
+    EXPRESSION                go to state 66
+    ASSIGNMENT_EXPRESSION     go to state 67
+    CONDITIONAL_EXPRESSION    go to state 35
+    LOGICAL_OR_EXPRESSION     go to state 36
+    LOGICAL_AND_EXPRESSION    go to state 37
+    INCLUSIVE_OR_EXPRESSION   go to state 38
+    EXCLUSIVE_OR_EXPRESSION   go to state 39
+    AND_EXPRESSION            go to state 40
+    EQUALITY_EXPRESSION       go to state 41
+    RELATIONAL_EXPRESSION     go to state 42
+    SHIFT_EXPRESSION          go to state 43
+    ADDITIVE_EXPRESSION       go to state 44
+    MULTIPLCATIVE_EXPRESSION  go to state 45
+    CAST_EXPRESSION           go to state 46
+    PREFIX_EXPRESSION         go to state 47
+    POSTFIX_EXPRESSION        go to state 48
+    PRIMARY_EXPRESSION        go to state 49
+    VARIABLE_CONSTANT         go to state 50
+
+
+State 155
+
+   19 ITERATION_STATEMENT: FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT . R_BRAC STATEMENT
+   20                    | FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT . EXPRESSION R_BRAC STATEMENT
+
+    IDENTIFIER  shift, and go to state 29
+    DECR        shift, and go to state 30
+    INCR        shift, and go to state 31
+    L_BRAC      shift, and go to state 32
+    R_BRAC      shift, and go to state 162
+    STRING      shift, and go to state 33
+
+    EXPRESSION                go to state 163
+    ASSIGNMENT_EXPRESSION     go to state 67
+    CONDITIONAL_EXPRESSION    go to state 35
+    LOGICAL_OR_EXPRESSION     go to state 36
+    LOGICAL_AND_EXPRESSION    go to state 37
+    INCLUSIVE_OR_EXPRESSION   go to state 38
+    EXCLUSIVE_OR_EXPRESSION   go to state 39
+    AND_EXPRESSION            go to state 40
+    EQUALITY_EXPRESSION       go to state 41
+    RELATIONAL_EXPRESSION     go to state 42
+    SHIFT_EXPRESSION          go to state 43
+    ADDITIVE_EXPRESSION       go to state 44
+    MULTIPLCATIVE_EXPRESSION  go to state 45
+    CAST_EXPRESSION           go to state 46
+    PREFIX_EXPRESSION         go to state 47
+    POSTFIX_EXPRESSION        go to state 48
+    PRIMARY_EXPRESSION        go to state 49
+    VARIABLE_CONSTANT         go to state 50
+
+
+State 156
+
+   21 ITERATION_STATEMENT: FOR L_BRAC DECLARATION EXPRESSION_STATEMENT . R_BRAC STATEMENT
+   22                    | FOR L_BRAC DECLARATION EXPRESSION_STATEMENT . EXPRESSION R_BRAC STATEMENT
+
+    IDENTIFIER  shift, and go to state 29
+    DECR        shift, and go to state 30
+    INCR        shift, and go to state 31
+    L_BRAC      shift, and go to state 32
+    R_BRAC      shift, and go to state 164
+    STRING      shift, and go to state 33
+
+    EXPRESSION                go to state 165
+    ASSIGNMENT_EXPRESSION     go to state 67
+    CONDITIONAL_EXPRESSION    go to state 35
+    LOGICAL_OR_EXPRESSION     go to state 36
+    LOGICAL_AND_EXPRESSION    go to state 37
+    INCLUSIVE_OR_EXPRESSION   go to state 38
+    EXCLUSIVE_OR_EXPRESSION   go to state 39
+    AND_EXPRESSION            go to state 40
+    EQUALITY_EXPRESSION       go to state 41
+    RELATIONAL_EXPRESSION     go to state 42
+    SHIFT_EXPRESSION          go to state 43
+    ADDITIVE_EXPRESSION       go to state 44
+    MULTIPLCATIVE_EXPRESSION  go to state 45
+    CAST_EXPRESSION           go to state 46
+    PREFIX_EXPRESSION         go to state 47
+    POSTFIX_EXPRESSION        go to state 48
+    PRIMARY_EXPRESSION        go to state 49
+    VARIABLE_CONSTANT         go to state 50
+
+
+State 157
+
+   94 INIT_DECLARATOR: DECLARATOR .
+   95                | DECLARATOR . EQUAL INITIALIZER
+
+    EQUAL  shift, and go to state 24
+
+    $default  reduce using rule 94 (INIT_DECLARATOR)
+
+
+State 158
+
+   31 CONDITIONAL_EXPRESSION: LOGICAL_OR_EXPRESSION QUES_MARK EXPRESSION COLON CONDITIONAL_EXPRESSION .
+
+    $default  reduce using rule 31 (CONDITIONAL_EXPRESSION)
+
+
+State 159
+
+   18 ITERATION_STATEMENT: DO STATEMENT WHILE L_BRAC EXPRESSION . R_BRAC
+   27 EXPRESSION: EXPRESSION . COMMA ASSIGNMENT_EXPRESSION
+
+    COMMA   shift, and go to state 118
+    R_BRAC  shift, and go to state 166
+
+
+State 160
+
+   17 ITERATION_STATEMENT: WHILE L_BRAC EXPRESSION R_BRAC STATEMENT .
+
+    $default  reduce using rule 17 (ITERATION_STATEMENT)
+
+
+State 161
+
+   15 SELECTION_STATEMENT: IF L_BRAC EXPRESSION R_BRAC STATEMENT .
+   16                    | IF L_BRAC EXPRESSION R_BRAC STATEMENT . ELSE STATEMENT
+
+    ELSE  shift, and go to state 167
+
+    ELSE      [reduce using rule 15 (SELECTION_STATEMENT)]
+    $default  reduce using rule 15 (SELECTION_STATEMENT)
+
+
+State 162
+
+   19 ITERATION_STATEMENT: FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT R_BRAC . STATEMENT
 
     IDENTIFIER  shift, and go to state 29
     DECR        shift, and go to state 30
@@ -2530,117 +2602,18 @@ State 161
     VARIABLE_CONSTANT         go to state 50
 
 
-State 162
-
-   19 ITERATION_STATEMENT: FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT . R_BRAC STATEMENT
-   20                    | FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT . EXPRESSION R_BRAC STATEMENT
-
-    IDENTIFIER  shift, and go to state 29
-    DECR        shift, and go to state 30
-    INCR        shift, and go to state 31
-    L_BRAC      shift, and go to state 32
-    R_BRAC      shift, and go to state 169
-    STRING      shift, and go to state 33
-
-    EXPRESSION                go to state 170
-    ASSIGNMENT_EXPRESSION     go to state 67
-    CONDITIONAL_EXPRESSION    go to state 35
-    LOGICAL_OR_EXPRESSION     go to state 36
-    LOGICAL_AND_EXPRESSION    go to state 37
-    INCLUSIVE_OR_EXPRESSION   go to state 38
-    EXCLUSIVE_OR_EXPRESSION   go to state 39
-    AND_EXPRESSION            go to state 40
-    EQUALITY_EXPRESSION       go to state 41
-    RELATIONAL_EXPRESSION     go to state 42
-    SHIFT_EXPRESSION          go to state 43
-    ADDITIVE_EXPRESSION       go to state 44
-    MULTIPLCATIVE_EXPRESSION  go to state 45
-    CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 47
-    POSTFIX_EXPRESSION        go to state 48
-    PRIMARY_EXPRESSION        go to state 49
-    VARIABLE_CONSTANT         go to state 50
-
-
 State 163
 
-   21 ITERATION_STATEMENT: FOR L_BRAC DECLARATION EXPRESSION_STATEMENT . R_BRAC STATEMENT
-   22                    | FOR L_BRAC DECLARATION EXPRESSION_STATEMENT . EXPRESSION R_BRAC STATEMENT
+   20 ITERATION_STATEMENT: FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT EXPRESSION . R_BRAC STATEMENT
+   27 EXPRESSION: EXPRESSION . COMMA ASSIGNMENT_EXPRESSION
 
-    IDENTIFIER  shift, and go to state 29
-    DECR        shift, and go to state 30
-    INCR        shift, and go to state 31
-    L_BRAC      shift, and go to state 32
-    R_BRAC      shift, and go to state 171
-    STRING      shift, and go to state 33
-
-    EXPRESSION                go to state 172
-    ASSIGNMENT_EXPRESSION     go to state 67
-    CONDITIONAL_EXPRESSION    go to state 35
-    LOGICAL_OR_EXPRESSION     go to state 36
-    LOGICAL_AND_EXPRESSION    go to state 37
-    INCLUSIVE_OR_EXPRESSION   go to state 38
-    EXCLUSIVE_OR_EXPRESSION   go to state 39
-    AND_EXPRESSION            go to state 40
-    EQUALITY_EXPRESSION       go to state 41
-    RELATIONAL_EXPRESSION     go to state 42
-    SHIFT_EXPRESSION          go to state 43
-    ADDITIVE_EXPRESSION       go to state 44
-    MULTIPLCATIVE_EXPRESSION  go to state 45
-    CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 47
-    POSTFIX_EXPRESSION        go to state 48
-    PRIMARY_EXPRESSION        go to state 49
-    VARIABLE_CONSTANT         go to state 50
+    COMMA   shift, and go to state 118
+    R_BRAC  shift, and go to state 169
 
 
 State 164
 
-   97 INIT_DECLARATOR: DECLARATOR .
-   98                | DECLARATOR . EQUAL INITIALIZER
-
-    EQUAL  shift, and go to state 24
-
-    $default  reduce using rule 97 (INIT_DECLARATOR)
-
-
-State 165
-
-   31 CONDITIONAL_EXPRESSION: LOGICAL_OR_EXPRESSION QUES_MARK EXPRESSION COLON CONDITIONAL_EXPRESSION .
-
-    $default  reduce using rule 31 (CONDITIONAL_EXPRESSION)
-
-
-State 166
-
-   18 ITERATION_STATEMENT: DO STATEMENT WHILE L_BRAC EXPRESSION . R_BRAC
-   27 EXPRESSION: EXPRESSION . COMMA ASSIGNMENT_EXPRESSION
-
-    COMMA   shift, and go to state 121
-    R_BRAC  shift, and go to state 173
-
-
-State 167
-
-   17 ITERATION_STATEMENT: WHILE L_BRAC EXPRESSION R_BRAC STATEMENT .
-
-    $default  reduce using rule 17 (ITERATION_STATEMENT)
-
-
-State 168
-
-   15 SELECTION_STATEMENT: IF L_BRAC EXPRESSION R_BRAC STATEMENT .
-   16                    | IF L_BRAC EXPRESSION R_BRAC STATEMENT . ELSE STATEMENT
-
-    ELSE  shift, and go to state 174
-
-    ELSE      [reduce using rule 15 (SELECTION_STATEMENT)]
-    $default  reduce using rule 15 (SELECTION_STATEMENT)
-
-
-State 169
-
-   19 ITERATION_STATEMENT: FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT R_BRAC . STATEMENT
+   21 ITERATION_STATEMENT: FOR L_BRAC DECLARATION EXPRESSION_STATEMENT R_BRAC . STATEMENT
 
     IDENTIFIER  shift, and go to state 29
     DECR        shift, and go to state 30
@@ -2655,7 +2628,116 @@ State 169
     L_CURLY     shift, and go to state 25
     STRING      shift, and go to state 33
 
-    STATEMENT                 go to state 175
+    STATEMENT                 go to state 170
+    COMPOUND_STATEMENT        go to state 60
+    SELECTION_STATEMENT       go to state 62
+    ITERATION_STATEMENT       go to state 63
+    JUMP_STATEMENT            go to state 64
+    EXPRESSION_STATEMENT      go to state 65
+    EXPRESSION                go to state 66
+    ASSIGNMENT_EXPRESSION     go to state 67
+    CONDITIONAL_EXPRESSION    go to state 35
+    LOGICAL_OR_EXPRESSION     go to state 36
+    LOGICAL_AND_EXPRESSION    go to state 37
+    INCLUSIVE_OR_EXPRESSION   go to state 38
+    EXCLUSIVE_OR_EXPRESSION   go to state 39
+    AND_EXPRESSION            go to state 40
+    EQUALITY_EXPRESSION       go to state 41
+    RELATIONAL_EXPRESSION     go to state 42
+    SHIFT_EXPRESSION          go to state 43
+    ADDITIVE_EXPRESSION       go to state 44
+    MULTIPLCATIVE_EXPRESSION  go to state 45
+    CAST_EXPRESSION           go to state 46
+    PREFIX_EXPRESSION         go to state 47
+    POSTFIX_EXPRESSION        go to state 48
+    PRIMARY_EXPRESSION        go to state 49
+    VARIABLE_CONSTANT         go to state 50
+
+
+State 165
+
+   22 ITERATION_STATEMENT: FOR L_BRAC DECLARATION EXPRESSION_STATEMENT EXPRESSION . R_BRAC STATEMENT
+   27 EXPRESSION: EXPRESSION . COMMA ASSIGNMENT_EXPRESSION
+
+    COMMA   shift, and go to state 118
+    R_BRAC  shift, and go to state 171
+
+
+State 166
+
+   18 ITERATION_STATEMENT: DO STATEMENT WHILE L_BRAC EXPRESSION R_BRAC .
+
+    $default  reduce using rule 18 (ITERATION_STATEMENT)
+
+
+State 167
+
+   16 SELECTION_STATEMENT: IF L_BRAC EXPRESSION R_BRAC STATEMENT ELSE . STATEMENT
+
+    IDENTIFIER  shift, and go to state 29
+    DECR        shift, and go to state 30
+    INCR        shift, and go to state 31
+    DO          shift, and go to state 52
+    WHILE       shift, and go to state 53
+    IF          shift, and go to state 54
+    FOR         shift, and go to state 55
+    RETURN      shift, and go to state 56
+    SEMICOLON   shift, and go to state 57
+    L_BRAC      shift, and go to state 32
+    L_CURLY     shift, and go to state 25
+    STRING      shift, and go to state 33
+
+    STATEMENT                 go to state 172
+    COMPOUND_STATEMENT        go to state 60
+    SELECTION_STATEMENT       go to state 62
+    ITERATION_STATEMENT       go to state 63
+    JUMP_STATEMENT            go to state 64
+    EXPRESSION_STATEMENT      go to state 65
+    EXPRESSION                go to state 66
+    ASSIGNMENT_EXPRESSION     go to state 67
+    CONDITIONAL_EXPRESSION    go to state 35
+    LOGICAL_OR_EXPRESSION     go to state 36
+    LOGICAL_AND_EXPRESSION    go to state 37
+    INCLUSIVE_OR_EXPRESSION   go to state 38
+    EXCLUSIVE_OR_EXPRESSION   go to state 39
+    AND_EXPRESSION            go to state 40
+    EQUALITY_EXPRESSION       go to state 41
+    RELATIONAL_EXPRESSION     go to state 42
+    SHIFT_EXPRESSION          go to state 43
+    ADDITIVE_EXPRESSION       go to state 44
+    MULTIPLCATIVE_EXPRESSION  go to state 45
+    CAST_EXPRESSION           go to state 46
+    PREFIX_EXPRESSION         go to state 47
+    POSTFIX_EXPRESSION        go to state 48
+    PRIMARY_EXPRESSION        go to state 49
+    VARIABLE_CONSTANT         go to state 50
+
+
+State 168
+
+   19 ITERATION_STATEMENT: FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT R_BRAC STATEMENT .
+
+    $default  reduce using rule 19 (ITERATION_STATEMENT)
+
+
+State 169
+
+   20 ITERATION_STATEMENT: FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT EXPRESSION R_BRAC . STATEMENT
+
+    IDENTIFIER  shift, and go to state 29
+    DECR        shift, and go to state 30
+    INCR        shift, and go to state 31
+    DO          shift, and go to state 52
+    WHILE       shift, and go to state 53
+    IF          shift, and go to state 54
+    FOR         shift, and go to state 55
+    RETURN      shift, and go to state 56
+    SEMICOLON   shift, and go to state 57
+    L_BRAC      shift, and go to state 32
+    L_CURLY     shift, and go to state 25
+    STRING      shift, and go to state 33
+
+    STATEMENT                 go to state 173
     COMPOUND_STATEMENT        go to state 60
     SELECTION_STATEMENT       go to state 62
     ITERATION_STATEMENT       go to state 63
@@ -2683,16 +2765,14 @@ State 169
 
 State 170
 
-   20 ITERATION_STATEMENT: FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT EXPRESSION . R_BRAC STATEMENT
-   27 EXPRESSION: EXPRESSION . COMMA ASSIGNMENT_EXPRESSION
+   21 ITERATION_STATEMENT: FOR L_BRAC DECLARATION EXPRESSION_STATEMENT R_BRAC STATEMENT .
 
-    COMMA   shift, and go to state 121
-    R_BRAC  shift, and go to state 176
+    $default  reduce using rule 21 (ITERATION_STATEMENT)
 
 
 State 171
 
-   21 ITERATION_STATEMENT: FOR L_BRAC DECLARATION EXPRESSION_STATEMENT R_BRAC . STATEMENT
+   22 ITERATION_STATEMENT: FOR L_BRAC DECLARATION EXPRESSION_STATEMENT EXPRESSION R_BRAC . STATEMENT
 
     IDENTIFIER  shift, and go to state 29
     DECR        shift, and go to state 30
@@ -2707,7 +2787,7 @@ State 171
     L_CURLY     shift, and go to state 25
     STRING      shift, and go to state 33
 
-    STATEMENT                 go to state 177
+    STATEMENT                 go to state 174
     COMPOUND_STATEMENT        go to state 60
     SELECTION_STATEMENT       go to state 62
     ITERATION_STATEMENT       go to state 63
@@ -2735,178 +2815,19 @@ State 171
 
 State 172
 
-   22 ITERATION_STATEMENT: FOR L_BRAC DECLARATION EXPRESSION_STATEMENT EXPRESSION . R_BRAC STATEMENT
-   27 EXPRESSION: EXPRESSION . COMMA ASSIGNMENT_EXPRESSION
-
-    COMMA   shift, and go to state 121
-    R_BRAC  shift, and go to state 178
-
-
-State 173
-
-   18 ITERATION_STATEMENT: DO STATEMENT WHILE L_BRAC EXPRESSION R_BRAC .
-
-    $default  reduce using rule 18 (ITERATION_STATEMENT)
-
-
-State 174
-
-   16 SELECTION_STATEMENT: IF L_BRAC EXPRESSION R_BRAC STATEMENT ELSE . STATEMENT
-
-    IDENTIFIER  shift, and go to state 29
-    DECR        shift, and go to state 30
-    INCR        shift, and go to state 31
-    DO          shift, and go to state 52
-    WHILE       shift, and go to state 53
-    IF          shift, and go to state 54
-    FOR         shift, and go to state 55
-    RETURN      shift, and go to state 56
-    SEMICOLON   shift, and go to state 57
-    L_BRAC      shift, and go to state 32
-    L_CURLY     shift, and go to state 25
-    STRING      shift, and go to state 33
-
-    STATEMENT                 go to state 179
-    COMPOUND_STATEMENT        go to state 60
-    SELECTION_STATEMENT       go to state 62
-    ITERATION_STATEMENT       go to state 63
-    JUMP_STATEMENT            go to state 64
-    EXPRESSION_STATEMENT      go to state 65
-    EXPRESSION                go to state 66
-    ASSIGNMENT_EXPRESSION     go to state 67
-    CONDITIONAL_EXPRESSION    go to state 35
-    LOGICAL_OR_EXPRESSION     go to state 36
-    LOGICAL_AND_EXPRESSION    go to state 37
-    INCLUSIVE_OR_EXPRESSION   go to state 38
-    EXCLUSIVE_OR_EXPRESSION   go to state 39
-    AND_EXPRESSION            go to state 40
-    EQUALITY_EXPRESSION       go to state 41
-    RELATIONAL_EXPRESSION     go to state 42
-    SHIFT_EXPRESSION          go to state 43
-    ADDITIVE_EXPRESSION       go to state 44
-    MULTIPLCATIVE_EXPRESSION  go to state 45
-    CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 47
-    POSTFIX_EXPRESSION        go to state 48
-    PRIMARY_EXPRESSION        go to state 49
-    VARIABLE_CONSTANT         go to state 50
-
-
-State 175
-
-   19 ITERATION_STATEMENT: FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT R_BRAC STATEMENT .
-
-    $default  reduce using rule 19 (ITERATION_STATEMENT)
-
-
-State 176
-
-   20 ITERATION_STATEMENT: FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT EXPRESSION R_BRAC . STATEMENT
-
-    IDENTIFIER  shift, and go to state 29
-    DECR        shift, and go to state 30
-    INCR        shift, and go to state 31
-    DO          shift, and go to state 52
-    WHILE       shift, and go to state 53
-    IF          shift, and go to state 54
-    FOR         shift, and go to state 55
-    RETURN      shift, and go to state 56
-    SEMICOLON   shift, and go to state 57
-    L_BRAC      shift, and go to state 32
-    L_CURLY     shift, and go to state 25
-    STRING      shift, and go to state 33
-
-    STATEMENT                 go to state 180
-    COMPOUND_STATEMENT        go to state 60
-    SELECTION_STATEMENT       go to state 62
-    ITERATION_STATEMENT       go to state 63
-    JUMP_STATEMENT            go to state 64
-    EXPRESSION_STATEMENT      go to state 65
-    EXPRESSION                go to state 66
-    ASSIGNMENT_EXPRESSION     go to state 67
-    CONDITIONAL_EXPRESSION    go to state 35
-    LOGICAL_OR_EXPRESSION     go to state 36
-    LOGICAL_AND_EXPRESSION    go to state 37
-    INCLUSIVE_OR_EXPRESSION   go to state 38
-    EXCLUSIVE_OR_EXPRESSION   go to state 39
-    AND_EXPRESSION            go to state 40
-    EQUALITY_EXPRESSION       go to state 41
-    RELATIONAL_EXPRESSION     go to state 42
-    SHIFT_EXPRESSION          go to state 43
-    ADDITIVE_EXPRESSION       go to state 44
-    MULTIPLCATIVE_EXPRESSION  go to state 45
-    CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 47
-    POSTFIX_EXPRESSION        go to state 48
-    PRIMARY_EXPRESSION        go to state 49
-    VARIABLE_CONSTANT         go to state 50
-
-
-State 177
-
-   21 ITERATION_STATEMENT: FOR L_BRAC DECLARATION EXPRESSION_STATEMENT R_BRAC STATEMENT .
-
-    $default  reduce using rule 21 (ITERATION_STATEMENT)
-
-
-State 178
-
-   22 ITERATION_STATEMENT: FOR L_BRAC DECLARATION EXPRESSION_STATEMENT EXPRESSION R_BRAC . STATEMENT
-
-    IDENTIFIER  shift, and go to state 29
-    DECR        shift, and go to state 30
-    INCR        shift, and go to state 31
-    DO          shift, and go to state 52
-    WHILE       shift, and go to state 53
-    IF          shift, and go to state 54
-    FOR         shift, and go to state 55
-    RETURN      shift, and go to state 56
-    SEMICOLON   shift, and go to state 57
-    L_BRAC      shift, and go to state 32
-    L_CURLY     shift, and go to state 25
-    STRING      shift, and go to state 33
-
-    STATEMENT                 go to state 181
-    COMPOUND_STATEMENT        go to state 60
-    SELECTION_STATEMENT       go to state 62
-    ITERATION_STATEMENT       go to state 63
-    JUMP_STATEMENT            go to state 64
-    EXPRESSION_STATEMENT      go to state 65
-    EXPRESSION                go to state 66
-    ASSIGNMENT_EXPRESSION     go to state 67
-    CONDITIONAL_EXPRESSION    go to state 35
-    LOGICAL_OR_EXPRESSION     go to state 36
-    LOGICAL_AND_EXPRESSION    go to state 37
-    INCLUSIVE_OR_EXPRESSION   go to state 38
-    EXCLUSIVE_OR_EXPRESSION   go to state 39
-    AND_EXPRESSION            go to state 40
-    EQUALITY_EXPRESSION       go to state 41
-    RELATIONAL_EXPRESSION     go to state 42
-    SHIFT_EXPRESSION          go to state 43
-    ADDITIVE_EXPRESSION       go to state 44
-    MULTIPLCATIVE_EXPRESSION  go to state 45
-    CAST_EXPRESSION           go to state 46
-    PREFIX_EXPRESSION         go to state 47
-    POSTFIX_EXPRESSION        go to state 48
-    PRIMARY_EXPRESSION        go to state 49
-    VARIABLE_CONSTANT         go to state 50
-
-
-State 179
-
    16 SELECTION_STATEMENT: IF L_BRAC EXPRESSION R_BRAC STATEMENT ELSE STATEMENT .
 
     $default  reduce using rule 16 (SELECTION_STATEMENT)
 
 
-State 180
+State 173
 
    20 ITERATION_STATEMENT: FOR L_BRAC EXPRESSION_STATEMENT EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT .
 
     $default  reduce using rule 20 (ITERATION_STATEMENT)
 
 
-State 181
+State 174
 
    22 ITERATION_STATEMENT: FOR L_BRAC DECLARATION EXPRESSION_STATEMENT EXPRESSION R_BRAC STATEMENT .
 
