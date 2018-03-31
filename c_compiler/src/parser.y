@@ -94,12 +94,6 @@ EXTERNAL_DECLARATION
 	: DECLARATION             														{ $$ = $1;}
 	| DECLARATION_SPECIFIER DECLARATOR COMPOUND_STATEMENT    						{ $$ = new Function($1, $2, $3);}
 
-// FUNCTIONS - INITIALLY SMALLER TO BE MORE MANAGEABLE
-
-//FUNCTION_DEFINITION
-	//| 							{ $$ = new Function($1, $2, $3);}
-	//| DECLARATION_SPECIFIER DECLARATOR DECLARATION_LIST COMPOUND_STATEMENT			{ $$ = new Function($2, $3, $4);}
-
 ///////////////////////////////////////// STATEMENTS /////////////////////////////////////////////////////////////////////////////////
 
 STATEMENT
@@ -112,9 +106,9 @@ STATEMENT
 
 COMPOUND_STATEMENT
 	: L_CURLY R_CURLY																{ $$ = new CompoundStatement();}
-	| L_CURLY DECLARATION_SEQ R_CURLY												{ $$ = new CompoundStatement( $2, new List({}) ); } 
+	// | L_CURLY DECLARATION_SEQ R_CURLY												{ $$ = new CompoundStatement( $2, new List({}) ); } 
 	| L_CURLY STATEMENT_LIST R_CURLY												{ $$ = new CompoundStatement( new List({}), $2); }
-	| L_CURLY DECLARATION_SEQ STATEMENT_LIST R_CURLY								{ $$ = new CompoundStatement( $2, $3 ); }
+	// | L_CURLY DECLARATION_SEQ STATEMENT_LIST R_CURLY								{ $$ = new CompoundStatement( $2, $3 ); }
 
 STATEMENT_LIST
 	: STATEMENT 																	{ $$ = new List({$1}); }
@@ -123,8 +117,7 @@ STATEMENT_LIST
 SELECTION_STATEMENT
 	: IF L_BRAC EXPRESSION R_BRAC STATEMENT											{ $$ = new IfElseStatement($3, $5, new CompoundStatement());}
 	| IF L_BRAC EXPRESSION R_BRAC STATEMENT ELSE STATEMENT							{ $$ = new IfElseStatement($3, $5, $7);} 
-	| SWITCH L_BRAC EXPRESSION R_BRAC STATEMENT										{ $$ = new SwitchStatement($3, $5); }
-
+	
 ITERATION_STATEMENT // start with one
 	: WHILE L_BRAC EXPRESSION R_BRAC STATEMENT											  { $$ = new WhileStatement($3, $5);} 
 	| DO STATEMENT WHILE L_BRAC EXPRESSION R_BRAC										  { $$ = new DoWhileStatement($5, $2);} 
@@ -135,9 +128,9 @@ ITERATION_STATEMENT // start with one
 		
 JUMP_STATEMENT // just focus on return function for now
 	: RETURN EXPRESSION_STATEMENT													{ $$ = new ReturnStatement($2);}
-	| GOTO IDENTIFIER SEMICOLON														{ $$ = new GotoStatement(*$2);}
-	| CONTINUE SEMICOLON															{ $$ = new ContinueStatement();}
-	| BREAK SEMICOLON																{ $$ = new BreakStatement();}
+	// | GOTO IDENTIFIER SEMICOLON														{ $$ = new GotoStatement(*$2);}
+	// | CONTINUE SEMICOLON															{ $$ = new ContinueStatement();}
+	// | BREAK SEMICOLON																{ $$ = new BreakStatement();}
 
 
 ////////////////////////////////////////////////////// EXPRESSIONS //////////////////////////////////////////////////////////////////////
@@ -218,21 +211,21 @@ PREFIX_EXPRESSION
 	: POSTFIX_EXPRESSION 															{ $$ = $1; }
 	| INCR PREFIX_EXPRESSION 														{ $$ = new PrefixExpr($2, $1); }
 	| DECR PREFIX_EXPRESSION 														{ $$ = new PrefixExpr($2, $1); }
-	| UNARY_OPERATOR CAST_EXPRESSION 												{ $$ = new PrefixExpr($2, $1); }
-	| SIZEOF L_BRAC PREFIX_EXPRESSION R_BRAC										{ $$ = new PrefixExpr($3, $1); }
-	| SIZEOF L_BRAC TYPE_NAME R_BRAC 												{ $$ = new PrefixExpr($3, $1); }
+	// | UNARY_OPERATOR CAST_EXPRESSION 												{ $$ = new PrefixExpr($2, $1); }
+	// | SIZEOF L_BRAC PREFIX_EXPRESSION R_BRAC										{ $$ = new PrefixExpr($3, $1); }
+	// | SIZEOF L_BRAC TYPE_NAME R_BRAC 												{ $$ = new PrefixExpr($3, $1); }
 
 
-UNARY_OPERATOR
-	: AND
-	| LAND
-	| TIMES
-	| PLUS
-	| MINUS
-	| OR
-	| LOR
-	| XOR
-	| DIVIDE
+// UNARY_OPERATOR
+// 	: AND
+// 	| LAND
+// 	| TIMES
+// 	| PLUS
+// 	| MINUS
+// 	| OR
+// 	| LOR
+// 	| XOR
+// 	| DIVIDE
 
 POSTFIX_EXPRESSION
 	: PRIMARY_EXPRESSION 															{$$ = $1;}
@@ -247,13 +240,13 @@ POSTFIX_EXPRESSION
 TYPE_NAME
 	: VOID
 	| CHAR
-	| SHORT
+	// | SHORT
 	| INT
-	| LONG
-	| FLOAT
-	| DOUBLE
-	| SIGNED
-	| UNSIGNED
+	// | LONG
+	// | FLOAT
+	// | DOUBLE
+	// | SIGNED
+	// | UNSIGNED
 
 PRIMARY_EXPRESSION
 	: VARIABLE_CONSTANT																		{ $$ = $1;}
@@ -262,9 +255,9 @@ PRIMARY_EXPRESSION
 
 VARIABLE_CONSTANT
 	: IDENTIFIER																	{ $$ = new Variable($1);}
-	| I_CONST																	{ $$ = new IntConstant(*$1);}
-	| F_CONST																	{ $$ = new FloatConstant(*$1);}
-	| C_CONST 																	{ $$ = new CharConstant(*$1); }
+	// | I_CONST																	{ $$ = new IntConstant(*$1);}
+	// | F_CONST																	{ $$ = new FloatConstant(*$1);}
+	// | C_CONST 																	{ $$ = new CharConstant(*$1); }
 
 ASSIGNMENT_OP
 	: EQUAL 																		{ $$ = $1; }
@@ -282,9 +275,9 @@ ASSIGNMENT_OP
 
 ///////////////////////////////////////////////////////////////// DECLARATIONS ///////////////////////////////////////////////////////////////////
 
-DECLARATION_SEQ
-	: DECLARATION																	{ $$ = new DeclarationList({$1});}
-	| DECLARATION_SEQ DECLARATION													{ $$ -> add($2); }
+// DECLARATION_SEQ
+// 	: DECLARATION																	{ $$ = new DeclarationList({$1});}
+// 	| DECLARATION_SEQ DECLARATION													{ $$ -> add($2); }
 
 DECLARATION
 	: DECLARATION_SPECIFIER SEMICOLON												{ $$ = new Declaration($1,( new List({}) ) ); }
@@ -292,24 +285,24 @@ DECLARATION
 
 DECLARATION_SPECIFIER	
 	: TYPE_SPECIFIER																{ $$ = $1 ; }
-	| CONST																			{ $$ = new Type(Const) ; }
-	| TYPE_SPECIFIER DECLARATION_SPECIFIER											{ $2->add($1); $$ = $2; delete $1; }
-	| CONST DECLARATION_SPECIFIER													{ $2->add(new Type(Const) ); $$ = $2; delete $1; }
+	// | CONST																			{ $$ = new Type(Const) ; }
+	// | TYPE_SPECIFIER DECLARATION_SPECIFIER											{ $2->add($1); $$ = $2; delete $1; }
+	// | CONST DECLARATION_SPECIFIER													{ $2->add(new Type(Const) ); $$ = $2; delete $1; }
 
 TYPE_SPECIFIER
 	: VOID			          														{ $$ = new Type(Void);}
-	| CHAR			        														{ $$ = new Type(Char);}
+	// | CHAR			        														{ $$ = new Type(Char);}
 	| INT			            													{ $$ = new Type(Int);}
-	| SHORT			        														{ $$ = new Type(Short);}
-	| LONG			        														{ $$ = new Type(Long);}
+	// | SHORT			        														{ $$ = new Type(Short);}
+	// | LONG			        														{ $$ = new Type(Long);}
 	| FLOAT			          														{ $$ = new Type(Float);}
-	| DOUBLE		        														{ $$ = new Type(Double);}
-	| SIGNED		        														{ $$ = new Type(1);}
-	| UNSIGNED		      															{ $$ = new Type(0);}
+	// | DOUBLE		        														{ $$ = new Type(Double);}
+	// | SIGNED		        														{ $$ = new Type(1);}
+	// | UNSIGNED		      															{ $$ = new Type(0);}
 
 INIT_DECLARATOR_LIST
 	: INIT_DECLARATOR	                                  							{ $$ = new DeclarationList({$1}); }
-	| INIT_DECLARATOR_LIST COMMA INIT_DECLARATOR									{ $$ -> add($3); }
+	// | INIT_DECLARATOR_LIST COMMA INIT_DECLARATOR									{ $$ -> add($3); }
 
 INIT_DECLARATOR
 	: DECLARATOR		                      										{ $$ = $1; }
@@ -329,10 +322,10 @@ DIRECT_DECLARATOR
 	: L_BRAC DECLARATOR R_BRAC														{ $$ = $2; }
 	| IDENTIFIER																	{ $$ = new Variable($1);}
 	| L_BRAC R_BRAC DECLARATOR														{ $$ = $3; }
-	| DIRECT_DECLARATOR L_SQUARE R_SQUARE											{ $$ = new ArrayDeclarator($1, new Constant("-1")); } 	// Undefined Array 
-	| DIRECT_DECLARATOR L_BRAC R_BRAC												{ $$ = new FunctionDeclarator($1,( new List({}) ) ); } 	// Nullary Function
-	| DIRECT_DECLARATOR L_BRAC PARAMETER_LIST R_BRAC				                { $$ = new FunctionDeclarator($1, $3); } 				// Unary|Binary Function 
-	| DIRECT_DECLARATOR L_BRAC IDENTIFIER_LIST R_BRAC								{ $$ = new FunctionDeclarator($1, $3); } 	//ExtraHard // Complex Unary|Binary Function 
+	// | DIRECT_DECLARATOR L_SQUARE R_SQUARE											{ $$ = new ArrayDeclarator($1, new Constant("-1")); } 	// Undefined Array 
+	// | DIRECT_DECLARATOR L_BRAC R_BRAC												{ $$ = new FunctionDeclarator($1,( new List({}) ) ); } 	// Nullary Function
+	// | DIRECT_DECLARATOR L_BRAC PARAMETER_LIST R_BRAC				                { $$ = new FunctionDeclarator($1, $3); } 				// Unary|Binary Function 
+	// | DIRECT_DECLARATOR L_BRAC IDENTIFIER_LIST R_BRAC								{ $$ = new FunctionDeclarator($1, $3); } 	//ExtraHard // Complex Unary|Binary Function 
 
 PARAMETER_LIST 
 	: DECLARATION_SPECIFIER DECLARATOR												{ $$ = new ParameterList({ new Declaration($1, new DeclarationList({ $2 }) ) }); }

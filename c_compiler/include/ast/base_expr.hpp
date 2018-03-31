@@ -22,10 +22,10 @@ public:
 };
 
 class Expression_Null : public Expression {
-public:
+public: 
+  Expression_Null(){};
   virtual ~Expression_Null(){};
   virtual std::string getNodeType() const override;
-  Expression_Null(){};
   virtual std::vector<const baseNode *> getChildren() const override { return {}; }
 };
 

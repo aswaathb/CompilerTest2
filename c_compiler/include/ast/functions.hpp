@@ -21,8 +21,7 @@ public:
 
   //! Getters
   virtual std::string getType() const;
-  virtual std::string getNodeType() const { return "Function"; };
-  virtual std::string getHeader() const;
+  virtual std::string getNodeType() const;
   virtual std::string getDetails() const override;
   virtual std::vector<std::string> getParams() const;
   virtual std::string getParamString() const;

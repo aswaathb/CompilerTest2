@@ -15,6 +15,8 @@ const baseNode * child;
 mutable int ptr = 0;
 public:
   Declarator(const baseNode * _child) : child(_child) {};
+  
+  virtual ~Declarator(){};
 
   virtual std::string getNodeType() const override;
   virtual std::string getId() const override { return child->getId(); };

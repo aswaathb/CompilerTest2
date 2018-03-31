@@ -26,14 +26,14 @@ protected:
   mutable int p;
 
 public:
-  virtual ~baseNode();
+  virtual ~baseNode(){} ;
 
-  baseNode();
+  baseNode(){};
   //! Getters
   virtual std::string getNodeType() const;      //! Return the type of the node
   virtual std::string getDetails() const;
 
-  virtual const baseNode * add(const baseNode * child) const;
+  virtual const baseNode * add(const baseNode * child) const ;
 
   virtual int getPtr() const {return 0; };
   virtual std::vector<const baseNode *> getChildren() const { return {};}; //! If not overridden, return empty.
@@ -42,6 +42,8 @@ public:
   virtual std::vector<std::string> getChildParams() const;
   virtual void addString(std::string) const;
   virtual std::vector<std::string> getStrings() const;
+  //virtual std::vector<const baseNode *> getChildren() = 0 ;
+
   
   
   //! Recursive setter:
@@ -64,17 +66,17 @@ protected:
   mutable std::vector<const baseNode *> children;
 public:
   //! Initialise using brace initializer new List({arg1, arg2, arg3})
-  List(std::vector<const baseNode *> _children) : children(_children) {}
+  List(std::vector<const baseNode *> _children): children(_children) {};
   
   //! Destructor for list
-  virtual ~List();
+   virtual ~List(){};
   
   virtual const baseNode * add(const baseNode * child) const;
   
   
   //! Getters
   virtual std::string getNodeType() const;
-  virtual std::vector<const baseNode *> getChildren() const;
+  virtual std::vector<const baseNode *> getChildren();
   
   //! Printers
   virtual void python_print(std::ostream &stream) const;
@@ -86,7 +88,9 @@ public:
 class MultiList : public List {
 public:
   //! Initialise using brace initializer new MultiList({arg1, arg2, arg3})
-  MultiList(std::vector<const baseNode *> _children) : List(_children) {}
+  MultiList(std::vector<const baseNode *> _children) : List(_children) {
+
+  };
   
   //! Getters
   virtual std::string getNodeType() const;

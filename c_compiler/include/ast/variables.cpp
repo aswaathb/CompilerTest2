@@ -8,9 +8,6 @@ std::string Parameter::getNodeType() const { return "Parameter"; }
 
 std::string Variable::getId() const { return id; };
 
-std::string Variable::getHeader() const { 
-  return "<" + getNodeType() + " id=\"" + getId() + "\" " + baseNode::getDetails() + "/>";
-}
 
 /* PRNT ASSEMBLY */
 Context Variable::generate_assembly(Context ctxt, int d) const {

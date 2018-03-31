@@ -1,86 +1,25 @@
-CXXFLAGS += -std=c++11 -W -Wall -g -Wno-unused-parameter -Wno-unused-variable -Wunused-function
-# Set constant directorys
-LSDIR=src	###################
-PSDIR=src	####################
-CSDIR=src   ###################
+CPPFLAGS += -std=c++11 -W -Wall -g -Wno-unused-parameter
+CPPFLAGS += -I include
 
-INC=-Iinclude
-# Preprocessor flags, MMD creates dependency files
-CPPFLAGS += -MMD $(INC)
+all : bin/print_canonical bin/eval_expr
 
-FLX = $(LSDIR)/lexer.yy.cpp
-BIS = $(PSDIR)/parser.tab.c
+src/parser.tab.cpp src/parser.tab.hpp : src/parser.y
+	bison -v -d src/parser.y -o src/parser.tab.cpp
 
-###
-### BUILD RULES FOR LEXER
-###
-# List of source files for lexer
-#LSRCS= $(LSDIR)/lexer_main.cpp $(FLX)   ########################
-src/lexer.yy.cpp : src/lexer.flex				#########1######
-		flex -o src/lexer.yy.cpp  src/lexer.flex   #######2################
+src/lexer.yy.cpp : src/lexer.flex src/parser.tab.hpp
+	flex -o src/lexer.yy.cpp  src/lexer.flex
 
-bin/lexer: src/parser.tab.hpp src/lexer.yy.cpp ############3###################
+bin/print_canonical : src/print_canonical.o src/parser.tab.o src/lexer.yy.o src/parser.tab.o
 	mkdir -p bin
-	g++ $(CPPFLAGS) -o bin/lexer  src/lexer.yy.cpp #####4##############
-
-src/parser.tab.hpp: src/parser.y
-	bison -d -o src/parser.tab.cpp $^
-
-# Need to generate lexer.yy.cpp from .flex first
-%/lexer.yy.cpp: %/lexer.flex src/parser.tab.hpp
-	flex -o $@ $^ 
-
-# Need to build lexer.yy.o next
-%/lexer.yy.o: lexer.yy.cpp
-	g++ $(CPPFLAGS) $(CXXFLAGS) -o $@ $^
-
--include $(_LSRCS:%.cpp=%.d)
-
-###
-### BUILD RULES FOR PARSER
-###
-# Source files
-#PSRCS=$(PSDIR)/parser_main.cpp	########################
-#-include $(PSRCS:%.cpp=%.d)	#######################
-PSRCS += $(FLX) $(BIS)
-PSRCS += $(wildcard include/ast/*.cpp) ############
-
-bin/parser: src/parser.tab.hpp $(PSRCS:%.cpp=%.o) 
+	g++ $(CPPFLAGS) -o bin/print_canonical $^
+	
+bin/eval_expr : src/eval_expr.o src/parser.tab.o src/lexer.yy.o src/parser.tab.o
 	mkdir -p bin
-	g++ $(CPPFLAGS) $(CXXFLAGS) -o $@ $(PSRCS:%.cpp=%.o)
-
-%/parser.tab.cpp: src/parser.tab.hpp
-
-# Need to generate lexer.yy.cpp from .flex first
-%/lexer.yy.cpp: %/lexer.flex src/parser.tab.hpp
-	flex -o $@ $^ 
-
-###
-### BUILD RULES FOR COMPILER
-###
-# Source files
-#CSRCS=$(CSDIR)/compiler_main.cpp ############################
-#-include $(CSRCS:%.cpp=%.d)		######################
-CSRCS += $(FLX) $(BIS)
-CSRCS += $(wildcard include/ast/*.cpp) #############
-
-bin/compiler : src/parser.tab.hpp $(CSRCS:%.cpp=%.o)
-	mkdir -p bin
-	g++ $(CPPFLAGS) $(CXXFLAGS) -o $@ $^
-
-all : bin/lexer bin/parser bin/compiler
-
-clean:
-	rm -f bin/*
+	g++ $(CPPFLAGS) -o bin/eval_expr $^
 
 
-	rm -f src/*.o
-	rm -f src/*.d
-	rm -f src/*.tab.*
-	rm -f src/*.yy.*
-	rm -f src/ast/*.o
-	rm -f src/ast/*.d
-	rm -f test/compiler/out/*
-	rm -f test/compiler/ref/*
-
-.PHONY: clean
+clean :
+	rm src/*.o
+	rm bin/*
+	rm src/*.tab.cpp
+	rm src/*.yy.cpp

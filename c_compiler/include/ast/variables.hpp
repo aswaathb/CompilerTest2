@@ -12,7 +12,8 @@ private:
 public:
   virtual ~Variable(){};
 
-  Variable(const std::string* _id) : id(*_id) {};
+  Variable(const std::string* _id) 
+  : id(*_id) {};
   Variable(const std::string* _id, bool _ptr) : id(*_id), ptr(_ptr) { };
   
   virtual std::string getNodeType() const override;

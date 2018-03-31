@@ -3,7 +3,7 @@
 #include "context.hpp"
 
 
-BinaryExpression::BinaryExpression(const Expression *_left, const Expression *_right, std::string *_op)
+BinaryExpression::BinaryExpression(const Expression *_left, const Expression *_right, std::string _op)
     : left(_left), right(_right), op(*_op) {}
 
 /* GETTERS */

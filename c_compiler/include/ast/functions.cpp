@@ -15,9 +15,6 @@ std::vector<const baseNode *> Function::getChildren() const{
 
 std::string Function::getType() const { return type->getTypename(); }
 
-std::string Function::getHeader() const {
-  return "<" + getNodeType() + " id=\"" + id + "\" type=\"" + type->getTypename() + "\" " + getDetails() + " >";
-}
 
 std::string Function::getDetails() const {
   std::string params = getParamString();
@@ -51,6 +48,10 @@ void Function::setChildDefs() const {
   baseNode::setChildDefs();
 }
 
+
+std::string Function::getNodeType() const {
+  return "Function";
+}
 
 /*
    END OF GETTERS
