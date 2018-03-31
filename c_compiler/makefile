@@ -22,6 +22,6 @@ bin/eval_expr : src/eval_expr.o src/parser.tab.o src/lexer.yy.o src/parser.tab.o
 
 clean :
 	rm src/*.o
-	rm bin/*
 	rm src/*.tab.cpp
 	rm src/*.yy.cpp
+	rm bin/*
