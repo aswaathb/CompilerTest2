@@ -84,17 +84,6 @@ void baseNode::setParamUses() const {
   }
 }
 
-
-void baseNode::tab(std::ostream &stream, bool open){
- if (!open) {
-   tabcount--;
-   stream << std::string(tabcount, '\t');
- } else {
-   stream << std::string(tabcount, '\t');
-   tabcount++;
- }
-}
-
 /*
    PRINTERS
  */

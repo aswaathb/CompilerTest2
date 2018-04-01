@@ -7,8 +7,6 @@
  */
 
 std::string CompoundStatement::getNodeType() const { 
-if (parser)
-  return "Scope";
 return "CompoundStatement"; };
 
 std::vector<const baseNode *> CompoundStatement::getChildren() const {
@@ -41,7 +39,6 @@ Context ExprStatement::generate_assembly(Context ctxt, int d) const {
 
 
 void ExprStatement::python_print(std::ostream& stream) const {
-if (!parser)
   stream << "Expr Statement NOT YET IMPLEMENTED"                    << std::endl;
 }
 
@@ -61,14 +58,12 @@ std::vector<const Expression *>SelectionStatement::getConditions() const {
 }
 
 std::string IfStatement::getNodeType() const {
-  if (parser)
-    return "Scope";
+
   return "IfStatement";
 }
 
 std::string IfElseStatement::getNodeType() const {
-  if (parser)
-    return "Scope";
+
   return "IfElseStatement";
 }
 
@@ -186,7 +181,7 @@ Context ContinueStatement::generate_assembly(Context ctxt, int d) const{
 
 Context GotoStatement::generate_assembly(Context ctxt, int d) const{
   
-  ctxt.ss() << "\tj\t" << label << "# jump to label"                << std::endl;
+  ctxt.ss() << "\tj\t" << targetLabel << "# jump to label"          << std::endl;
   ctxt.ss() << "\tnop"                                              << std::endl;
   return ctxt;
 }
@@ -244,7 +239,7 @@ Context Case::generate_assembly(Context ctxt, int d) const {
   return ctxt;
 }
 
-Context DefaultLabel::generate_assembly(Context ctxt, int d) const {
+Context Default::generate_assembly(Context ctxt, int d) const {
   std::string dLabel = "default" + genUniqueID();
 
   ctxt.ss() << dLabel << ": # unique default label just in case"    << std::endl;
@@ -257,27 +252,26 @@ Context DefaultLabel::generate_assembly(Context ctxt, int d) const {
 
 
 std::string Iteration::getNodeType() const { 
-  if (parser)
-    return "Scope";
-  return "Iteration"; }
-std::string ForStatement::getNodeType() const { 
-  if (parser)
-    return "Scope";
-  return "ForStatement"; }
+  return "Iteration"; 
+}
+
+std::string ForStatementBase::getNodeType() const { 
+  return "ForStatementBase"; 
+}
+
 std::string WhileStatement::getNodeType() const { 
-  if (parser)
-    return "Scope";
-  return "WhileStatement"; }
+  return "WhileStatement"; 
+}
+
 std::string DoWhileStatement::getNodeType() const { 
-  if (parser)    
-    return "Scope";
-  return "DoWhileStatement"; }
+  return "DoWhileStatement"; 
+}
 
 
-std::string ExprExprFor::getNodeType() const                        { return "EEForStatement"; }
-std::string DecExprFor::getNodeType() const                         { return "DEForStatement"; }
-std::string ExprExprExprFor::getNodeType() const                    { return "EEEForStatement"; }
-std::string DecExprExprFor::getNodeType() const                     { return "DEEForStatement"; }
+std::string ExprExprFor::getNodeType() const                        { return "ExprExprFor"; }
+std::string DecExprFor::getNodeType() const                         { return "DecExprFor"; }
+std::string ExprExprExprFor::getNodeType() const                    { return "ExprExprExprFor"; }
+std::string DecExprExprFor::getNodeType() const                     { return "DecExprExprFor"; }
 
 
 
@@ -289,7 +283,7 @@ std::vector<const baseNode*> WhileStatement::getChildren() const {
   return {cond,stat1};
 }
 
-std::vector<const baseNode*> ForStatement::getChildren() const {
+std::vector<const baseNode*> ForStatementBase::getChildren() const {
   return {cond1,stat1};
 }
 
@@ -302,11 +296,11 @@ std::vector<const baseNode*> ExprExprExprFor::getChildren() const {
 }
 
 std::vector<const baseNode*> DecExprFor::getChildren() const {
-  return {dec,cond1,stat1};
+  return {decl,cond1,stat1};
 }
 
 std::vector<const baseNode*> DecExprExprFor::getChildren() const {
-  return {dec,cond1,cond2,stat1};
+  return {decl,cond1,cond2,stat1};
 }
 
 /*
@@ -317,7 +311,7 @@ std::vector<const baseNode*> DecExprExprFor::getChildren() const {
    PRINTERS
  */
 
-Context print_while(Context ctxt, const Iteration * in, const Statement * stat1){
+Context loop_print(Context ctxt, const Iteration * in, const Statement * stat1){
   // Create labels
   std::string _ID_ = genUniqueID();
   std::string cond       = "$cond"       + _ID_;
@@ -363,31 +357,31 @@ Context print_while(Context ctxt, const Iteration * in, const Statement * stat1)
 }
 
 Context Iteration::generate_assembly(Context ctxt, int d) const {
-  print_while(ctxt, this, stat1);
+  loop_print(ctxt, this, stat1);
 
   return ctxt;
 }
 
 
 Context WhileStatement::generate_assembly(Context ctxt, int d) const {
-  print_while(ctxt, this, stat1);
+  loop_print(ctxt, this, stat1);
 
   return ctxt;
 }
 
 Context DoWhileStatement::generate_assembly(Context ctxt, int d) const {
-  print_while(ctxt, this, stat1);
+  loop_print(ctxt, this, stat1);
 
   return ctxt;
 }
 
-Context ForStatement::generate_assembly(Context ctxt, int d) const {
+Context ForStatementBase::generate_assembly(Context ctxt, int d) const {
   
-  return print_while(ctxt, this, stat1);
+  return loop_print(ctxt, this, stat1);
 }
 
 Context DecExprExprFor::generate_assembly(Context ctxt, int d) const {
-  return print_while(ctxt, this, stat1);
+  return loop_print(ctxt, this, stat1);
 }
 
 

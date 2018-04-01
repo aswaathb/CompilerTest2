@@ -51,8 +51,8 @@ Context PrefixExpr::generate_assembly(Context ctxt, int d) const {
   int s = 1;
   if (op=="++"){
     ctxt.ss() << "#" << child->getId() << std::endl;
-    Var v = ctxt.getVariable(child->getId());
-    if (v.ptr){
+    Var variable = ctxt.getVariable(child->getId());
+    if (variable.pointer){
       s = 4;
     }
     child->generate_assembly(ctxt,d);
@@ -129,45 +129,45 @@ Context PrefixExpr::generate_assembly(Context ctxt, int d) const {
 
 
 
-// Context SquareOperator::generate_assembly(Context ctxt, int d) const {
+Context SquareOperator::generate_assembly(Context ctxt, int d) const {
 
-//   //???ctxt = arg->generate_assembly(ctxt,8);
-//   int i = 0;
-//   if (arg->getNodeType()=="IntConstant"){
-//     i = std::stoi(arg->getId(),0,0);
-//   }
-//   else{
-//     ctxt = arg->generate_assembly(ctxt,8);
-//   }
+  //???ctxt = arg->generate_assembly(ctxt,8);
+  int i = 0;
+  if (arg->getNodeType()=="IntConstant"){
+    i = std::stoi(arg->getId(),0,0);
+  }
+  else{
+    ctxt = arg->generate_assembly(ctxt,8);
+  }
 
-//   // Take offset value from frame ptr  
-//   std::string variableType = ctxt.getVarType(child->getId());
-//   ctxt.ss() << "\t# Square operator, vartype: " << variableType                       << std::endl;
-//   ctxt.ss() << "\tlw\t$" << d << "," << ctxt.getVarOffset(child->getId()) << "($fp)"  << std::endl;
-//   if (variableType=="char"){
-//     ctxt.ss() << "\taddu\t$" << d << ",$8,$" << d                                     << std::endl;
-//     ctxt.ss() << "\tlb\t$" << d << ",0" << "($" << d << ")"                           << std::endl;  
-//   }
-//   else{
-//     ctxt.ss() << "\tsll\t$8,$8,2"                                                     << std::endl;
-//     ctxt.ss() << "\taddu\t$" << d << ",$8,$" << d                                     << std::endl;
-//     ctxt.ss() << "\tlw\t$" << d << ",0" << "($" << d << ")"                           << std::endl;
-//   }
+  // Take offset value from frame ptr  
+  std::string variableType = ctxt.getVarType(child->getId());
+  ctxt.ss() << "\t# Square operator, vartype: " << variableType                       << std::endl;
+  ctxt.ss() << "\tlw\t$" << d << "," << ctxt.getVarOffset(child->getId()) << "($fp)"  << std::endl;
+  if (variableType=="char"){
+    ctxt.ss() << "\taddu\t$" << d << ",$8,$" << d                                     << std::endl;
+    ctxt.ss() << "\tlb\t$" << d << ",0" << "($" << d << ")"                           << std::endl;  
+  }
+  else{
+    ctxt.ss() << "\tsll\t$8,$8,2"                                                     << std::endl;
+    ctxt.ss() << "\taddu\t$" << d << ",$8,$" << d                                     << std::endl;
+    ctxt.ss() << "\tlw\t$" << d << ",0" << "($" << d << ")"                           << std::endl;
+  }
   
-//   return ctxt;
-// }
+  return ctxt;
+}
 
 
-// Context CastExpr::generate_assembly(Context ctxt, int d) const {
+Context CastExpr::generate_assembly(Context ctxt, int d) const {
   
-//   return ctxt;
-// }
+  return ctxt;
+}
 
 
 Context PostfixExpr::generate_assembly(Context ctxt, int d) const {
   int s = 1;
   Var variable = ctxt.getVariable(child->getId());
-  if (variable.ptr){
+  if (variable.pointer){
     s = 4;
   }
   if (op=="++"){

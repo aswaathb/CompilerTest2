@@ -54,9 +54,10 @@ public:
   virtual ~CompoundStatement() {
     delete decl;
     delete stat;
-  };
-  CompoundStatement() : decl(new List({}) ), stat(new List({}) ) {};
+  };  
   CompoundStatement(const List *_decl, const List *_stat) : decl(_decl), stat(_stat) {};
+
+  CompoundStatement() : decl(new List({}) ), stat(new List({}) ) {};
 
   virtual std::string getNodeType() const override;
   virtual std::vector<const baseNode *> getChildren() const override;
@@ -213,7 +214,7 @@ public:
   virtual ~Default(){};
   Default(const Statement *_stat) : stat(_stat) {};
   
-  virtual std::string getNodeType() const override { return "Default";};
+  virtual std::string getNodeType() const override;
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 };
 
@@ -223,11 +224,11 @@ class Iteration : public ConditionalStatement {
 public:
   virtual ~Iteration(){};
   virtual std::string getNodeType() const;
-  // virtual std::vector<const baseNode *> getChildren() const;
-  // virtual std::vector<const Expression*> getConditions() const = 0;
+  virtual std::vector<const baseNode *> getChildren() const;
+ 
 
   Iteration(const Statement *_stat) : ConditionalStatement(_stat) {}
-  virtual std::vector<const baseNode *> getChildren() const = 0;
+
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 };
 
@@ -247,7 +248,7 @@ public:
   WhileStatement(const Expression *_cond, const Statement *_stat)
       : Iteration(_stat), cond(_cond) {};
   virtual std::vector<const baseNode *> getChildren() const override;
-  //virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+  virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 };
 
 
@@ -260,7 +261,7 @@ public:
   virtual std::string getNodeType() const override;
 
   DoWhileStatement(const Expression *_cond, const Statement *_stat) : WhileStatement(_cond, _stat) {};
-  //virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+  virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 };
 
 
@@ -276,7 +277,7 @@ public:
     return {(const Expression*)cond1};
   };
   virtual std::vector<const baseNode *> getChildren() const override;
-  // virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+  virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 };
 
 class ExprExprFor : public ForStatementBase {
@@ -334,7 +335,7 @@ public:
     return {(const Expression*)cond1, cond2};
   };
   virtual std::vector<const baseNode *> getChildren() const override;
-  // virtual Context generate_assembly(Context ctxt, int d = 2) const override;
+  virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 };
 
 

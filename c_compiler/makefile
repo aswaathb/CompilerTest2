@@ -2,8 +2,14 @@ CPPFLAGS += -std=c++11 -W -Wall -g -Wno-unused-parameter -D_GLIBCXX_USE_CXX11_AB
 
 
 CPPFLAGS += -I include
+ASTCPP += $(wildcard include/ast/*.cpp) ############
 
-all : bin/print_canonical bin/eval_expr
+all : bin/parser bin/print_canonical bin/eval_expr 
+
+bin/parser: src/parser.tab.hpp $(ASTCPP:%.cpp=%.o) 
+	mkdir -p bin
+	g++ $(CPPFLAGS) -o $@ $(ASTCPP:%.cpp=%.o)
+
 
 src/parser.tab.cpp src/parser.tab.hpp : src/parser.y
 	bison -v -d src/parser.y -o src/parser.tab.cpp
@@ -18,6 +24,8 @@ bin/print_canonical : src/print_canonical.o src/parser.tab.o src/lexer.yy.o src/
 bin/eval_expr : src/eval_expr.o src/parser.tab.o src/lexer.yy.o src/parser.tab.o
 	mkdir -p bin
 	g++ $(CPPFLAGS) -o bin/eval_expr $^
+
+
 
 
 clean :
