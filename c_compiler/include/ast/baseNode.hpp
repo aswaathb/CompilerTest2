@@ -10,11 +10,8 @@
 class Context;
 
 extern int yylex();
-//! Abstract base class for ast node
 class baseNode {
 private:
-//   static int tabcount;
-//   static int changed;
   static std::vector<std::string> strings;
 protected:
 //   mutable int sourceline;
@@ -26,15 +23,17 @@ protected:
   mutable int p;
 
 public:
-  virtual ~baseNode() { };
+  virtual ~baseNode(){
+    for (auto &it:getChildren()){
+      std::cerr << "Deleting " << it->getNodeType() << std::endl;
+      delete it;
+    }
+  };
 
   baseNode();
   //! Getters
   virtual std::string getNodeType() const;      //! Return the type of the node
   virtual std::string getDetails() const;
-
-  virtual const baseNode * add(const baseNode * child) const ;
-
   virtual int getPtr() const {return 0; };
   virtual std::vector<const baseNode *> getChildren() const { return {};}; //! If not overridden, return empty.
   virtual std::string getId() const;            //! Return the id of a variable, ideally should be pure virtual
@@ -65,17 +64,17 @@ class List : public baseNode {
 protected:
   mutable std::vector<const baseNode *> children;
 public:
-  List(std::vector<const baseNode *> _children): children(_children){ } ;
+  List(std::vector<const baseNode *> _children): children(_children) {};
   
   //! Destructor for list
-   virtual ~List(){};
+   virtual ~List();
   
   virtual const baseNode * add(const baseNode * child) const;
   
   
   //! Getters
   virtual std::string getNodeType() const;
-  virtual std::vector<const baseNode *> getChildren();
+  virtual std::vector<const baseNode *> getChildren() const;
   
   //! Printers
   virtual void python_print(std::ostream &stream) const;

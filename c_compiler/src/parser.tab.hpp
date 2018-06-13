@@ -139,7 +139,19 @@ extern int yydebug;
     COLON = 322,
     DOT = 323,
     STRING = 324,
-    SIZEOF = 325
+    SIZEOF = 325,
+    CONDITIONAL_EXPRESSION = 326,
+    LOGICAL_OR_EXPRESSION = 327,
+    LOGICAL_AND_EXPRESSION = 328,
+    INCLUSIVE_OR_EXPRESSION = 329,
+    EXCLUSIVE_OR_EXPRESSION = 330,
+    AND_EXPRESSION = 331,
+    RELATIONAL_EXPRESSION = 332,
+    SHIFT_EXPRESSION = 333,
+    CAST_EXPRESSION = 334,
+    PREFIX_EXPRESSION = 335,
+    POSTFIX_EXPRESSION = 336,
+    VARIABLE_CONSTANT = 337
   };
 #endif
 
@@ -161,7 +173,7 @@ union YYSTYPE
 
 	std::string 		*str;
 
-#line 165 "src/parser.tab.hpp" /* yacc.c:1909  */
+#line 177 "src/parser.tab.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

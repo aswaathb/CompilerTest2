@@ -24,7 +24,7 @@ std::vector<const baseNode *> CompoundStatement::getChildren() const {
 Context CompoundStatement::generate_assembly(Context ctxt, int d) const {
 
   ctxt = decl->generate_assembly(ctxt);
-
+  
   for (auto it: stat->getChildren()){
     it->generate_assembly(ctxt,d);
   }

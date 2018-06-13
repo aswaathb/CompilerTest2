@@ -1,7 +1,7 @@
 
 #include "declaration.hpp"
 #include "context.hpp"
-#include "variable.hpp"
+#include "variables.hpp"
 
 /*
    GETTERS
@@ -13,7 +13,7 @@ std::string FunctionDeclarator::getNodeType() const { return "FunctionDeclarator
 std::string Declaration::getNodeType() const        { return "Declaration"; };
 
 std::string Declaration::getId() const {
-  return dlist->getChildren()[0]->getId();
+  return list->getChildren()[0]->getId();
 }
 
 std::string Declaration::getTypename() const {
@@ -120,20 +120,19 @@ Context InitDeclarator::generate_assembly(Context ctxt, int d) const{
   return ctxt;
 }
 
-/* 
-    PRINT PYTHON
-*/
-void Declarator::python_print(std::ostream &stream) const{
-    stream << " DECLARATOR NEEDS TO BE IMPLEMENTED"         << std::endl; 
-}
+// /* 
+//     PRINT PYTHON
+// */
+// void Declarator::python_print(std::ostream &stream) const{
+//     stream << " DECLARATOR NEEDS TO BE IMPLEMENTED"         << std::endl; 
+// }
 
-void FunctionDeclarator::python_print(std::ostream &stream) const {
-    stream << " FUNCTION_DECARATION NEEDS TO BE IMPLEMENTED"<< std::endl; 
+// void FunctionDeclarator::python_print(std::ostream &stream) const {
+//     stream << " FUNCTION_DECARATION NEEDS TO BE IMPLEMENTED"<< std::endl; 
 
-};
+// };
 
-void Declaration::python_print(std::ostream &stream) const{
-    stream << " DECARATION NEEDS TO BE IMPLEMENTED"         << std::endl; 
-  }
-};
+// void Declaration::python_print(std::ostream &stream) const{
+//     stream << " DECARATION NEEDS TO BE IMPLEMENTED"         << std::endl; 
+// };
 

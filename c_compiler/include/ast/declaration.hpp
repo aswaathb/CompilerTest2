@@ -5,6 +5,7 @@
 
 #include "baseNode.hpp"
 #include "types.hpp"
+#include "base_expr.hpp"
 
 
 class DeclaratorBase : public baseNode {};

@@ -3,7 +3,7 @@
 #include "context.hpp"
 
 
-BinaryExpression::BinaryExpression(const Expression *_left, const Expression *_right, std::string _op)
+BinaryExpression::BinaryExpression(const Expression *_left, const Expression *_right, std::string *_op)
     : left(_left), right(_right), op(*_op) {}
 
 /* GETTERS */
@@ -15,7 +15,7 @@ std::string AssignmentExpression::getNodeType() const {
   return "AssignmentExpression";
 }
 std::string BinaryExpression::getDetails() const {
-   return " op=\"" + getOp() + "\" " + Node::getDetails();
+   return " op=\"" + getOp() + "\" " + baseNode::getDetails();
 }
 
 std::string BinaryExpression::getOp() const { return op; };
@@ -56,7 +56,7 @@ Context BinaryExpression::generate_assembly(Context ctxt, int d) const {
     getLeft()->generate_assembly(ctxt,3);
     ctxt.ss() << "\tsltu\t$" << d << ",$0,$3" <<" # checking if left > zero"    << std::endl;
     ctxt.ss() << "\tbeq\t$"  << d << ",1," << end <<" # then short circuit"     << std::endl;
-    ctxt.ss() << "\tnop"                             s                          << std::endl;
+    ctxt.ss() << "\tnop"                                                        << std::endl;
 
     // RHS
     ctxt.push(3);
@@ -193,13 +193,9 @@ Context AssignmentExpression::generate_assembly(Context ctxt, int d) const {
     ctxt.ss() << "\txor\t$2,$3,$2" << " # xor $3^$2"        << std::endl;
   } else if (op == "<<=") {
     ctxt.ss() << "\tlsl\t$2,$3,$2" << " # << $3<<$2"        << std::endl;
-  } else    (op == ">>=") {
+  } else if (op == ">>=") {
     ctxt.ss() << "\tasr\t$2,$3,$2" << " # >> $3>>$2"        << std::endl;
   }
   ctxt.storeVariable(getLeft()->getId(), 2);
   return ctxt;
 }
-
-void BinaryExpression::python_print(std::ostream &stream) const {
-    std::cout << left->python_print(stream); << op << right->python_print(stream); endline
-};

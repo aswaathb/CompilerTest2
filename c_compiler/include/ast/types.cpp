@@ -55,9 +55,9 @@ std::vector<std::string> Type::getTypeVec() const {
       typeVector.push_back("longlong");
       break; 
   }
-  ss << std::hex << "0x" << s;
+  ss << std::hex << "0x" << spec;
   ss.clear();
-  ss << std::hex << "0x" << q << std::dec;
+  ss << std::hex << "0x" << qual << std::dec;
 
   typeVector.push_back(ss.str());
   typeVector.push_back(ss.str());
@@ -103,8 +103,8 @@ std::string Type::getTypename() const {
       ss << "longlong";
       break; 
   }
-  ss << std::hex << " 0x" << s;
-  ss << std::hex << " 0x" << q << std::dec;
+  ss << std::hex << " 0x" << spec;
+  ss << std::hex << " 0x" << qual << std::dec;
   
   if (sign){
     //Add space so strings done merge
@@ -126,23 +126,23 @@ void Type::add(const Type* in) const {
     sign = sign_in;
   }
   if (qual_in){
-    assert(q==0);
+    assert(qual==0);
     qual = qual_in; 
   }
   if (spec_in){
-    assert(s==0);
+    assert(spec==0);
     spec = spec_in;
   }
-  if (t==0){
+  if (type==0){
     type = type_in;
   }
   
   else if (type_in>6){
 
-    if (t==0x1){ // for int
+    if (type==0x1){ // for int
       type = type_in;
     }
-    else if (t==0x5){ //for double
+    else if (type==0x5){ //for double
       type = type_in;
     }
     else if (type == Long){

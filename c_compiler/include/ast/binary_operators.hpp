@@ -25,7 +25,7 @@ public:
 
   const Expression * getLeft() const { return left;};
 
-  const Expression * getRight()const { return right;};
+  const Expression * getRight() const { return right;};
 
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 

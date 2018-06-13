@@ -5,7 +5,7 @@
 int main(int argc, char *argv[])
 {
     
-    const Expression *ast=parseAST();
+    const baseNode *ast=parseAST();
     
     //python translation
     ast->python_print();

@@ -25,21 +25,21 @@ std::vector<std::string> baseNode::getChildParams() const {
   return childParams;
 }
 
-std::string baseNode::getDetails() const {
-  std::string defs = " childDefs=\"";
-  if (childDefs.size()){
-    for (auto &it : childDefs){
-      defs += it + ",";
-    }
-    // Get rid of trailing comma
-    defs = defs.substr(0, defs.size()-1);
-    defs += "\"";
-  }
-  else {
-    defs = "";
-  }
-  return "endline=\"" + std::to_string(sourceline) + "\" endcol=\"" + std::to_string(sourcecol) + "\"" + defs;
-}
+// std::string baseNode::getDetails() const {
+//   std::string defs = " childDefs=\"";
+//   if (childDefs.size()){
+//     for (auto &it : childDefs){
+//       defs += it + ",";
+//     }
+//     // Get rid of trailing comma
+//     defs = defs.substr(0, defs.size()-1);
+//     defs += "\"";
+//   }
+//   else {
+//     defs = "";
+//   }
+//   return "endline=\"" + std::to_string(sourceline) + "\" endcol=\"" + std::to_string(sourcecol) + "\"" + defs;
+// }
 
 std::vector<std::string> baseNode::getStrings() const {
   return strings;
@@ -48,11 +48,6 @@ std::vector<std::string> baseNode::getStrings() const {
 /*
    SETTERS
  */
-
-const baseNode::add(const baseNode *child) const {
-  children.push_back(child);
-  return this;
-};
 
 //!
 void baseNode::addString(std::string s) const {
@@ -211,39 +206,39 @@ Context ExprList::generate_assembly(Context ctxt, int d) const{
   return ctxt;
 }
 
-/*
-   PRINT PYTHON
- */
+// /*
+//    PRINT PYTHON
+//  */
 
-void List::python_print(std::ostream &stream) const {
-  for (auto &it : getChildren()){
-    it->python_print(stream);
-  }
-}
+// void List::python_print(std::ostream &stream) const {
+//   for (auto &it : getChildren()){
+//     it->python_print(stream);
+//   }
+// }
 
-void MultiList::python_print(std::ostream &stream) const {
-  if (getChildren().size() != 0) {
-    tab(stream);
-    tab_incr();
-    for (auto &it : getChildren()){
-      it->python_print(stream);
-    }
-    tab(stream,false);
-  } else {
-    tab_decr();
-  }
-}
+// void MultiList::python_print(std::ostream &stream) const {
+//   if (getChildren().size() != 0) {
+//     tab(stream);
+//     tab_incr();
+//     for (auto &it : getChildren()){
+//       it->python_print(stream);
+//     }
+//     tab(stream,false);
+//   } else {
+//     tab_decr();
+//   }
+// }
 
-void DeclarationList::python_print(std::ostream &stream) const{
-  List::python_print(stream);
-};
+// void DeclarationList::python_print(std::ostream &stream) const{
+//   List::python_print(stream);
+// };
 
-void ParameterList::python_print(std::ostream &stream) const{
-  for (auto &it : getChildren()) {
-    stream << "<Parameter id=\"" << it->getId() << "\" />" << std::endl;
-  }
-};
+// void ParameterList::python_print(std::ostream &stream) const{
+//   for (auto &it : getChildren()) {
+//     stream << "<Parameter id=\"" << it->getId() << "\" />" << std::endl;
+//   }
+// };
 
-void ExprList::python_print(std::ostream &stream) const{
-    List::python_print(sstream);
-};
+// void ExprList::python_print(std::ostream &stream) const{
+//     List::python_print(sstream);
+// };

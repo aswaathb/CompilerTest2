@@ -16,7 +16,7 @@ Context Variable::generate_assembly(Context ctxt, int d) const {
     //ctxt.ss() << "\tlw $" << d << "," << ctxt.getVariable(id) << "($fp)" << " # load var: " << id << std::endl;
   }
   catch(std::out_of_range& e){
-    std::cerr << expr.what() << std::endl;
+    std::cerr << "error - out of range" << std::endl;
     std::terminate();
   }
   return ctxt;
