@@ -23,8 +23,8 @@ Context Variable::generate_assembly(Context ctxt, int d) const {
 }
 
 
-/* PRINT PYHTON */
+// /* PRINT PYHTON */
 
-void Variable::python_print(std::ostream &stream) const {
-  stream << "VARIABLE NEEDS TO BE IMPLEMENTED" << std::endl;
-}
+// void Variable::python_print(std::ostream &stream) const {
+//   stream << "VARIABLE NEEDS TO BE IMPLEMENTED" << std::endl;
+// }

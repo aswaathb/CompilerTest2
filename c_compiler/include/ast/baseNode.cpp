@@ -3,6 +3,8 @@
 #include "declaration.hpp"
 #include "statement.hpp"
 
+
+
 /*
    GETTERS
  */
@@ -11,6 +13,7 @@ std::string baseNode::getNodeType() const {
   return "baseNode";
 }
 
+baseNode::baseNode() : sourceline(yylsourcelino), sourcecol(yylcolno) {};
 
 //! Return the id of a variable, ideally should be pure virtual
 std::string baseNode::getId() const { return getNodeType();}
@@ -25,21 +28,21 @@ std::vector<std::string> baseNode::getChildParams() const {
   return childParams;
 }
 
-// std::string baseNode::getDetails() const {
-//   std::string defs = " childDefs=\"";
-//   if (childDefs.size()){
-//     for (auto &it : childDefs){
-//       defs += it + ",";
-//     }
-//     // Get rid of trailing comma
-//     defs = defs.substr(0, defs.size()-1);
-//     defs += "\"";
-//   }
-//   else {
-//     defs = "";
-//   }
-//   return "endline=\"" + std::to_string(sourceline) + "\" endcol=\"" + std::to_string(sourcecol) + "\"" + defs;
-// }
+std::string baseNode::getDetails() const {
+  std::string defs = " childDefs=\"";
+  if (childDefs.size()){
+    for (auto &it : childDefs){
+      defs += it + ",";
+    }
+    // Get rid of trailing comma
+    defs = defs.substr(0, defs.size()-1);
+    defs += "\"";
+  }
+  else {
+    defs = "";
+  }
+  return "endline=\"" + std::to_string(sourceline) + "\" endcol=\"" + std::to_string(sourcecol) + "\"" + defs;
+}
 
 std::vector<std::string> baseNode::getStrings() const {
   return strings;
@@ -90,11 +93,11 @@ Context baseNode::generate_assembly(Context ctxt, int d) const {
   return ctxt;
 }
 
-void baseNode::python_print(std::ostream &stream) const {
-    for (auto &it : getChildren()){
-        it->python_print(stream);
-    }
-}
+// void baseNode::python_print(std::ostream &stream) const {
+//     for (auto &it : getChildren()){
+//         it->python_print(stream);
+//     }
+// }
 
   ///////////////////////////////////////////////////////////////////
 /*

@@ -20,7 +20,7 @@ public:
   virtual std::string getId() const override;
   void setPtr() const { ptr++; }
   int getPtr() const { return ptr; }
-  virtual void python_print(std::ostream &stream) const override;
+  //virtual void python_print(std::ostream &stream) const override;
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 };
 

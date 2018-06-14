@@ -16,7 +16,7 @@ public:
   virtual std::string getNodeType() const override { return "ExprStatement"; };
   virtual std::vector<const baseNode *> getChildren() const override { return {expr}; }
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
-  virtual void python_print(std::ostream& stream) const override;
+  //virtual void python_print(std::ostream& stream) const override;
 };
 
 /*
@@ -35,7 +35,7 @@ public:
   ConditionalStatement(const Statement *_stat1) : stat1(_stat1) {};
 
   virtual std::string getNodeType() const { return "ConditionalStatement"; };
-  virtual void python_print(std::ostream &stream) const;
+  //virtual void python_print(std::ostream &stream) const;
 
   virtual std::vector<const baseNode *> getChildren() const override { return {stat1}; }
   virtual std::vector<const Expression *> getConditions() const = 0;
@@ -61,7 +61,7 @@ public:
 
   virtual std::string getNodeType() const override;
   virtual std::vector<const baseNode *> getChildren() const override;
-  virtual void python_print(std::ostream &stream) const override;
+  //virtual void python_print(std::ostream &stream) const override;
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 };
 
@@ -88,7 +88,7 @@ public:
   IfStatement(const Expression *_cond, const Statement *_stat)
       : SelectionStatement(_cond, _stat) {};
 
-  virtual void python_print(std::ostream &stream) const;
+  //virtual void python_print(std::ostream &stream) const;
 };
 
 /*
@@ -105,7 +105,7 @@ public:
   virtual std::string getNodeType() const override;
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
   virtual std::vector<const baseNode *> getChildren() const override { return {stat1,stat2}; }
-  virtual void python_print(std::ostream &stream) const;
+  //virtual void python_print(std::ostream &stream) const;
 };
 
 
@@ -129,7 +129,7 @@ public:
   virtual ~JumpStatement(){};
 
   virtual std::string getNodeType() const override;
-  virtual void python_print(std::ostream& stream) const override;
+  //virtual void python_print(std::ostream& stream) const override;
 };
 
 
@@ -222,13 +222,10 @@ public:
 
 class Iteration : public ConditionalStatement {
 public:
+  Iteration(const Statement *_stat) : ConditionalStatement(_stat) {}
   virtual ~Iteration(){};
   virtual std::string getNodeType() const;
-  virtual std::vector<const baseNode *> getChildren() const;
- 
-
-  Iteration(const Statement *_stat) : ConditionalStatement(_stat) {}
-
+  virtual std::vector<const baseNode *> getChildren() const = 0;
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 };
 

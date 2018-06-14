@@ -38,19 +38,6 @@ Context ExprStatement::generate_assembly(Context ctxt, int d) const {
 }
 
 
-void ExprStatement::python_print(std::ostream& stream) const {
-  stream << "Expr Statement NOT YET IMPLEMENTED"                    << std::endl;
-}
-
-void ConditionalStatement::python_print(std::ostream &stream) const {
-  stream << "Conditional Statement NOT YET IMPLEMENTED"             << std::endl;
-}
-
-void CompoundStatement::python_print(std::ostream &stream) const {
-  stream << "Compound Statement NOT YET IMPLEMENTED"                << std::endl;
-}
-
-
 const Expression *SelectionStatement::getCondition() const              { return getConditions()[0]; };
 
 std::vector<const Expression *>SelectionStatement::getConditions() const {
@@ -123,20 +110,6 @@ Context IfElseStatement::generate_assembly(Context ctxt, int d) const {
 }
 
 
-/*
-  PRINT PYTHONN
- */
-
-void IfStatement::python_print(std::ostream &stream) const {
-    stream << "IfStatement NOT YET IMPLEMENTED"                     << std::endl;
-}
-
-void IfElseStatement::python_print(std::ostream &stream) const {
-    stream << "IfElseStatement NOT YET IMPLEMENTED"                 << std::endl;
-}
-/*
-  END OF PRINTERS
- */
 
 
 /*
@@ -184,15 +157,6 @@ Context GotoStatement::generate_assembly(Context ctxt, int d) const{
   ctxt.ss() << "\tj\t" << targetLabel << "# jump to label"          << std::endl;
   ctxt.ss() << "\tnop"                                              << std::endl;
   return ctxt;
-}
-
-
-/*
-  PRINT PYTHONN
- */
-
-void JumpStatement::python_print(std::ostream& stream) const {
-    stream << "JUMPStatement NOT YET IMPLEMENTED"                   << std::endl;
 }
 
 

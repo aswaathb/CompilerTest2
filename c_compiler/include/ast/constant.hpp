@@ -15,7 +15,7 @@ public:
   virtual std::string getValue() const { return value_in; };
   virtual std::string getId() const override {return value_in;};
   virtual std::vector<const baseNode *> getChildren() const override {return {};}
-  virtual void python_print(std::ostream &stream) const override;
+  //virtual void python_print(std::ostream &stream) const override;
 };
 
 class StringLiteral : public Constant {

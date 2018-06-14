@@ -18,7 +18,7 @@ public:
   virtual std::vector<std::string> getTypeVec() const { return std::vector<std::string>{"Int","0x0","0x0","Signed"}; };
   virtual std::string getId() const { return "No id"; }
   virtual const Expression * add(const Expression * child) const {(void)child; return this;};
-  virtual void python_print(std::ostream& stream) const override;
+  //virtual void python_print(std::ostream& stream) const override;
 };
 
 class Expression_Null : public Expression {

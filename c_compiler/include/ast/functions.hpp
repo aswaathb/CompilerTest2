@@ -29,7 +29,7 @@ public:
   
   virtual void setChildDefs() const override;
 
-  virtual void python_print(std::ostream &stream) const;
+  //virtual void python_print(std::ostream &stream) const;
   virtual Context generate_assembly(Context ctxt, int d = 2) const;
 };
 

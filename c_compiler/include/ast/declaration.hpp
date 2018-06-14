@@ -24,7 +24,7 @@ public:
   virtual void setPtr() const { ptr = 1; }
   virtual int getPtr() const override { return ptr; }
   virtual void setChildDefs() const override;
-  virtual void python_print(std::ostream &stream) const override;
+  //virtual void python_print(std::ostream &stream) const override;
   virtual std::vector<const baseNode *> getChildren() const override { return {child}; }
   virtual const List * getParams() const { return new List({}); }
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
@@ -54,7 +54,7 @@ public:
   FunctionDeclarator(const baseNode * _child, const List * _func) : Declarator(_child), func(_func) {};
   virtual std::string getNodeType() const override;
   virtual const List * getParams() const override;
-  virtual void python_print(std::ostream &stream) const override;
+  //virtual void python_print(std::ostream &stream) const override;
 };
 
 class Declaration : public DeclaratorBase {
@@ -73,7 +73,7 @@ public:
   virtual std::vector<std::string> getChildDefs() const override;
   virtual void setChildDefs() const override;
   
-  virtual void python_print(std::ostream &streams) const override;
+  //virtual void python_print(std::ostream &streams) const override;
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 };
 

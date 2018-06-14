@@ -174,10 +174,10 @@ Context Function::generate_assembly(Context ctxt, int d) const{
   return return_ctxt;
 }
 
-/* 
-    PRINT PYTHON 
-*/
-void Function::python_print(std::ostream &stream) const {
-    stream << " FUNCTION NEEDS TO BE IMPLEMENTED" << std::endl; 
+// /* 
+//     PRINT PYTHON 
+// */
+// void Function::python_print(std::ostream &stream) const {
+//     stream << " FUNCTION NEEDS TO BE IMPLEMENTED" << std::endl; 
 
-}
+// }

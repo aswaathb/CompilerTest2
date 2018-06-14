@@ -29,7 +29,7 @@ public:
 
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
 
-  virtual void python_print(std::ostream& stream) const override;
+  //virtual void python_print(std::ostream& stream) const override;
 
 };
 

@@ -75,10 +75,10 @@ Context StringLiteral::generate_assembly(Context ctxt, int d) const {
   return ctxt;
 }
 
-/* 
-  PRINT PYTHON 
-*/
-void Constant::python_print(std::ostream &stream) const {
-  stream << "NEEDS IMPLEMENTATION" << std::endl;
-}
+// /* 
+//   PRINT PYTHON 
+// */
+// void Constant::python_print(std::ostream &stream) const {
+//   stream << "NEEDS IMPLEMENTATION" << std::endl;
+// }
 

@@ -4,10 +4,11 @@
 	#include "parser.tab.hpp"
 	#include <string>
 	#include <cstdlib>
-
+	void col_inc();
+	void store(char * yytext);
 
 	// extern "C" int fileno(FILE *stream);
-	//void yy_colCount();
+	void yy_colCount();
 %}
 
 digit       [0-9]
@@ -89,7 +90,7 @@ sizeof 						{ return (SIZEOF); }
 {letter}{alphanum}*        	{ return (IDENTIFIER); }
 
 %%
-/*
+
 int col = 0;
 
 void yy_colCount(){
@@ -102,8 +103,16 @@ void yy_colCount(){
 			col++;
 	ECHO;
 }
-*/
 
+
+void col_inc(){
+  yylcolno += len;
+}
+
+void store(char * yytext){
+  yylval.raw = new std::string(yytext);
+  len = yyleng;
+}
 
 void yyerror (char const *s)
 {

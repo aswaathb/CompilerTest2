@@ -8,14 +8,21 @@
 #include "context.hpp"
 
 class Context;
-
+extern int len;
+extern int yylineno;
+extern int yylcolno;
+extern int yylsourcelino;
+// extern std::string yylfile;
 extern int yylex();
+
+
 class baseNode {
 private:
   static std::vector<std::string> strings;
+
 protected:
-//   mutable int sourceline;
-//   mutable int sourcecol;
+   mutable int sourceline;
+   mutable int sourcecol;
 //   static bool parser;
   // metadata;
   mutable std::vector<std::string> childDefs; //! Child defs and
@@ -39,9 +46,9 @@ public:
   virtual std::string getId() const;            //! Return the id of a variable, ideally should be pure virtual
   virtual std::vector<std::string> getChildDefs() const; //! Child defs is the most useful, especially for functions
   virtual std::vector<std::string> getChildParams() const;
-  virtual void addString(std::string) const;
+  virtual void addString(std::string s) const;
   virtual std::vector<std::string> getStrings() const;
-  //virtual std::vector<const baseNode *> getChildren() = 0 ;
+  // virtual std::vector<const baseNode *> getChildren() = 0 ;
 
   
   
@@ -51,7 +58,7 @@ public:
 
   
   //! Printers
-  virtual void python_print(std::ostream &stream) const;            //! Print python implicit recursive function
+  //virtual void python_print(std::ostream &stream) const;            //! Print python implicit recursive function
   virtual Context generate_assembly(Context ctxt, int d = 2) const; //! Print out mips assembly
   
 
@@ -77,7 +84,7 @@ public:
   virtual std::vector<const baseNode *> getChildren() const;
   
   //! Printers
-  virtual void python_print(std::ostream &stream) const;
+  //virtual void python_print(std::ostream &stream) const;
 };
 
 //! MultiList is a node of the ast that can have any number of children
@@ -94,7 +101,7 @@ public:
   virtual std::string getNodeType() const;
   
   //! Printers
-  virtual void python_print(std::ostream &stream) const;
+  //virtual void python_print(std::ostream &stream) const;
 };
 
 
@@ -116,7 +123,7 @@ public:
   //! Getters
   virtual std::string getNodeType() const override;
   //! Printers
-  virtual void python_print(std::ostream &stream) const override;
+ // virtual void python_print(std::ostream &stream) const override;
 };
 
 //! Functions have a parameter list.
@@ -126,7 +133,7 @@ public:
   //! Getters
   virtual std::string getNodeType() const override;
   //! Printers
-  virtual void python_print(std::ostream &stream) const override;
+  //virtual void python_print(std::ostream &stream) const override;
 };
 
 class ExprList : public List {
@@ -137,7 +144,7 @@ public:
   virtual std::string getNodeType() const override;
   virtual std::vector<const baseNode *> getChildren() const override;
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
-  virtual void python_print(std::ostream &stream) const override;
+  //virtual void python_print(std::ostream &stream) const override;
 };
 
 
