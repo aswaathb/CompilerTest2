@@ -3,8 +3,6 @@
 #include "declaration.hpp"
 #include "statement.hpp"
 
-
-
 /*
    GETTERS
  */
@@ -13,7 +11,7 @@ std::string baseNode::getNodeType() const {
   return "baseNode";
 }
 
-baseNode::baseNode() : sourceline(yylsourcelino), sourcecol(yylcolno) {};
+baseNode::baseNode() {};
 
 //! Return the id of a variable, ideally should be pure virtual
 std::string baseNode::getId() const { return getNodeType();}
@@ -93,11 +91,12 @@ Context baseNode::generate_assembly(Context ctxt, int d) const {
   return ctxt;
 }
 
-// void baseNode::python_print(std::ostream &stream) const {
-//     for (auto &it : getChildren()){
-//         it->python_print(stream);
-//     }
-// }
+void baseNode::python_print(std::ostream &stream) const {
+ for (auto &it : getChildren()){
+         it->python_print(stream);
+     }
+ }
+
 
   ///////////////////////////////////////////////////////////////////
 /*
@@ -213,35 +212,35 @@ Context ExprList::generate_assembly(Context ctxt, int d) const{
 //    PRINT PYTHON
 //  */
 
-// void List::python_print(std::ostream &stream) const {
-//   for (auto &it : getChildren()){
-//     it->python_print(stream);
-//   }
-// }
+ void List::python_print(std::ostream &stream) const {
+   for (auto &it : getChildren()){
+     it->python_print(stream);
+   }
+ }
 
-// void MultiList::python_print(std::ostream &stream) const {
-//   if (getChildren().size() != 0) {
-//     tab(stream);
-//     tab_incr();
-//     for (auto &it : getChildren()){
-//       it->python_print(stream);
-//     }
-//     tab(stream,false);
-//   } else {
-//     tab_decr();
-//   }
-// }
+ void MultiList::python_print(std::ostream &stream) const {
+   if (getChildren().size() != 0) {
+     tab(stream);
+     tab_incr();
+     for (auto &it : getChildren()){
+       it->python_print(stream);
+     }
+     tab(stream,false);
+   } else {
+     tab_decr();
+   }
+ }
 
-// void DeclarationList::python_print(std::ostream &stream) const{
-//   List::python_print(stream);
-// };
+ void DeclarationList::python_print(std::ostream &stream) const{
+   List::python_print(stream);
+ };
 
-// void ParameterList::python_print(std::ostream &stream) const{
-//   for (auto &it : getChildren()) {
-//     stream << "<Parameter id=\"" << it->getId() << "\" />" << std::endl;
-//   }
-// };
+ void ParameterList::python_print(std::ostream &stream) const{
+   for (auto &it : getChildren()) {
+     stream << "<Parameter id=\"" << it->getId() << "\" />" << std::endl;
+   }
+ };
 
-// void ExprList::python_print(std::ostream &stream) const{
-//     List::python_print(sstream);
-// };
+ void ExprList::python_print(std::ostream &stream) const{
+     List::python_print(sstream);
+ };

@@ -91,29 +91,6 @@ sizeof 						{ return (SIZEOF); }
 
 %%
 
-int col = 0;
-
-void yy_colCount(){
-  for (int i = 0; yytexti != '\0'; i++)
-		if (yytexti == '\n')
-			col = 0;
-		else if (yytexti == '\t)
-			col += 8 - (col % 8);
-		else
-			col++;
-	ECHO;
-}
-
-
-void col_inc(){
-  yylcolno += len;
-}
-
-void store(char * yytext){
-  yylval.raw = new std::string(yytext);
-  len = yyleng;
-}
-
 void yyerror (char const *s)
 {
   fprintf (stderr, "Flex Error: %s\n", s); /* s is the text that wasn't matched */

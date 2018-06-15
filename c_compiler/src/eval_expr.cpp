@@ -8,7 +8,6 @@ int main(int argc, char *argv[])
     const baseNode *ast=parseAST();
     
     //python translation
-    ast->python_print();
     std::cout<<std::endl;
     //Python "Footer"
     std::cout<<"if __name__ == \"__main__\": "<<std::endl;

@@ -18,7 +18,7 @@ extern int yylex();
 
 class baseNode {
 private:
-  static std::vector<std::string> strings;
+ // static std::vector<std::string> strings;
 
 protected:
    mutable int sourceline;
@@ -28,6 +28,7 @@ protected:
   mutable std::vector<std::string> childDefs; //! Child defs and
   mutable std::vector<std::string> childParams; //! Child params
   mutable int p;
+	mutable std::vector<std::string> strings;
 
 public:
   virtual ~baseNode(){
@@ -50,19 +51,19 @@ public:
   virtual std::vector<std::string> getStrings() const;
   // virtual std::vector<const baseNode *> getChildren() = 0 ;
 
-  
-  
+
+
   //! Recursive setter:
   virtual void setChildDefs() const;
   virtual void setParamUses() const;
 
-  
-  //! Printers
-  //virtual void python_print(std::ostream &stream) const;            //! Print python implicit recursive function
-  virtual Context generate_assembly(Context ctxt, int d = 2) const; //! Print out mips assembly
-  
 
-  virtual void setPtr() const {};  
+  //! Printers
+  virtual void python_print(std::ostream &stream) const;            //! Print python implicit recursive function
+  virtual Context generate_assembly(Context ctxt, int d = 2) const; //! Print out mips assembly
+
+
+  virtual void setPtr() const {};
 
 };
 
@@ -72,19 +73,19 @@ protected:
   mutable std::vector<const baseNode *> children;
 public:
   List(std::vector<const baseNode *> _children): children(_children) {};
-  
+
   //! Destructor for list
    virtual ~List();
-  
+
   virtual const baseNode * add(const baseNode * child) const;
-  
-  
+
+
   //! Getters
   virtual std::string getNodeType() const;
   virtual std::vector<const baseNode *> getChildren() const;
-  
+
   //! Printers
-  //virtual void python_print(std::ostream &stream) const;
+  virtual void python_print(std::ostream &stream) const;
 };
 
 //! MultiList is a node of the ast that can have any number of children
@@ -96,12 +97,12 @@ public:
   MultiList(std::vector<const baseNode *> _children) : List(_children) {
 
   };
-  
+
   //! Getters
   virtual std::string getNodeType() const;
-  
+
   //! Printers
-  //virtual void python_print(std::ostream &stream) const;
+  virtual void python_print(std::ostream &stream) const;
 };
 
 
@@ -110,7 +111,7 @@ public:
 class TranslationUnit : public MultiList {
 public:
   TranslationUnit(std::vector<const baseNode *> _child) : MultiList(_child) {}
-  
+
   //! Getters
   virtual std::string getNodeType() const override;
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
@@ -123,7 +124,7 @@ public:
   //! Getters
   virtual std::string getNodeType() const override;
   //! Printers
- // virtual void python_print(std::ostream &stream) const override;
+  virtual void python_print(std::ostream &stream) const override;
 };
 
 //! Functions have a parameter list.
@@ -133,7 +134,7 @@ public:
   //! Getters
   virtual std::string getNodeType() const override;
   //! Printers
-  //virtual void python_print(std::ostream &stream) const override;
+  virtual void python_print(std::ostream &stream) const override;
 };
 
 class ExprList : public List {
@@ -144,7 +145,7 @@ public:
   virtual std::string getNodeType() const override;
   virtual std::vector<const baseNode *> getChildren() const override;
   virtual Context generate_assembly(Context ctxt, int d = 2) const override;
-  //virtual void python_print(std::ostream &stream) const override;
+  virtual void python_print(std::ostream &stream) const override;
 };
 
 
